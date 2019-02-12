@@ -24,7 +24,7 @@ For 3:
 
 `sudo apt-get install pgadmin3`
 
-Start Pgadmin and create a database on the local running postgres server, with the name `znaj_znak`.
+Start Pgadmin and create a database on the local running postgres server, with the name `report_server`.
 
 CD into project directory and run:
 

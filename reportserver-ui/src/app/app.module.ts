@@ -1,26 +1,80 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+
+import {
+  MatInputModule, MatFormFieldModule, MatSelectModule, MatOptionModule, MatCardModule,
+  MatButtonModule, MatToolbarModule, MatMenuModule, MatIconModule, MatSnackBarModule
+} from '@angular/material';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { NgxFlagIconCssModule } from 'ngx-flag-icon-css'
+import { StorageServiceModule } from 'angular-webstorage-service';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
-import { MatInputModule, MatFormFieldModule, MatSelectModule, MatOptionModule, MatCardModule } from '@angular/material';
+import { RegisterComponent } from './register/register.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { ApiInterceptor } from './api-interceptor';
+import { SeveritySnackbarComponent } from './severity-snackbar/severity-snackbar.component';
+
+
+const appRoutes: Routes = [
+  { path: 'login', component: LoginComponent, data: { animation: 'LoginPage' } },
+  { path: 'register', component: RegisterComponent, data: { animation: 'RegisterPage' } },
+  { path: 'dashboard', component: DashboardComponent, data: { animation: 'DashboardPage' } },
+  { path: '', redirectTo: 'login', pathMatch: 'full' }
+];
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent,
+    DashboardComponent,
+    SeveritySnackbarComponent
   ],
   imports: [
+    RouterModule.forRoot(appRoutes, { enableTracing: false }),
     BrowserModule,
+    NgxFlagIconCssModule,
     MatFormFieldModule,
     MatOptionModule,
     MatSelectModule,
     MatInputModule,
+    MatButtonModule,
+    MatToolbarModule,
+    MatMenuModule,
+    MatIconModule,
+    MatSnackBarModule,
     BrowserAnimationsModule,
     MatCardModule,
+    HttpClientModule,
+    FormsModule,
+    StorageServiceModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ApiInterceptor,
+      multi: true
+    }
+  ],
+  bootstrap: [AppComponent],
+  entryComponents: [SeveritySnackbarComponent]
 })
 export class AppModule { }

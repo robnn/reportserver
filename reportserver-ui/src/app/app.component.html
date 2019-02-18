@@ -1,1 +1,32 @@
-<app-login></app-login>
+<mat-toolbar style="height: 50px" class="shadow dark-grey">
+    <mat-icon>filter_list</mat-icon>
+    <span>ReportServer</span>
+    <span class="fill-remaining-space"></span>
+    <div>
+        <button mat-button [matMenuTriggerFor]="menu">
+            <mat-icon>
+                menu
+            </mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item routerLink="/register">{{ "REGISTER" | translate }}</button>
+            <button mat-menu-item routerLink="/login">{{ "LOGIN" | translate }}</button>
+            <button mat-menu-item [matMenuTriggerFor]="language">{{ "LANGUAGE" | translate }}</button>
+        </mat-menu>
+        <mat-menu #language="matMenu">
+            <button mat-menu-item (click)="changeToHu()">
+                <mat-icon>
+                    <flag-icon country="hu" squared></flag-icon>
+                </mat-icon>{{ "HUNGARIAN" | translate }}
+            </button>
+            <button mat-menu-item (click)="changeToEn()">
+                <mat-icon>
+                    <flag-icon country="gb" squared></flag-icon>
+                </mat-icon>{{ "ENGLISH" | translate }}
+            </button>
+        </mat-menu>
+    </div>
+</mat-toolbar>
+<div [@routeAnimations]="prepareRoute(outlet)" >
+        <router-outlet #outlet="outlet"></router-outlet>
+      </div>

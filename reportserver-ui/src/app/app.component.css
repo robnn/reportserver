@@ -1,0 +1,36 @@
+.shadow {
+    -webkit-box-shadow: 0 8px 6px -6px rgb(16, 16, 16);
+    -moz-box-shadow: 0 8px 6px -6px rgb(16, 16, 16);
+    box-shadow: 0 8px 6px -6px rgb(16, 16, 16);
+}
+
+.fill-remaining-space {
+    flex: 1 1 auto;
+}
+
+main {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+router-outlet~* {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.dark-grey {
+    background-color: rgb(16, 16, 16);
+}
+
+::ng-deep snack-bar-container.severity-snackbar {
+    background: rgb(80, 80, 80);
+}
+
+::ng-deep .severity-snackbar .mat-simple-snackbar{
+    color: white;
+    height: 90px;
+  line-height: 90px;
+}

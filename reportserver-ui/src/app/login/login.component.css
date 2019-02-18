@@ -1,10 +1,25 @@
 .example-form {
-    min-width: 150px;
-    max-width: 500px;
-    width: 100%;
-  }
-  
-  .example-full-width {
-    width: 100%;
-  }
-  
+  min-width: 50px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+.material-icons.md-48 {
+  font-size: 48px;
+  color: primary;
+}
+
+.login-form-card {
+  width: 300px;
+  margin-top: 2cm;
+  background-color: rgb(80, 80, 80);
+  text-align: center;
+}
+
+.full-width {
+  width: 100%;
+}

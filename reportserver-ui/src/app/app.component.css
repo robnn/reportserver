@@ -4,9 +4,6 @@
     box-shadow: 0 8px 6px -6px rgb(16, 16, 16);
 }
 
-.fill-remaining-space {
-    flex: 1 1 auto;
-}
 
 main {
     position: relative;
@@ -31,6 +28,4 @@ router-outlet~* {
 
 ::ng-deep .severity-snackbar .mat-simple-snackbar{
     color: white;
-    height: 90px;
-  line-height: 90px;
 }

@@ -19,10 +19,10 @@ export class AppComponent {
   title = 'reportserver-ui';
 
   private ngUnsubscribe = new Subject();
-  
+
   constructor(private translateService: TranslateService,
     private notificationService: NotificationService,
-    private snackBar: MatSnackBar){
+    private snackBar: MatSnackBar) {
     this.initializeNotifications();
     translateService.addLangs(['hu', 'en']);
     translateService.setDefaultLang('en');
@@ -30,7 +30,7 @@ export class AppComponent {
   }
 
   onActivate(componentRef) {
-   
+
   }
 
   changeToHu() {
@@ -53,19 +53,17 @@ export class AppComponent {
         notif.forEach(n => {
           this.openSnackbar(n);
         })
-        
+
       });
   }
 
   openSnackbar(message: Message) {
     const config = new MatSnackBarConfig();
-    config.duration = 2000;
+    // config.duration = 2000;
     config.panelClass = ['severity-snackbar']
     config.horizontalPosition = 'right';
-    config.data = {
-      message: this.translateService.instant(message.message),
-      icon: 'error'
-    }
-      this.snackBar.openFromComponent(SeveritySnackbarComponent, config);
+    config.data = { message }
+    const snackBarRef = this.snackBar.openFromComponent(SeveritySnackbarComponent, config)
+    snackBarRef.instance.snackBarRef = snackBarRef;
   }
 }

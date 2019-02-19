@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
-@import "~@angular/material/prebuilt-themes/purple-green.css";
+/* @import "app-theme.scss";
+@import "~@angular/material/prebuilt-themes/purple-green.css"; */
 
 .material-icons {
     font-family: 'Material Icons';
@@ -29,7 +30,7 @@
   margin: auto;
 }
 
-body {
+.app-background {
   margin: 0%;
   padding: 0%;
   
@@ -60,4 +61,13 @@ body {
 
 .full-width {
   width: 100%;
+}
+
+.flag-icon {
+  border-radius: 2px;
+}
+
+
+.fill-remaining-space {
+  flex: 1 1 auto;
 }

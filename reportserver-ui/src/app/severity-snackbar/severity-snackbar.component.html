@@ -1,4 +1,8 @@
-<mat-icon color="accent">{{ data?.icon }}</mat-icon>
-<span class="mat-simple-snackbar">
-  {{ data?.message }}
-</span>
+<div class="display-flex">
+  <mat-icon [color]="getIconColor(data?.message.severity)">{{ getIconName(data?.message.severity) }}</mat-icon>
+  <span class="mat-simple-snackbar padding-start">
+    {{ data?.message.message | translate }}
+  </span>
+  <span class="fill-remaining-space"></span>
+  <button color="accent" mat-button (click)="dismiss()">{{ "CLOSE" | translate }}</button>
+</div>

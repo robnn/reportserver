@@ -35,5 +35,7 @@
   "LANGUAGE": "Nyelv",
   "HUNGARIAN": "Magyar",
   "ENGLISH": "Angol",
-  "INVALID_CREDENTIALS": "Érvénytelen bejelentkezési adatok!"
+  "INVALID_CREDENTIALS": "Érvénytelen bejelentkezési adatok!",
+  "CLOSE": "Bezárás",
+  "SUCCESSFUL_LOGIN": "Sikeres bejelentkezés!"
 }

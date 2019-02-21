@@ -1,21 +1,30 @@
-<mat-card class="login-form-card centered">
-  <i class="material-icons md-48">account_circle</i>
-  <mat-card-title>{{ "LOGIN" | translate }}</mat-card-title>
-  <mat-card-subtitle>{{ "PLEASE_LOGIN" | translate }}</mat-card-subtitle>
-  <mat-card-content>
-    <form class="example-form centered">
-      <mat-form-field  color="accent">
-        <input matInput placeholder="{{ 'USERNAME' | translate }}" name="username" required autofocus [(ngModel)]="user.username">
-        <mat-label><mat-icon>face</mat-icon> {{ 'USERNAME' | translate }} </mat-label>
+<form class="example-form centered" (ngSubmit)="loginSubmit()">
+  <mat-card class="login-form-card centered">
+    <i class="material-icons md-48">account_circle</i>
+    <mat-card-title>{{ "LOGIN" | translate }}</mat-card-title>
+    <mat-card-subtitle>{{ "PLEASE_LOGIN" | translate }}</mat-card-subtitle>
+    <mat-card-content>
+
+      <mat-form-field color="accent">
+        <input matInput placeholder="{{ 'USERNAME' | translate }}" name="username" required autofocus
+               [(ngModel)]="user.username">
+        <mat-label>
+          <mat-icon>face</mat-icon>
+          {{ 'USERNAME' | translate }} </mat-label>
       </mat-form-field>
       <br>
-      <mat-form-field  color="accent">
-        <input matInput type="password" placeholder="{{ 'PASSWORD' | translate }}" name="password" required [(ngModel)]="user.password">
-        <mat-label><mat-icon>lock</mat-icon> {{ 'PASSWORD' | translate }} </mat-label>
+      <mat-form-field color="accent">
+        <input matInput type="password" placeholder="{{ 'PASSWORD' | translate }}" name="password" required
+               [(ngModel)]="user.password">
+        <mat-label>
+          <mat-icon>lock</mat-icon>
+          {{ 'PASSWORD' | translate }} </mat-label>
       </mat-form-field>
-    </form>
-  </mat-card-content>
-  <mat-card-actions>
-    <button color="accent" class="full-width" mat-button (click)="loginClick()">{{ "LOGIN" | translate }}</button>
-  </mat-card-actions>
-</mat-card>
+
+    </mat-card-content>
+    <mat-card-actions>
+      <button color="accent" type="submit" class="full-width" mat-button>{{ "LOGIN" | translate }}</button>
+    </mat-card-actions>
+
+  </mat-card>
+</form>

@@ -37,5 +37,9 @@
   "ENGLISH": "Angol",
   "INVALID_CREDENTIALS": "Érvénytelen bejelentkezési adatok!",
   "CLOSE": "Bezárás",
-  "SUCCESSFUL_LOGIN": "Sikeres bejelentkezés!"
+  "SUCCESSFUL_LOGIN": "Sikeres bejelentkezés!",
+  "SUCCESSFUL_REGISTRATION": "Sikeres regisztráció!",
+  "USED_EMAIL_ADDRESS": "Az email cím már foglalt!",
+  "USED_USERNAME": "A felhasználónév már foglalt!"
+}
 }

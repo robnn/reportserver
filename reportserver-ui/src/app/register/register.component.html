@@ -1,29 +1,37 @@
-<mat-card class="login-form-card centered">
+<form class="example-form centered" (ngSubmit)="registerSubmit()">
+  <mat-card class="login-form-card centered">
     <i class="material-icons md-48">account_circle</i>
     <mat-card-title>{{ "REGISTER" | translate }}</mat-card-title>
     <mat-card-subtitle>{{ "REGISTER_TITLE" | translate }}</mat-card-subtitle>
     <mat-card-content>
-      <form class="example-form centered">
-          <mat-form-field color="accent" class="register-input-field">
-              <input matInput placeholder="{{ 'EMAIL' | translate }}">
-              <mat-label><mat-icon>mail</mat-icon> {{ 'EMAIL' | translate }} </mat-label>
-            </mat-form-field>
-        <mat-form-field color="accent" class="register-input-field">
-          <input matInput placeholder="{{ 'USERNAME' | translate }}">
-          <mat-label><mat-icon>face</mat-icon> {{ 'USERNAME' | translate }} </mat-label>
-        </mat-form-field>
-        <br>
-        <mat-form-field color="accent" class="register-input-field">
-          <input matInput type="password" placeholder="{{ 'PASSWORD' | translate }}">
-          <mat-label><mat-icon>lock</mat-icon> {{ 'PASSWORD' | translate }} </mat-label>
-        </mat-form-field>
-        <mat-form-field color="accent" class="register-input-field">
-            <input matInput type="password" placeholder="{{ 'PASSWORD_AGAIN' | translate }}">
-            <mat-label><mat-icon>lock</mat-icon> {{ 'PASSWORD_AGAIN' | translate }} </mat-label>
-          </mat-form-field>
-      </form>
+      <mat-form-field color="accent" class="register-input-field">
+        <input matInput placeholder="{{ 'EMAIL' | translate }}" email="true" type="email" name="email" required autofocus [(ngModel)]="user.emailAddress">
+        <mat-label>
+          <mat-icon>mail</mat-icon>
+          {{ 'EMAIL' | translate }} </mat-label>
+      </mat-form-field>
+      <mat-form-field color="accent" class="register-input-field">
+        <input matInput placeholder="{{ 'USERNAME' | translate }}" name="username" required [(ngModel)]="user.username">
+        <mat-label>
+          <mat-icon>face</mat-icon>
+          {{ 'USERNAME' | translate }} </mat-label>
+      </mat-form-field>
+      <br>
+      <mat-form-field color="accent" class="register-input-field">
+        <input matInput type="password" placeholder="{{ 'PASSWORD' | translate }}" name="password" required [(ngModel)]="user.password">
+        <mat-label>
+          <mat-icon>lock</mat-icon>
+          {{ 'PASSWORD' | translate }} </mat-label>
+      </mat-form-field>
+      <mat-form-field color="accent" class="register-input-field">
+        <input matInput type="password" placeholder="{{ 'PASSWORD_AGAIN' | translate }}" name="password" required [(ngModel)]="secondPassword">
+        <mat-label>
+          <mat-icon>lock</mat-icon>
+          {{ 'PASSWORD_AGAIN' | translate }} </mat-label>
+      </mat-form-field>
     </mat-card-content>
     <mat-card-actions>
-      <button color="accent" class="full-width" mat-button>{{ "REGISTER" | translate }}</button>
+      <button color="accent" class="full-width" mat-button type="submit">{{ "REGISTER" | translate }}</button>
     </mat-card-actions>
   </mat-card>
+</form>

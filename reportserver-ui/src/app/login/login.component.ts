@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
     this.user = new User();
   }
 
-  loginClick() {
+  loginSubmit() {
     this.userService.login(this.user);
   }
 }

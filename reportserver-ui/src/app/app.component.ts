@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { slideInAnimation } from './animations';
-import { RouterOutlet } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { NotificationService } from './notification.service';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
-import { Message } from './model/message';
-import { SeveritySnackbarComponent } from './severity-snackbar/severity-snackbar.component';
+import {Component} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
+import {slideInAnimation} from './animations';
+import {RouterOutlet} from '@angular/router';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {NotificationService} from './notification.service';
+import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
+import {Message} from './model/message';
+import {SeveritySnackbarComponent} from './severity-snackbar/severity-snackbar.component';
+import {UserService} from './user.service';
 
 @Component({
   selector: 'app-root',
@@ -16,13 +17,13 @@ import { SeveritySnackbarComponent } from './severity-snackbar/severity-snackbar
   animations: [slideInAnimation]
 })
 export class AppComponent {
-  title = 'reportserver-ui';
 
   private ngUnsubscribe = new Subject();
 
   constructor(private translateService: TranslateService,
-    private notificationService: NotificationService,
-    private snackBar: MatSnackBar) {
+              private notificationService: NotificationService,
+              private snackBar: MatSnackBar,
+              private userService: UserService) {
     this.initializeNotifications();
     translateService.addLangs(['hu', 'en']);
     translateService.setDefaultLang('en');
@@ -52,7 +53,7 @@ export class AppComponent {
       .subscribe((notif) => {
         notif.forEach(n => {
           this.openSnackbar(n);
-        })
+        });
 
       });
   }
@@ -60,10 +61,10 @@ export class AppComponent {
   openSnackbar(message: Message) {
     const config = new MatSnackBarConfig();
     // config.duration = 2000;
-    config.panelClass = ['severity-snackbar']
+    config.panelClass = ['severity-snackbar'];
     config.horizontalPosition = 'right';
-    config.data = { message }
-    const snackBarRef = this.snackBar.openFromComponent(SeveritySnackbarComponent, config)
+    config.data = {message};
+    const snackBarRef = this.snackBar.openFromComponent(SeveritySnackbarComponent, config);
     snackBarRef.instance.snackBarRef = snackBarRef;
   }
 }

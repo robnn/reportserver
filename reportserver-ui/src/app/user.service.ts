@@ -25,8 +25,14 @@ export class UserService {
     private localStorageService: LocalStorageService,
     private router: Router) { }
 
-  register(user: User): Observable<User> {
-    return this.http.post<User>(this.usersUrl, user);
+  register(user: User) {
+    this.http.post<User>(this.usersUrl, user).subscribe(() => {
+      this.router.navigate(['/login']);
+      const successfulLoginMessage = new Message(Severity.INFO, 'SUCCESSFUL_REGISTRATION');
+      this.notificationService.addNotification(successfulLoginMessage);
+    }, error => {
+      this.notificationService.addNotification(error.error);
+    });
   }
 
   login(user: User) {
@@ -34,8 +40,9 @@ export class UserService {
       this.authToken = x.token;
       this.localStorageService.storeUserToken(x.token);
       this.router.navigate(['/dashboard']);
-      const successfulLoginMessage = new Message(Severity.INFO, "SUCCESSFUL_LOGIN");
+      const successfulLoginMessage = new Message(Severity.INFO, 'SUCCESSFUL_LOGIN');
       this.notificationService.addNotification(successfulLoginMessage);
+      this.getUserData();
     }, error => {
       this.notificationService.addNotification(error.error);
     });
@@ -67,17 +74,17 @@ export class UserService {
     return this.http.get<User>(this.usersUrl + 'byToken/' + this.authToken, { headers: this.getAuthTokenAsHttpHeader(null) });
   }
 
-  public getUserData2(): Observable<User> {
+  public getUserData(): User {
     if (!this.user) {
       const observable = this.getUserForToken();
       observable.subscribe(user => {
         this.user = user;
+        return user;
       }, error => {
         this.notificationService.addNotification(error.error.messages);
       });
-      return observable;
     } else {
-      return of(this.user);
+      return this.user;
     }
   }
 

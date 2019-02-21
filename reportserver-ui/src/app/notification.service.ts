@@ -11,12 +11,11 @@ export class NotificationService {
 
   constructor() { }
 
-  public addNotification = (nofitication: Message): void => {
-    console.log("Added message: " + nofitication.message);
-    this.notifications.next(new Array(nofitication));
+  public addNotification = (notification: Message): void => {
+    this.notifications.next(new Array(notification));
   }
 
-  public getNotifications = () => 
+  public getNotifications = () =>
       this.notifications.asObservable()
-  
+
 }

@@ -3,6 +3,7 @@
     <span>ReportServer</span>
     <span class="fill-remaining-space"></span>
     <div>
+      <span *ngIf="userService.getUserData() != null">{{ userService.getUserData().username }}</span>
         <button mat-button [matMenuTriggerFor]="menu">
             <mat-icon>
                 menu

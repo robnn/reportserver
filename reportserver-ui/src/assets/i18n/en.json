@@ -37,5 +37,8 @@
   "ENGLISH": "English",
   "INVALID_CREDENTIALS": "Invalid credentials!",
   "CLOSE": "Close",
-  "SUCCESSFUL_LOGIN": "Successful login!"
+  "SUCCESSFUL_LOGIN": "Successful login!",
+  "SUCCESSFUL_REGISTRATION": "Successful registration!",
+  "USED_EMAIL_ADDRESS": "Email address already used!",
+  "USED_USERNAME": "Username already used!"
 }

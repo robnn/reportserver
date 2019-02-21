@@ -31,15 +31,13 @@
 }
 
 .app-background {
-  margin: 0%;
-  padding: 0%;
+  margin: 0;
+  padding: 0;
   
   background-color: rgb(64, 64, 64);
 }
 
 .example-form {
-  min-width: 50px;
-  max-width: 500px;
   width: 100%;
 }
 
@@ -49,7 +47,6 @@
 
 .material-icons.md-48 {
   font-size: 48px;
-  color: primary;
 }
 
 .login-form-card {

@@ -71,7 +71,7 @@ export class UserService {
   }
 
   getUserForToken(): Observable<User> {
-    return this.http.get<User>(this.usersUrl + 'byToken/' + this.authToken, { headers: this.getAuthTokenAsHttpHeader(null) });
+    return this.http.get<User>(this.usersUrl + 'byToken/' + this.getAuthToken(), { headers: this.getAuthTokenAsHttpHeader(null) });
   }
 
   public getUserData(): User {
@@ -81,7 +81,7 @@ export class UserService {
         this.user = user;
         return user;
       }, error => {
-        this.notificationService.addNotification(error.error.messages);
+        this.notificationService.addNotification(error.error);
       });
     } else {
       return this.user;

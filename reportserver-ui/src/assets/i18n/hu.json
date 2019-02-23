@@ -40,6 +40,8 @@
   "SUCCESSFUL_LOGIN": "Sikeres bejelentkezés!",
   "SUCCESSFUL_REGISTRATION": "Sikeres regisztráció!",
   "USED_EMAIL_ADDRESS": "Az email cím már foglalt!",
-  "USED_USERNAME": "A felhasználónév már foglalt!"
-}
+  "USED_USERNAME": "A felhasználónév már foglalt!",
+  "DASHBOARD": "Dashboard",
+  "QUERIES": "Lekérdezések",
+  "INVALID_TOKEN": "Nincs bejelentkezve!"
 }

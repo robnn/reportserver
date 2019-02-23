@@ -1,14 +1,14 @@
-import {Component} from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
-import {slideInAnimation} from './animations';
-import {RouterOutlet} from '@angular/router';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-import {NotificationService} from './notification.service';
-import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
-import {Message} from './model/message';
-import {SeveritySnackbarComponent} from './severity-snackbar/severity-snackbar.component';
-import {UserService} from './user.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { slideInAnimation } from './animations';
+import { RouterOutlet } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { NotificationService } from './notification.service';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import { Message } from './model/message';
+import { SeveritySnackbarComponent } from './severity-snackbar/severity-snackbar.component';
+import { UserService } from './user.service';
 
 @Component({
   selector: 'app-root',
@@ -16,20 +16,26 @@ import {UserService} from './user.service';
   styleUrls: ['./app.component.css'],
   animations: [slideInAnimation]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+
 
   private ngUnsubscribe = new Subject();
 
   constructor(private translateService: TranslateService,
-              private notificationService: NotificationService,
-              private snackBar: MatSnackBar,
-              private userService: UserService) {
+    private notificationService: NotificationService,
+    private snackBar: MatSnackBar,
+    private userService: UserService) {
     this.initializeNotifications();
     translateService.addLangs(['hu', 'en']);
     translateService.setDefaultLang('en');
     translateService.use('en');
   }
 
+  ngOnInit(): void {
+    if(this.userService.getAuthToken() != null){
+      this.userService.getUserData();
+    }
+  }
   onActivate(componentRef) {
 
   }
@@ -63,7 +69,7 @@ export class AppComponent {
     // config.duration = 2000;
     config.panelClass = ['severity-snackbar'];
     config.horizontalPosition = 'right';
-    config.data = {message};
+    config.data = { message };
     const snackBarRef = this.snackBar.openFromComponent(SeveritySnackbarComponent, config);
     snackBarRef.instance.snackBarRef = snackBarRef;
   }

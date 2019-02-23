@@ -40,5 +40,8 @@
   "SUCCESSFUL_LOGIN": "Successful login!",
   "SUCCESSFUL_REGISTRATION": "Successful registration!",
   "USED_EMAIL_ADDRESS": "Email address already used!",
-  "USED_USERNAME": "Username already used!"
+  "USED_USERNAME": "Username already used!",
+  "DASHBOARD": "Dashboard",
+  "QUERIES": "Queries",
+  "INVALID_TOKEN": "You are not logged in!"
 }

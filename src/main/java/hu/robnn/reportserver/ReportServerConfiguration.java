@@ -1,5 +1,6 @@
 package hu.robnn.reportserver;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -59,9 +60,20 @@ public class ReportServerConfiguration {
         return entityManagerFactoryBean;
     }
 
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public File jdbcFolder() {
+        File file = null;
+        try {
+            file = new File(properties().getProperty("jdbc.drivers.folder"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            //TODO itt logolni kéne
+        }
+        return file;
     }
 }

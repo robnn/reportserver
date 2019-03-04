@@ -20,7 +20,7 @@ class ConnectionDescriptorMapper(private val driverRepository: DriverRepository)
         return target
     }
 
-    fun map(source: ConnectionDescriptor?, target: HConnectionDescriptor): HConnectionDescriptor? {
+    fun map(source: ConnectionDescriptor?, target: HConnectionDescriptor?): HConnectionDescriptor? {
         if (source == null)
             return null
         var realTarget = target

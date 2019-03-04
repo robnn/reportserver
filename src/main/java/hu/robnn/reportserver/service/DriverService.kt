@@ -20,7 +20,7 @@ import java.util.jar.JarFile
 interface DriverService {
     fun listInstalledDrivers(): Drivers
     fun installDriver(multipartFile: MultipartFile): Driver?
-    fun createAndStoreConnection(connectionDescriptor: ConnectionDescriptor)
+    fun findDriverClassName(driverPath: String, ucl: URLClassLoader): String
 }
 
 @Component
@@ -28,9 +28,6 @@ class DriverServiceImpl(private val driverMapper: DriverMapper,
                         private val driverRepository: DriverRepository,
                         private val jdbcFolder: File) : DriverService {
 
-    companion object {
-        val connectionMap = HashMap<ConnectionDescriptor, Connection>()
-    }
 
     override fun listInstalledDrivers(): Drivers =
             Drivers(driverRepository.findAll().map { driverMapper.map(it) })
@@ -39,28 +36,17 @@ class DriverServiceImpl(private val driverMapper: DriverMapper,
     override fun installDriver(multipartFile: MultipartFile): Driver? {
         multipartFile.transferTo(File(jdbcFolder.absolutePath, multipartFile.originalFilename))
         val driverName = multipartFile.originalFilename
+        val driverPath = jdbcFolder.absolutePath + "/" + multipartFile.originalFilename
+        val driverUrl = URL("jar:file:$driverPath!/")
+        val ucl = URLClassLoader(arrayOf(driverUrl))
+        val driverClassName = findDriverClassName(driverPath, ucl)
         val hDriver = HDriver()
         hDriver.name = driverName
+        hDriver.driverClassNAme = driverClassName
         return driverMapper.map(driverRepository.save(hDriver))
     }
 
-    override fun createAndStoreConnection(connectionDescriptor: ConnectionDescriptor) {
-        val driverInRepository = driverRepository.findByUuid(connectionDescriptor.driverUuid.toString())
-        val driverPath = jdbcFolder.absolutePath + "/" + driverInRepository.name
-        val driverUrl = URL("jar:file:$driverPath!/")
-        val ucl = URLClassLoader(arrayOf(driverUrl))
-        var neededClassName = findDriverClassName(driverPath, ucl)
-
-
-        val d = Class.forName(neededClassName, true, ucl).newInstance() as java.sql.Driver
-        DriverManager.registerDriver(DriverShim(d))
-        val connection = DriverManager.getConnection("jdbc:postgresql://localhost/reportserver", "postgres", "postgres")
-        // Success!
-
-        return connection
-    }
-
-    private fun findDriverClassName(driverPath: String, ucl: URLClassLoader): String {
+    override fun findDriverClassName(driverPath: String, ucl: URLClassLoader): String {
         val driverFile = File(driverPath)
         val jarFile = JarFile(driverFile)
 

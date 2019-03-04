@@ -29,4 +29,7 @@ class HDriver: UuidHolder {
     private var uuid: String = UUID.randomUUID().toString()
 
     var name: String? = null
+
+    @Column(name = "driver_class_name")
+    var driverClassNAme: String? = null
 }

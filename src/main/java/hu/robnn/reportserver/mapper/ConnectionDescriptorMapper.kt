@@ -13,6 +13,7 @@ class ConnectionDescriptorMapper(private val driverRepository: DriverRepository)
         if (source == null)
             return null
         val target = ConnectionDescriptor()
+        target.uuid = UUID.fromString(source.uuid)
         target.driverUuid = UUID.fromString(source.driver!!.uuid)
         target.jdbcConnectionString = source.jdbcConnectionString
         target.password = source.password

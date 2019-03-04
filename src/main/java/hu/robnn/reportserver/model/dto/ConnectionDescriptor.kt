@@ -44,3 +44,5 @@ data class ConnectionDescriptor(var uuid: UUID = UUID.randomUUID(),
 
 
 }
+
+data class ConnectionDescriptorsResponse(var connections: List<ConnectionDescriptor> = mutableListOf())

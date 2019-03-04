@@ -27,7 +27,7 @@ class HConnectionDescriptor : UuidHolder {
 
         if (id != other.id) return false
         if (uuid != other.uuid) return false
-        if (driver != other.driver) return false
+        if (driver!!.id != other.driver!!.id) return false
         if (jdbcConnectionString != other.jdbcConnectionString) return false
         if (username != other.username) return false
         if (password != other.password) return false
@@ -39,7 +39,7 @@ class HConnectionDescriptor : UuidHolder {
     override fun hashCode(): Int {
         var result = id?.hashCode() ?: 0
         result = 31 * result + uuid.hashCode()
-        result = 31 * result + (driver?.hashCode() ?: 0)
+        result = 31 * result + (driver!!.id?.hashCode() ?: 0)
         result = 31 * result + (jdbcConnectionString?.hashCode() ?: 0)
         result = 31 * result + (username?.hashCode() ?: 0)
         result = 31 * result + (password?.hashCode() ?: 0)

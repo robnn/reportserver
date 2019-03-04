@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.sql.Connection;
 
 @Component
 @RestController("/drivers")
@@ -34,13 +33,5 @@ public class DriverApi {
 //    @Authenticated(neededRole = UserRole.USER)
     public ResponseEntity<Drivers> listDrivers(){
         return new ResponseEntity<>(driverService.listInstalledDrivers(), HttpStatus.OK);
-    }
-
-    @RequestMapping(path = "drivers/connection", method = RequestMethod.GET)
-//    @Authenticated(neededRole = UserRole.USER)
-    public ResponseEntity<Connection> getConnection(){
-        Driver driver = new Driver();
-        driver.setUuid("a59b4e5a-e24f-4629-a9f3-830122a90e2a");
-        return new ResponseEntity<>(driverService.getConnectionForDriver(driver, "alma"), HttpStatus.OK);
     }
 }

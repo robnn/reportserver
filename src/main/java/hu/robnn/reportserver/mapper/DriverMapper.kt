@@ -14,6 +14,7 @@ class DriverMapper {
         target.name = source.name
         target.uuid = UUID.fromString(source.uuid)
         target.driverClassName = source.driverClassNAme
+        target.dbType = source.dbType
         return target
     }
 
@@ -28,6 +29,7 @@ class DriverMapper {
         realTarget.name = source.name
         realTarget.uuid = source.uuid.toString()
         realTarget.driverClassNAme = source.driverClassName
+        realTarget.dbType = source.dbType
         return realTarget
     }
 }

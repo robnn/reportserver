@@ -1,0 +1,63 @@
+<div class="flexed">
+  <mat-card class="drivers-card">
+    <mat-card-title>{{ "INSTALLED_DRIVERS" | translate }}</mat-card-title>
+    <mat-card-content>
+  
+      <mat-accordion *ngIf="drivers">
+        <mat-expansion-panel  *ngFor="let driver of drivers.drivers">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ driver.dbType | translate }}
+            </mat-panel-title>
+            <mat-panel-description>
+              {{ driver.name }}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+      
+          <mat-form-field color="accent">
+            <input matInput readonly="true" placeholder="{{ 'DETECTED_DRIVER_CLASS_NAME' | translate }}" name="driverClassName" value="{{ driver.driverClassName }}"
+                   >
+            <mat-label>
+              <mat-icon>class</mat-icon>
+              {{ 'DETECTED_DRIVER_CLASS_NAME' | translate }} </mat-label>
+          </mat-form-field>
+        </mat-expansion-panel>
+      </mat-accordion>
+      
+  
+    </mat-card-content>
+    <mat-card-actions>
+      <!--<button color="accent" type="submit" class="full-width" mat-button>{{ "LOGIN" | translate }}</button>-->
+    </mat-card-actions>
+  
+  </mat-card>
+  
+  <mat-card class="drivers-card">
+    <i class="material-icons md-48">account_circle</i>
+    <mat-card-title>{{ "LOGIN" | translate }}</mat-card-title>
+    <mat-card-subtitle>{{ "PLEASE_LOGIN" | translate }}</mat-card-subtitle>
+    <mat-card-content>
+  
+      <mat-form-field color="accent">
+        <input matInput placeholder="{{ 'USERNAME' | translate }}" name="username" required autofocus
+               >
+        <mat-label>
+          <mat-icon>face</mat-icon>
+          {{ 'USERNAME' | translate }} </mat-label>
+      </mat-form-field>
+      <br>
+      <mat-form-field color="accent">
+        <input matInput type="password" placeholder="{{ 'PASSWORD' | translate }}" name="password" required
+               >
+        <mat-label>
+          <mat-icon>lock</mat-icon>
+          {{ 'PASSWORD' | translate }} </mat-label>
+      </mat-form-field>
+  
+    </mat-card-content>
+    <mat-card-actions>
+      <button color="accent" type="submit" class="full-width" mat-button>{{ "LOGIN" | translate }}</button>
+    </mat-card-actions>
+  
+  </mat-card>
+</div>

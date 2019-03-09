@@ -25,8 +25,8 @@ public class DriverApi {
 
     @RequestMapping(path = "drivers", method = RequestMethod.POST)
 //    @Authenticated(neededRole = UserRole.USER)
-    public ResponseEntity<Driver> installDriver(@RequestParam MultipartFile multipartFile){
-        return new ResponseEntity<>(driverService.installDriver(multipartFile), HttpStatus.CREATED);
+    public ResponseEntity<Driver> installDriver(@RequestParam MultipartFile multipartFile, @RequestParam String dbType){
+        return new ResponseEntity<>(driverService.installDriver(multipartFile, dbType), HttpStatus.CREATED);
     }
 
     @RequestMapping(path = "drivers", method = RequestMethod.GET)

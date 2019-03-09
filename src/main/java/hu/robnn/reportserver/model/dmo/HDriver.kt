@@ -2,6 +2,7 @@ package hu.robnn.reportserver.model.dmo
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import hu.robnn.commons.interfaces.UuidHolder
+import hu.robnn.reportserver.enums.DbType
 import java.util.*
 import javax.persistence.*
 
@@ -32,4 +33,8 @@ class HDriver: UuidHolder {
 
     @Column(name = "driver_class_name")
     var driverClassNAme: String? = null
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "db_type")
+    var dbType: DbType? = null
 }

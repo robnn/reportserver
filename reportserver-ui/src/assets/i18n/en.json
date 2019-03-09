@@ -43,5 +43,10 @@
   "USED_USERNAME": "Username already used!",
   "DASHBOARD": "Dashboard",
   "QUERIES": "Queries",
-  "INVALID_TOKEN": "You are not logged in!"
+  "INVALID_TOKEN": "You are not logged in!",
+  "SETTINGS": "Settings",
+  "DRIVERS": "Drivers",
+  "CONNECTIONS": "Connections",
+  "INSTALLED_DRIVERS": "Installed drivers",
+  "DETECTED_DRIVER_CLASS_NAME": "Detected driver class name"
 }

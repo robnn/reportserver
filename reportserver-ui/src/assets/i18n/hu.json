@@ -43,5 +43,9 @@
   "USED_USERNAME": "A felhasználónév már foglalt!",
   "DASHBOARD": "Dashboard",
   "QUERIES": "Lekérdezések",
-  "INVALID_TOKEN": "Nincs bejelentkezve!"
+  "INVALID_TOKEN": "Nincs bejelentkezve!",
+  "SETTINGS": "Beállítások",
+  "DRIVERS": "Meghajtók",
+  "CONNECTIONS": "Kapcsolatok",
+  "INSTALLED_DRIVERS": "Telepített meghajtók"
 }

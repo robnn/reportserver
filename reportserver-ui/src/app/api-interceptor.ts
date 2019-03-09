@@ -7,7 +7,7 @@ import { environment } from '../environments/environment'
 export class ApiInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const baseUrl = environment.baserUrl;
-        if (req.url.includes('files') || req.url.includes('users') || req.url.includes('folders')) {
+        if (req.url.includes('drivers') || req.url.includes('users') || req.url.includes('folders')) {
             const apiReq = req.clone({ url: `${baseUrl}${req.url}` });
             return next.handle(apiReq);
         } else {

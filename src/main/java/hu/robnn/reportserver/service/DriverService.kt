@@ -1,6 +1,7 @@
 package hu.robnn.reportserver.service
 
 import hu.robnn.reportserver.dao.DriverRepository
+import hu.robnn.reportserver.enums.DbType
 import hu.robnn.reportserver.mapper.DriverMapper
 import hu.robnn.reportserver.model.dmo.HDriver
 import hu.robnn.reportserver.model.dto.Driver
@@ -19,7 +20,7 @@ import java.util.jar.JarFile
 
 interface DriverService {
     fun listInstalledDrivers(): Drivers
-    fun installDriver(multipartFile: MultipartFile): Driver?
+    fun installDriver(multipartFile: MultipartFile, dbType: String): Driver?
     fun findDriverClassName(driverPath: String, ucl: URLClassLoader): String
 }
 
@@ -33,7 +34,7 @@ class DriverServiceImpl(private val driverMapper: DriverMapper,
             Drivers(driverRepository.findAll().map { driverMapper.map(it) })
 
 
-    override fun installDriver(multipartFile: MultipartFile): Driver? {
+    override fun installDriver(multipartFile: MultipartFile, dbType: String): Driver? {
         multipartFile.transferTo(File(jdbcFolder.absolutePath, multipartFile.originalFilename))
         val driverName = multipartFile.originalFilename
         val driverPath = jdbcFolder.absolutePath + "/" + multipartFile.originalFilename
@@ -42,6 +43,7 @@ class DriverServiceImpl(private val driverMapper: DriverMapper,
         val driverClassName = findDriverClassName(driverPath, ucl)
         val hDriver = HDriver()
         hDriver.name = driverName
+        hDriver.dbType = DbType.valueOf(dbType)
         hDriver.driverClassNAme = driverClassName
         return driverMapper.map(driverRepository.save(hDriver))
     }

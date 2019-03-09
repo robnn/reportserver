@@ -41,9 +41,11 @@ open class ConnectionManagerImpl(private val connectionDescriptorRepository: Con
 
     final override fun initializeConnections() {
         connectionDescriptorRepository.findAll().forEach {
-            registerDriverToDriverManager(it.driver!!)
-            val connection = DriverManager.getConnection(it.jdbcConnectionString, it.username, it.password)
-            connections[it] = connection
+            if(it?.host != null && it.port != null && it.dbName != null && it.driver?.dbType != null) {
+                registerDriverToDriverManager(it.driver!!)
+                val connection = DriverManager.getConnection(it.driver?.dbType?.buildJdbcString(it.host!!, it.port!!, it.dbName!!), it.username, it.password)
+                connections[it] = connection
+            }
         }
     }
 
@@ -53,7 +55,7 @@ open class ConnectionManagerImpl(private val connectionDescriptorRepository: Con
         val saved = connectionDescriptorRepository.save(connectionDescriptorMapper.map(connectionDescriptor, null))
         saved?.let {
             try {
-                val connection = DriverManager.getConnection(it.jdbcConnectionString, it.username, it.password)
+                val connection = DriverManager.getConnection(it.driver?.dbType?.buildJdbcString(it.host!!, it.port!!, it.dbName!!), it.username, it.password)
                 connections.putIfAbsent(it, connection)
             } catch (e: Exception) {
                 throw RuntimeException(e)

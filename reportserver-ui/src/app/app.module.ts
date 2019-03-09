@@ -6,7 +6,8 @@ import { FormsModule } from '@angular/forms';
 
 import {
   MatInputModule, MatFormFieldModule, MatSelectModule, MatOptionModule, MatCardModule,
-  MatButtonModule, MatToolbarModule, MatMenuModule, MatIconModule, MatSnackBarModule
+  MatButtonModule, MatToolbarModule, MatMenuModule, MatIconModule, MatSnackBarModule,
+  MatTabsModule, MatExpansionModule
 } from '@angular/material';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -21,12 +22,15 @@ import { RegisterComponent } from './register/register.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ApiInterceptor } from './api-interceptor';
 import { SeveritySnackbarComponent } from './severity-snackbar/severity-snackbar.component';
+import { SettingsComponent } from './settings/settings.component';
+import { DriversComponent } from './settings/drivers/drivers.component';
 
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent, data: { animation: 'LoginPage' } },
   { path: 'register', component: RegisterComponent, data: { animation: 'RegisterPage' } },
   { path: 'dashboard', component: DashboardComponent, data: { animation: 'DashboardPage' } },
+  { path: 'settings', component: SettingsComponent, data: { animation: 'SettingsPage' } },
   { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
 
@@ -40,7 +44,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     LoginComponent,
     RegisterComponent,
     DashboardComponent,
-    SeveritySnackbarComponent
+    SeveritySnackbarComponent,
+    SettingsComponent,
+    DriversComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes, { enableTracing: false }),
@@ -55,8 +61,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatMenuModule,
     MatIconModule,
     MatSnackBarModule,
-    BrowserAnimationsModule,
     MatCardModule,
+    MatTabsModule,
+    MatExpansionModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
     StorageServiceModule,

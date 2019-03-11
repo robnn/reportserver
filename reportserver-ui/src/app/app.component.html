@@ -1,50 +1,62 @@
-<mat-toolbar color="primary" style="height: 50px" class="mat-elevation-z6">
-    <mat-icon>filter_list</mat-icon>
-    <span>ReportServer</span>
-    <span class="fill-remaining-space"></span>
-    <div fxLayout="row" fxShow="false" fxShow.gt-sm>
-        <div *ngIf="userService.getUser() != null">
-            <button mat-button routerLink="/dashboard">{{ "DASHBOARD" | translate }}</button>
-            <button mat-button routerLink="/queries">{{ "QUERIES" | translate }}</button>
-            <button mat-button routerLink="/login" (click)="userService.invalidateData()">{{ "LOGOUT" | translate }}</button>
-            <span *ngIf="userService.getUser().role === 'ADMIN'">
-                <button mat-button routerLink="/settings">{{ "SETTINGS" | translate }}</button>
-            </span>
+<div class="wrapper">
+    <mat-toolbar color="primary" style="height: 50px" class="mat-elevation-z6">
+        <mat-icon>filter_list</mat-icon>
+        <span>ReportServer</span>
+        <span class="fill-remaining-space"></span>
+        <div fxLayout="row" fxShow="false" fxShow.gt-sm>
+            <div *ngIf="userService.getUser() != null">
+                <button mat-button routerLink="/dashboard">{{ "DASHBOARD" | translate }}</button>
+                <button mat-button routerLink="/queries">{{ "QUERIES" | translate }}</button>
+                <button mat-button routerLink="/login"
+                    (click)="userService.invalidateData()">{{ "LOGOUT" | translate }}</button>
+                <span *ngIf="userService.getUser().role === 'ADMIN'">
+                    <button mat-button routerLink="/settings">{{ "SETTINGS" | translate }}</button>
+                </span>
+            </div>
+            <div *ngIf="userService.getUser() == null">
+                <button mat-button routerLink="/register">{{ "REGISTER" | translate }}</button>
+                <button mat-button routerLink="/login">{{ "LOGIN" | translate }}</button>
+            </div>
+            <button mat-button [matMenuTriggerFor]="language">{{ "LANGUAGE" | translate }}</button>
         </div>
-        <div *ngIf="userService.getUser() == null">
-            <button mat-button routerLink="/register">{{ "REGISTER" | translate }}</button>
-            <button mat-button routerLink="/login">{{ "LOGIN" | translate }}</button>
-        </div>
-        <button mat-button [matMenuTriggerFor]="language">{{ "LANGUAGE" | translate }}</button>
+
+        <button mat-button [matMenuTriggerFor]="menu" fxHide="false" fxHide.gt-sm>
+            <mat-icon>
+                menu
+            </mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button *ngIf="userService.getUser() == null" mat-menu-item
+                routerLink="/register">{{ "REGISTER" | translate }}</button>
+            <button *ngIf="userService.getUser() == null" mat-menu-item
+                routerLink="/login">{{ "LOGIN" | translate }}</button>
+            <button *ngIf="userService.getUser() != null" mat-menu-item
+                routerLink="/dashboard">{{ "DASHBOARD" | translate }}</button>
+            <button *ngIf="userService.getUser() != null" mat-menu-item
+                routerLink="/queries">{{ "QUERIES" | translate }}</button>
+            <button *ngIf="userService.getUser() != null" mat-menu-item routerLink="/login"
+                (click)="userService.invalidateData()">{{ "LOGOUT" | translate }}</button>
+            <button *ngIf="userService.getUser() != null && userService.getUser().role === 'ADMIN'" mat-menu-item
+                routerLink="/settings">{{ "SETTINGS" | translate }}</button>
+            <button mat-menu-item [matMenuTriggerFor]="language">{{ "LANGUAGE" | translate }}</button>
+        </mat-menu>
+        <mat-menu #language="matMenu">
+            <button mat-menu-item (click)="changeToHu()">
+                <mat-icon>
+                    <flag-icon country="hu" squared></flag-icon>
+                </mat-icon>{{ "HUNGARIAN" | translate }}
+            </button>
+            <button mat-menu-item (click)="changeToEn()">
+                <mat-icon>
+                    <flag-icon country="gb" squared></flag-icon>
+                </mat-icon>{{ "ENGLISH" | translate }}
+            </button>
+        </mat-menu>
+    </mat-toolbar>
+    <div [@routeAnimations]="prepareRoute(outlet)" class="wrapper">
+        <router-outlet #outlet="outlet"></router-outlet>
     </div>
-    
-    <button mat-button [matMenuTriggerFor]="menu" fxHide="false" fxHide.gt-sm>
-        <mat-icon>
-            menu
-        </mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-        <button *ngIf="userService.getUser() == null" mat-menu-item routerLink="/register">{{ "REGISTER" | translate }}</button>
-        <button *ngIf="userService.getUser() == null" mat-menu-item routerLink="/login">{{ "LOGIN" | translate }}</button>
-        <button *ngIf="userService.getUser() != null" mat-menu-item routerLink="/dashboard">{{ "DASHBOARD" | translate }}</button>
-        <button *ngIf="userService.getUser() != null" mat-menu-item routerLink="/queries">{{ "QUERIES" | translate }}</button>
-        <button *ngIf="userService.getUser() != null" mat-menu-item routerLink="/login" (click)="userService.invalidateData()">{{ "LOGOUT" | translate }}</button>
-        <button *ngIf="userService.getUser() != null && userService.getUser().role === 'ADMIN'" mat-menu-item routerLink="/settings">{{ "SETTINGS" | translate }}</button>
-        <button mat-menu-item [matMenuTriggerFor]="language">{{ "LANGUAGE" | translate }}</button>
-    </mat-menu>
-    <mat-menu #language="matMenu">
-        <button mat-menu-item (click)="changeToHu()">
-            <mat-icon>
-                <flag-icon country="hu" squared></flag-icon>
-            </mat-icon>{{ "HUNGARIAN" | translate }}
-        </button>
-        <button mat-menu-item (click)="changeToEn()">
-            <mat-icon>
-                <flag-icon country="gb" squared></flag-icon>
-            </mat-icon>{{ "ENGLISH" | translate }}
-        </button>
-    </mat-menu>
-</mat-toolbar>
-<div [@routeAnimations]="prepareRoute(outlet)">
-    <router-outlet #outlet="outlet"></router-outlet>
 </div>
+        <footer class="footer">
+            <mat-toolbar class="centered">Kurovszky Robin</mat-toolbar>
+        </footer>

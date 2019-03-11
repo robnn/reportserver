@@ -24,13 +24,13 @@ public class DriverApi {
     }
 
     @RequestMapping(path = "drivers", method = RequestMethod.POST)
-//    @Authenticated(neededRole = UserRole.USER)
+    @Authenticated(neededRole = UserRole.USER)
     public ResponseEntity<Driver> installDriver(@RequestParam MultipartFile multipartFile, @RequestParam String dbType){
         return new ResponseEntity<>(driverService.installDriver(multipartFile, dbType), HttpStatus.CREATED);
     }
 
     @RequestMapping(path = "drivers", method = RequestMethod.GET)
-//    @Authenticated(neededRole = UserRole.USER)
+    @Authenticated(neededRole = UserRole.USER)
     public ResponseEntity<Drivers> listDrivers(){
         return new ResponseEntity<>(driverService.listInstalledDrivers(), HttpStatus.OK);
     }

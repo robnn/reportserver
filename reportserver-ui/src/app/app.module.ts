@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 import {
   MatInputModule, MatFormFieldModule, MatSelectModule, MatOptionModule, MatCardModule,
   MatButtonModule, MatToolbarModule, MatMenuModule, MatIconModule, MatSnackBarModule,
-  MatTabsModule, MatExpansionModule
+  MatTabsModule, MatExpansionModule, MatDialogModule
 } from '@angular/material';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -24,6 +24,7 @@ import { ApiInterceptor } from './api-interceptor';
 import { SeveritySnackbarComponent } from './severity-snackbar/severity-snackbar.component';
 import { SettingsComponent } from './settings/settings.component';
 import { DriversComponent } from './settings/drivers/drivers.component';
+import { AddDialogComponent } from './settings/drivers/add-dialog/add-dialog.component';
 
 
 const appRoutes: Routes = [
@@ -46,7 +47,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     DashboardComponent,
     SeveritySnackbarComponent,
     SettingsComponent,
-    DriversComponent
+    DriversComponent,
+    AddDialogComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes, { enableTracing: false }),
@@ -64,6 +66,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatCardModule,
     MatTabsModule,
     MatExpansionModule,
+    MatDialogModule,
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
@@ -85,6 +88,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [SeveritySnackbarComponent]
+  entryComponents: [SeveritySnackbarComponent, AddDialogComponent]
 })
 export class AppModule { }

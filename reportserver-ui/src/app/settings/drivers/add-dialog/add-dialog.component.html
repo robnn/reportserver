@@ -1,0 +1,15 @@
+<h1 mat-dialog-title><mat-icon>class</mat-icon>{{ "NEW_DRIVER" | translate }}</h1>
+<div mat-dialog-content>
+  <p>What's your favorite animal?</p>
+  <input style="display: none" type="file" class="form-control" #file (change)="onFileAdded()" id="file"/>
+    <button mat-button (click)="addFiles()">
+      {{"ADD_FILES" | translate}}
+    </button>
+  <mat-form-field>
+    <input matInput >
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button (click)="uploadClick()" [mat-dialog-close]="" cdkFocusInitial>Ok</button>
+</div>

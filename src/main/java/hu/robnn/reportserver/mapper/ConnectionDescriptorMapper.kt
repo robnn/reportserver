@@ -15,6 +15,7 @@ class ConnectionDescriptorMapper(private val driverRepository: DriverRepository)
         val target = ConnectionDescriptor()
         target.uuid = UUID.fromString(source.uuid)
         target.driverUuid = UUID.fromString(source.driver!!.uuid)
+        target.driverType = source.driver!!.dbType
         target.host = source.host
         target.port = source.port
         target.dbName = source.dbName

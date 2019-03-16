@@ -48,5 +48,21 @@
   "DRIVERS": "Drivers",
   "CONNECTIONS": "Connections",
   "INSTALLED_DRIVERS": "Installed drivers",
-  "DETECTED_DRIVER_CLASS_NAME": "Detected driver class name"
+  "DETECTED_DRIVER_CLASS_NAME": "Detected driver class name",
+  "NEW_DRIVER": "New driver",
+  "DRIVER_TYPE": "Driver type",
+  "SELECT_JAR": "Select jar",
+  "INSTALL": "Install",
+  "ORACLE_THIN": "Oracle thin",
+  "MY_SQL": "MySql",
+  "MICROSOFT_SQL_SERVER": "Microsoft SQL Server",
+  "DB2": "DB 2",
+  "POSTGRESQL": "PostgreSQL",
+  "SQLITE": "SQLite",
+  "HOST": "Host",
+  "DB_NAME": "Database name",
+  "DRIVER": "Driver",
+  "NEW_CONNECTION": "New connection",
+  "PORT": "Port",
+  "CREATE": "Create"
 }

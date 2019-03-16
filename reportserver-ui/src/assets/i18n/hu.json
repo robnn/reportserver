@@ -47,5 +47,22 @@
   "SETTINGS": "Beállítások",
   "DRIVERS": "Meghajtók",
   "CONNECTIONS": "Kapcsolatok",
-  "INSTALLED_DRIVERS": "Telepített meghajtók"
+  "INSTALLED_DRIVERS": "Telepített meghajtók",
+  "DETECTED_DRIVER_CLASS_NAME": "Telepített meghajtó osztály neve",
+  "NEW_DRIVER": "Új meghajtó",
+  "DRIVER_TYPE": "Meghajtó típus",
+  "SELECT_JAR": "Jar fájl kiválasztása",
+  "INSTALL": "Telepítés",
+  "ORACLE_THIN": "Oracle thin",
+  "MY_SQL": "MySql",
+  "MICROSOFT_SQL_SERVER": "Microsoft SQL Server",
+  "DB2": "DB 2",
+  "POSTGRESQL": "PostgreSQL",
+  "SQLITE": "SQLite",
+  "HOST": "Elérhetőség",
+  "DB_NAME": "Adatbázis neve",
+  "DRIVER": "Meghajtó",
+  "NEW_CONNECTION": "Új kapcsolat",
+  "PORT": "Port",
+  "CREATE": "Létrehozás"
 }

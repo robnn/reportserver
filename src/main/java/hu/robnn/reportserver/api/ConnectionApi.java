@@ -1,5 +1,7 @@
 package hu.robnn.reportserver.api;
 
+import hu.robnn.auth.annotation.Authenticated;
+import hu.robnn.auth.enums.UserRole;
 import hu.robnn.reportserver.model.dto.ConnectionDescriptor;
 import hu.robnn.reportserver.model.dto.ConnectionDescriptorsResponse;
 import hu.robnn.reportserver.service.ConnectionManager;
@@ -22,19 +24,19 @@ public class ConnectionApi {
     }
 
     @RequestMapping(path = "connections", method = RequestMethod.POST)
-//    @Authenticated(neededRole = UserRole.USER)
+    @Authenticated(neededRole = UserRole.USER)
     public ResponseEntity<ConnectionDescriptor> createConnection(@RequestBody ConnectionDescriptor connectionDescriptor){
         return new ResponseEntity<>(connectionManager.createConnection(connectionDescriptor), HttpStatus.CREATED);
     }
 
     @RequestMapping(path = "connections", method = RequestMethod.GET)
-    //    @Authenticated(neededRole = UserRole.USER)
+    @Authenticated(neededRole = UserRole.USER)
     public ResponseEntity<ConnectionDescriptorsResponse> listConnections(){
         return new ResponseEntity<>(new ConnectionDescriptorsResponse(connectionManager.listConnections()), HttpStatus.OK);
     }
 
     @RequestMapping(path = "connections/query", method = RequestMethod.POST)
-    //    @Authenticated(neededRole = UserRole.USER)
+    @Authenticated(neededRole = UserRole.USER)
     public ResponseEntity<Integer> listConnections(@RequestParam String connectionUuid, @RequestParam String query){
         connectionManager.executeQuery(UUID.fromString(connectionUuid), query);
         return new ResponseEntity<>(5, HttpStatus.HTTP_VERSION_NOT_SUPPORTED);

@@ -24,15 +24,13 @@ export class DriversComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(AddDialogComponent, {
-      width: '250px',
-      data: {name: "aa", animal: "bb"}
+      width: '400px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if(result === "SAVED"){
         this.ngOnInit();
       }
-      console.log('The dialog was closed');
     });
   }
 

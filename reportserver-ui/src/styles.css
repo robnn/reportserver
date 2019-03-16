@@ -73,3 +73,19 @@ html, body {
   height: 100%;
   margin: 0;
 }
+
+body {
+  font-family: Roboto,"Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+}
+
+.large-card {
+  width: 90%;
+  min-height: 90%;
+  height: 90%;
+  margin-top: 1cm;
+  background-color: rgb(80, 80, 80) !important;
+  text-align: left;
+}
+.flexed {
+    display: flex;
+}

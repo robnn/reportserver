@@ -2,6 +2,8 @@ package hu.robnn.reportserver.service
 
 import hu.robnn.reportserver.dao.DriverRepository
 import hu.robnn.reportserver.enums.DbType
+import hu.robnn.reportserver.enums.DriverErrorCause
+import hu.robnn.reportserver.exception.ReportServerMappedException
 import hu.robnn.reportserver.mapper.DriverMapper
 import hu.robnn.reportserver.model.dmo.HDriver
 import hu.robnn.reportserver.model.dto.Driver
@@ -50,7 +52,11 @@ class DriverServiceImpl(private val driverMapper: DriverMapper,
 
     override fun findDriverClassName(driverPath: String, ucl: URLClassLoader): String {
         val driverFile = File(driverPath)
+        if (driverFile.extension != "jar") {
+            throw ReportServerMappedException(DriverErrorCause.NOT_A_JAR_FILE)
+        }
         val jarFile = JarFile(driverFile)
+
 
         var neededClassName = ""
         for (entry in jarFile.entries()) {
@@ -62,6 +68,9 @@ class DriverServiceImpl(private val driverMapper: DriverMapper,
                     break
                 }
             }
+        }
+        if (neededClassName == ""){
+            throw ReportServerMappedException(DriverErrorCause.NOT_VALID_JDBC_DRIVER)
         }
         return neededClassName
     }

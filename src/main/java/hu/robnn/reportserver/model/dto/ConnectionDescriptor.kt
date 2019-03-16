@@ -1,6 +1,7 @@
 package hu.robnn.reportserver.model.dto
 
 import hu.robnn.commons.interfaces.UuidHolder
+import hu.robnn.reportserver.enums.DbType
 import java.util.*
 
 data class ConnectionDescriptor(var uuid: UUID = UUID.randomUUID(),
@@ -9,7 +10,9 @@ data class ConnectionDescriptor(var uuid: UUID = UUID.randomUUID(),
                                 var port: String? = null,
                                 var dbName: String? = null,
                                 var username: String? = null,
-                                var password: String? = null): UuidHolder {
+                                var password: String? = null,
+                                var driverType: DbType? = null,
+                                var isAlive: Boolean = false): UuidHolder {
     override fun setUuid(p0: String?) {
         if(!p0.isNullOrEmpty()) {
             uuid = UUID.fromString(p0!!)

@@ -1,15 +1,23 @@
-<h1 mat-dialog-title><mat-icon>class</mat-icon>{{ "NEW_DRIVER" | translate }}</h1>
+
+<h1 mat-dialog-title><mat-icon>class</mat-icon><span>{{ "NEW_DRIVER" | translate }}</span></h1>
 <div mat-dialog-content>
-  <p>What's your favorite animal?</p>
-  <input style="display: none" type="file" class="form-control" #file (change)="onFileAdded()" id="file"/>
-    <button mat-button (click)="addFiles()">
-      {{"ADD_FILES" | translate}}
+  
+    <mat-form-field>
+        <mat-select placeholder="{{ 'DRIVER_TYPE' | translate }}" [(ngModel)]="selectedDbType" name="dbType">
+          <mat-option *ngFor="let type of types" [value]="type">
+            {{ type | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    <br>
+    <input style="display: none" type="file" class="form-control" #file (change)="onFileAdded()" id="file"/>
+    <button mat-button color="accent" (click)="addFiles()">
+        <span *ngIf="toUpload && toUpload.length > 0">{{ toUpload[0].name }}</span>
+        <span *ngIf="!toUpload || toUpload.length == 0">{{"SELECT_JAR" | translate}}</span>
     </button>
-  <mat-form-field>
-    <input matInput >
-  </mat-form-field>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button (click)="uploadClick()" [mat-dialog-close]="" cdkFocusInitial>Ok</button>
+  <div class="fill-remaining-space"></div>
+  <button mat-button color="accent" (click)="onNoClick()">{{ "CANCEL" | translate }}</button>
+  <button mat-button color="accent" (click)="uploadClick()" [mat-dialog-close]="" cdkFocusInitial>{{ "INSTALL" | translate }}</button>
 </div>

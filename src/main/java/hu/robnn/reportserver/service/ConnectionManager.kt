@@ -16,7 +16,9 @@ import java.net.URL
 import java.net.URLClassLoader
 import java.sql.Connection
 import java.sql.DriverManager
+import java.sql.ResultSet
 import java.util.*
+import javax.xml.transform.Result
 import kotlin.collections.HashMap
 
 interface ConnectionManager {
@@ -24,7 +26,7 @@ interface ConnectionManager {
     fun createConnection(connectionDescriptor: ConnectionDescriptor): ConnectionDescriptor
     fun getConnectionForConnectionDescriptorUuid(uuid: UUID): Connection
     fun listConnections(): List<ConnectionDescriptor>
-    fun executeQuery(connectionUuid: UUID, query: String)
+    fun executeQuery(connectionUuid: UUID, query: String): ResultSet
 }
 
 @Component
@@ -73,13 +75,25 @@ open class ConnectionManagerImpl(private val connectionDescriptorRepository: Con
         }
     }
 
-    override fun listConnections(): List<ConnectionDescriptor> = connectionDescriptorRepository.findAll().map { connectionDescriptorMapper.map(it)!! }
+    override fun listConnections(): List<ConnectionDescriptor> {
+        val connections = connectionDescriptorRepository.findAll().map { connectionDescriptorMapper.map(it)!! }
+        connections.forEach {it.isAlive = executeTestQuery(it.uuid) }
+        return connections
+    }
 
-    override fun executeQuery(connectionUuid: UUID, query: String) {
+    private fun executeTestQuery(connectionUuid: UUID): Boolean {
+        try {
+            executeQuery(connectionUuid, "SELECT 1")
+        } catch (e: Exception) {
+            return false
+        }
+        return true
+    }
+
+    override fun executeQuery(connectionUuid: UUID, query: String) : ResultSet {
         val connectionForConnectionDescriptorUuid = getConnectionForConnectionDescriptorUuid(connectionUuid)
         val createStatement = connectionForConnectionDescriptorUuid.createStatement()
-        val executeQuery = createStatement.executeQuery(query)
-        System.out.println(executeQuery)
+        return createStatement.executeQuery(query)
     }
 
     private fun registerDriverToDriverManager(driverInRepository: HDriver) {

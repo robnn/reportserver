@@ -1,0 +1,11 @@
+.right-margin-small {
+    margin-right: 10px;
+}
+
+.alive-green {
+    color: green;
+}
+
+.dead-red {
+    color: red;
+}

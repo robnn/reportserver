@@ -1,0 +1,52 @@
+
+  <mat-card class="large-card centered">
+      <mat-card-title>{{ "CONNECTIONS" | translate }}</mat-card-title>
+      <mat-card-content>
+    
+        <span *ngIf="!connections || connections.connections.length == 0">{{ "NO_DRIVERS" | translate }}</span>
+        <mat-accordion *ngIf="connections && connections.connections.length > 0">
+          <mat-expansion-panel  *ngFor="let connection of connections.connections">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                  <mat-icon *ngIf="!connection.alive" class="right-margin-small dead-red" >close</mat-icon>
+                  <mat-icon *ngIf="connection.alive" class="right-margin-small alive-green" >check</mat-icon>
+                <span>{{ connection.driverType | translate }} at {{ connection.host }}:{{ connection.port }} </span>
+              </mat-panel-title>
+              <mat-panel-description>
+                {{ "DB_NAME" | translate }}: {{ connection.dbName }}
+              </mat-panel-description>                
+            </mat-expansion-panel-header>
+        
+            <mat-form-field color="accent">
+              <input matInput readonly="true" placeholder="{{ 'USERNAME' | translate }}" name="username" value="{{ connection.username }}"
+                     >
+              <mat-label>
+                <mat-icon>class</mat-icon>
+                {{ 'USERNAME' | translate }} </mat-label>
+            </mat-form-field>
+            <br>
+            <mat-form-field color="accent">
+                <input matInput readonly="true" placeholder="{{ 'PASSWORD' | translate }}" name="password" value="{{ connection.password }}"
+                       >
+                <mat-label>
+                  <mat-icon>class</mat-icon>
+                  {{ 'PASSWORD' | translate }} </mat-label>
+              </mat-form-field>
+          </mat-expansion-panel>
+        </mat-accordion>
+        
+    
+      </mat-card-content>
+      <mat-card-actions>
+        <!--<button color="accent" type="submit" class="full-width" mat-button>{{ "LOGIN" | translate }}</button>-->
+      </mat-card-actions>
+      <div class="flexed">
+  
+        <div class="fill-remaining-space">
+    
+        </div>
+    
+          <button mat-button mat-mini-fab color="primary" (click)="openDialog()"><mat-icon>add</mat-icon></button>
+      </div>
+  
+      </mat-card>

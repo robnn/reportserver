@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DriverService } from 'src/app/driver.service';
 import { DbType } from 'src/app/model/driver';
+import { NotificationService } from 'src/app/notification.service';
 
 @Component({
   selector: 'app-add-dialog',
@@ -10,9 +11,13 @@ import { DbType } from 'src/app/model/driver';
 })
 export class AddDialogComponent {
 
+  public types = Object.keys(DbType);
+  public selectedDbType: DbType = DbType.POSTGRESQL;
+
   constructor(
     public dialogRef: MatDialogRef<AddDialogComponent>,
-    private driverService: DriverService) {}
+    private driverService: DriverService,
+    private notificationService: NotificationService) { }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -20,7 +25,7 @@ export class AddDialogComponent {
 
   @ViewChild('file') file;
 
-  toUploads: FileList;
+  toUpload: FileList;
 
 
   ngOnInit() {
@@ -28,7 +33,8 @@ export class AddDialogComponent {
 
 
   onFileAdded() {
-    this.toUploads = this.file.nativeElement.files;
+    this.toUpload = this.file.nativeElement.files;
+    console.log(this.toUpload[0]);
   }
 
   addFiles() {
@@ -36,11 +42,13 @@ export class AddDialogComponent {
   }
 
   uploadClick() {
-    Array.from(this.toUploads).forEach(file => {
-      this.driverService.createDriver(file, DbType.MY_SQL).subscribe(data => {
-        this.dialogRef.close("SAVED");
-      });
+
+    this.driverService.createDriver(this.toUpload[0], this.selectedDbType).subscribe(data => {
+      this.dialogRef.close("SAVED");
+    }, error => {
+      this.notificationService.addNotification(error.error);
     });
+
     this.file.nativeElement.value = '';
   }
 }

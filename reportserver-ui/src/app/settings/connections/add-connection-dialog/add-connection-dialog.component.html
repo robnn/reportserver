@@ -1,0 +1,49 @@
+<h1 mat-dialog-title><mat-icon>compare_arrows</mat-icon><span>{{ "NEW_CONNECTION" | translate }}</span></h1>
+<div mat-dialog-content class="center-inputs">
+  
+    <mat-form-field color="accent" class="large-width">
+        <mat-select placeholder="{{ 'DRIVER' | translate }}" [(ngModel)]="connection.driverUuid" name="driver">
+          <mat-option *ngFor="let driver of drivers.drivers" [value]="driver.uuid">
+            {{ driver.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    <br>
+    <mat-form-field color="accent" class="large-width">
+      <input matInput name="host" [(ngModel)]="connection.host">
+      <mat-label>
+        <mat-icon>computer</mat-icon> {{ 'HOST' | translate }} </mat-label>
+    </mat-form-field>
+    <br>
+    <mat-form-field color="accent" class="large-width">
+      <input matInput type="number" name="port" [(ngModel)]="connection.port">
+      <mat-label>
+        <mat-icon>dialpad</mat-icon> {{ 'PORT' | translate }} </mat-label>
+    </mat-form-field>
+    <br>
+    <mat-form-field color="accent" class="large-width">
+      <input matInput name="dbName" [(ngModel)]="connection.dbName">
+      <mat-label>
+        <mat-icon>folder</mat-icon> {{ 'DB_NAME' | translate }} 
+      </mat-label>
+    </mat-form-field>
+
+    <mat-form-field color="accent" class="large-width">
+      <input matInput name="username" [(ngModel)]="connection.username">
+      <mat-label>
+        <mat-icon>face</mat-icon> {{ 'USERNAME' | translate }} 
+      </mat-label>
+    </mat-form-field>
+
+    <mat-form-field color="accent" class="large-width">
+      <input matInput type="password" name="password" [(ngModel)]="connection.password">
+      <mat-label>
+        <mat-icon>lock</mat-icon> {{ 'PASSWORD' | translate }} 
+      </mat-label>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <div class="fill-remaining-space"></div>
+  <button mat-button color="accent" (click)="onNoClick()">{{ "CANCEL" | translate }}</button>
+  <button mat-button color="accent" (click)="createClick()" [mat-dialog-close]="" cdkFocusInitial>{{ "CREATE" | translate }}</button>
+</div>

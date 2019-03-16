@@ -25,6 +25,10 @@ import { SeveritySnackbarComponent } from './severity-snackbar/severity-snackbar
 import { SettingsComponent } from './settings/settings.component';
 import { DriversComponent } from './settings/drivers/drivers.component';
 import { AddDialogComponent } from './settings/drivers/add-dialog/add-dialog.component';
+import { ConnectionsComponent } from './settings/connections/connections.component';
+import { AddConnectionDialogComponent } from './settings/connections/add-connection-dialog/add-connection-dialog.component';
+import { QueriesComponent } from './queries/queries.component';
+import { AdHocComponent } from './queries/ad-hoc/ad-hoc.component';
 
 
 const appRoutes: Routes = [
@@ -32,6 +36,7 @@ const appRoutes: Routes = [
   { path: 'register', component: RegisterComponent, data: { animation: 'RegisterPage' } },
   { path: 'dashboard', component: DashboardComponent, data: { animation: 'DashboardPage' } },
   { path: 'settings', component: SettingsComponent, data: { animation: 'SettingsPage' } },
+  { path: 'queries', component: QueriesComponent, data: {animation: 'QueriesPage' } },
   { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
 
@@ -48,7 +53,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     SeveritySnackbarComponent,
     SettingsComponent,
     DriversComponent,
-    AddDialogComponent
+    AddDialogComponent,
+    ConnectionsComponent,
+    AddConnectionDialogComponent,
+    QueriesComponent,
+    AdHocComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes, { enableTracing: false }),
@@ -88,6 +97,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [SeveritySnackbarComponent, AddDialogComponent]
+  entryComponents: [SeveritySnackbarComponent, AddDialogComponent, AddConnectionDialogComponent]
 })
 export class AppModule { }

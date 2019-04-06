@@ -1,33 +1,42 @@
+<mat-card class="large-card centered">
+  <mat-card-title>{{ "AD_HOC" | translate }}</mat-card-title>
+  <mat-card-content>
 
-  <mat-card class="large-card centered">
-    <mat-card-title>{{ "AD_HOC" | translate }}</mat-card-title>
-    <mat-card-content>
-  
-      <mat-form-field *ngIf="connections" color="accent" class="large-width">
-        <mat-select placeholder="{{ 'CONNECTION' | translate }}" [(ngModel)]="connectionUuid" name="connection">
-          <mat-option *ngFor="let connection of connections.connections" [value]="connection.uuid">
-            {{ connection.dbName }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      
-      <br>
-    <mat-form-field color="accent" class="large-width">
-      <textarea matInput name="query" [(ngModel)]="query"></textarea>
-      <mat-label>
-        <mat-icon>computer</mat-icon> {{ 'QUERY' | translate }} </mat-label>
+    <mat-form-field *ngIf="connections" color="accent" class="full-width">
+      <mat-select placeholder="{{ 'CONNECTION' | translate }}" [(ngModel)]="connectionUuid" name="connection">
+        <mat-option *ngFor="let connection of connections.connections" [value]="connection.uuid">
+          {{ connection.dbName }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
-    </mat-card-content>
-    <mat-card-actions>
-      <!--<button color="accent" type="submit" class="full-width" mat-button>{{ "LOGIN" | translate }}</button>-->
-    </mat-card-actions>
-    <div class="flexed">
 
-      <div class="fill-remaining-space">
-  
-      </div>
-  
-        <button mat-button color="primary" (click)="executeQuery()">ExecuteQuery</button>
+    <br>
+    <mat-form-field color="accent" class="full-width">
+      <textarea matInput name="query" class="large-height" [(ngModel)]="query"></textarea>
+      <mat-label>
+        <mat-icon>computer</mat-icon> {{ 'QUERY' | translate }}
+      </mat-label>
+    </mat-form-field>
+  </mat-card-content>
+  <mat-card-actions>
+    <!--<button color="accent" type="submit" class="full-width" mat-button>{{ "LOGIN" | translate }}</button>-->
+  </mat-card-actions>
+  <div class="flexed">
+
+    <div class="fill-remaining-space">
+
     </div>
 
-    </mat-card>
+    <button mat-button color="primary" (click)="executePagedQuery(5)">ExecuteQuery</button>
+  </div>
+  
+    <mat-table *ngIf="this.queryResult"  [dataSource]="queryResult" class="mat-elevation-z8">
+      <ng-container *ngFor="let column of keys; let i = index" [attr.data-index]="i" matColumnDef="{{column}}">
+        <mat-header-cell *matHeaderCellDef> {{ column }}</mat-header-cell>
+        <mat-cell *matCellDef="let item"> {{ objectValues(item)[i] }} </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="keys"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: keys;"></mat-row>
+    </mat-table>
+    <!--<mat-paginator *ngIf="this.queryResult" [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>-->
+</mat-card>

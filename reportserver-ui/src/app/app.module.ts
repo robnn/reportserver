@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 import {
   MatInputModule, MatFormFieldModule, MatSelectModule, MatOptionModule, MatCardModule,
   MatButtonModule, MatToolbarModule, MatMenuModule, MatIconModule, MatSnackBarModule,
-  MatTabsModule, MatExpansionModule, MatDialogModule
+  MatTabsModule, MatExpansionModule, MatDialogModule, MatPaginatorModule, MatTableModule
 } from '@angular/material';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -76,6 +76,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatTabsModule,
     MatExpansionModule,
     MatDialogModule,
+    MatPaginatorModule,
+    MatTableModule,
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,

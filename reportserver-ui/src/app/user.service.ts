@@ -95,9 +95,13 @@ export class UserService {
   }
 
   public getUser(): User {
-    if (this.user) {
-      return this.user;
+    return this.user;
+  }
+
+  public hasRole(role: string) {
+    if (this.user == null) {
+      return false;
     }
-    return null;
+    return this.user.roles.map(x => x.roleCode).includes(role);
   }
 }

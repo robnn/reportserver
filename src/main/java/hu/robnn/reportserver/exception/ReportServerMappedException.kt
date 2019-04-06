@@ -1,6 +1,6 @@
 package hu.robnn.reportserver.exception
 
-import hu.robnn.reportserver.enums.ErrorCauses
+import hu.robnn.reportserver.enums.ErrorCause
 import java.lang.RuntimeException
 
-class ReportServerMappedException(val errorCause: ErrorCauses): RuntimeException()
+class ReportServerMappedException(val errorCause: ErrorCause): RuntimeException()

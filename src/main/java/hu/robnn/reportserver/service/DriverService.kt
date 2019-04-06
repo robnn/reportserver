@@ -8,14 +8,10 @@ import hu.robnn.reportserver.mapper.DriverMapper
 import hu.robnn.reportserver.model.dmo.HDriver
 import hu.robnn.reportserver.model.dto.Driver
 import hu.robnn.reportserver.model.dto.Drivers
-import hu.robnn.reportserver.model.DriverShim
-import hu.robnn.reportserver.model.dto.ConnectionDescriptor
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
 import java.net.URL
-import java.sql.Connection
-import java.sql.DriverManager
 import java.net.URLClassLoader
 import java.util.jar.JarFile
 

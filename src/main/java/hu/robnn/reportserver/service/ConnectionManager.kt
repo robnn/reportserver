@@ -16,9 +16,7 @@ import java.net.URL
 import java.net.URLClassLoader
 import java.sql.Connection
 import java.sql.DriverManager
-import java.sql.ResultSet
 import java.util.*
-import javax.xml.transform.Result
 import kotlin.collections.HashMap
 
 interface ConnectionManager {
@@ -26,14 +24,14 @@ interface ConnectionManager {
     fun createConnection(connectionDescriptor: ConnectionDescriptor): ConnectionDescriptor
     fun getConnectionForConnectionDescriptorUuid(uuid: UUID): Connection
     fun listConnections(): List<ConnectionDescriptor>
-    fun executeQuery(connectionUuid: UUID, query: String): ResultSet
 }
 
 @Component
 open class ConnectionManagerImpl(private val connectionDescriptorRepository: ConnectionDescriptorRepository,
                                  private val connectionDescriptorMapper: ConnectionDescriptorMapper,
                                  private val jdbcFolder: File,
-                                 private val driverService: DriverService) : ConnectionManager {
+                                 private val driverService: DriverService,
+                                 private val queryManager: QueryManager) : ConnectionManager {
 
     private val connections: MutableMap<HConnectionDescriptor, Connection> = HashMap()
 
@@ -77,23 +75,8 @@ open class ConnectionManagerImpl(private val connectionDescriptorRepository: Con
 
     override fun listConnections(): List<ConnectionDescriptor> {
         val connections = connectionDescriptorRepository.findAll().map { connectionDescriptorMapper.map(it)!! }
-        connections.forEach {it.isAlive = executeTestQuery(it.uuid) }
+        connections.forEach {it.isAlive = queryManager.executeTestQuery(it.uuid) }
         return connections
-    }
-
-    private fun executeTestQuery(connectionUuid: UUID): Boolean {
-        try {
-            executeQuery(connectionUuid, "SELECT 1")
-        } catch (e: Exception) {
-            return false
-        }
-        return true
-    }
-
-    override fun executeQuery(connectionUuid: UUID, query: String) : ResultSet {
-        val connectionForConnectionDescriptorUuid = getConnectionForConnectionDescriptorUuid(connectionUuid)
-        val createStatement = connectionForConnectionDescriptorUuid.createStatement()
-        return createStatement.executeQuery(query)
     }
 
     private fun registerDriverToDriverManager(driverInRepository: HDriver) {

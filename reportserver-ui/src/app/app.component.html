@@ -9,7 +9,7 @@
                 <button mat-button routerLink="/queries">{{ "QUERIES" | translate }}</button>
                 <button mat-button routerLink="/login"
                     (click)="userService.invalidateData()">{{ "LOGOUT" | translate }}</button>
-                <span *ngIf="userService.getUser().role === 'ADMIN'">
+                <span *ngIf="userService.hasRole('ADMIN')">
                     <button mat-button routerLink="/settings">{{ "SETTINGS" | translate }}</button>
                 </span>
             </div>
@@ -36,7 +36,7 @@
                 routerLink="/queries">{{ "QUERIES" | translate }}</button>
             <button *ngIf="userService.getUser() != null" mat-menu-item routerLink="/login"
                 (click)="userService.invalidateData()">{{ "LOGOUT" | translate }}</button>
-            <button *ngIf="userService.getUser() != null && userService.getUser().role === 'ADMIN'" mat-menu-item
+            <button *ngIf="userService.getUser() != null && userService.hasRole('ADMIN')" mat-menu-item
                 routerLink="/settings">{{ "SETTINGS" | translate }}</button>
             <button mat-menu-item [matMenuTriggerFor]="language">{{ "LANGUAGE" | translate }}</button>
         </mat-menu>

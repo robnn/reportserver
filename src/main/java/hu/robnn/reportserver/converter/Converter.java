@@ -28,6 +28,7 @@ public class Converter {
         PagedQueryResponse pagedQueryResponse = new PagedQueryResponse();
         int rowCounter = 0;
         int pageCounter = 1;
+        int itemCounter = 0;
         while (resultSet.next()) {
             int columnCount = resultSet.getMetaData().getColumnCount();
             Map<String, Object> objectMap = new HashMap<>();
@@ -35,6 +36,7 @@ public class Converter {
                 objectMap.put(resultSet.getMetaData().getColumnLabel(i + 1)
                         .toLowerCase(), resultSet.getObject(i + 1));
             }
+            itemCounter ++;
             if (pagedQueryRequest.getNeededPage() != null && pageCounter == pagedQueryRequest.getNeededPage()) {
                 pagedQueryResponse.getPagedResult().add(objectMap);
             }
@@ -47,6 +49,7 @@ public class Converter {
         pagedQueryResponse.setActualPage(pagedQueryRequest.getNeededPage());
         pagedQueryResponse.setItemsPerPage(pagedQueryRequest.getItemsPerPage());
         pagedQueryResponse.setTotalNumberOfPages(pageCounter - 1);
+        pagedQueryResponse.setTotalItems(itemCounter);
         return pagedQueryResponse;
     }
 }

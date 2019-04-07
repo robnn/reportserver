@@ -36,7 +36,7 @@ public class QueryApi {
 
     @RequestMapping(path = "/paged", method = RequestMethod.POST)
     @Authenticated
-    public ResponseEntity<PagedQueryResponse> executePagedQuery(@RequestBody PagedQueryRequest pagedQueryRequest) throws Exception {
+    public ResponseEntity<PagedQueryResponse> executePagedQuery(@RequestBody PagedQueryRequest pagedQueryRequest) {
         PagedQueryResponse pagedQueryResponse = queryManager.executePaginatedQuery(pagedQueryRequest);
         return new ResponseEntity<>(pagedQueryResponse, HttpStatus.OK);
     }

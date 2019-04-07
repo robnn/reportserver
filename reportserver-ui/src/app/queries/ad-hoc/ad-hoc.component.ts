@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConnectionService } from 'src/app/connection.service';
 import { Connections } from 'src/app/model/connection';
 import { NotificationService } from 'src/app/notification.service';
 import { QueryService } from 'src/app/query.service';
 import { PagedQueryRequest } from 'src/app/model/pagedQueryRequest';
+import { PagedQueryResponse } from 'src/app/model/pagedQueryResponse';
+import { ResultTableComponent } from '../result-table/result-table.component';
 
 @Component({
   selector: 'app-ad-hoc',
@@ -12,12 +14,12 @@ import { PagedQueryRequest } from 'src/app/model/pagedQueryRequest';
 })
 export class AdHocComponent implements OnInit {
 
+  @ViewChild(ResultTableComponent) resultTable: ResultTableComponent;
+
   public connections: Connections;
   public connectionUuid: string;
   public query: string;
-  public queryResult: Array<Map<string, object>>;
-  public objectValues = Object.values;
-  public keys;
+  public queryExecuted: boolean;
 
   constructor(private connectionService: ConnectionService,
     private notificationService: NotificationService,
@@ -35,18 +37,10 @@ export class AdHocComponent implements OnInit {
     });
   }
 
-  executePagedQuery(neededPage: number) {
-    const pagedQueryRequest = new PagedQueryRequest();
-    pagedQueryRequest.connectionUuid = this.connectionUuid;
-    pagedQueryRequest.queryString = this.query;
-    pagedQueryRequest.itemsPerPage = 5;
-    pagedQueryRequest.neededPage = 1;
-    this.queryService.runPagedQuery(pagedQueryRequest).subscribe(resp => {
-      this.queryResult = resp.pagedResult;
-      this.keys = Object.keys(this.queryResult[0]);
-      console.log(this.keys);
-    }, err => {
-      this.notificationService.addNotification(err.err);
-    })
+  executePagedQuery() {
+    this.queryExecuted = true;
+    if (this.resultTable) {
+      this.resultTable.executeQuery();
+    }
   }
 }

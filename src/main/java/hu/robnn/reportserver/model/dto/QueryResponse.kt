@@ -7,7 +7,8 @@ class QueryResponse(var result: MutableList<MutableMap<String, Any>> = mutableLi
 class PagedQueryResponse(var pagedResult: MutableList<MutableMap<String, Any>> = mutableListOf(),
                          var totalNumberOfPages: Int? = null,
                          var actualPage: Int? = null,
-                         var itemsPerPage: Int? = null)
+                         var itemsPerPage: Int? = null,
+                         var totalItems: Int? = null)
 
 class PagedQueryRequest(var queryString: String? = null,
                         var connectionUuid: UUID? = null,

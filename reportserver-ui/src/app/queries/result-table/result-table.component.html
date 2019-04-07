@@ -1,0 +1,16 @@
+<div *ngIf="this.queryResult">
+  <div *ngIf="totalRows !== 0">
+    <mat-table [dataSource]="queryResult" class="mat-elevation-z8">
+      <ng-container *ngFor="let column of keys; let i = index" [attr.data-index]="i" matColumnDef="{{column}}">
+        <mat-header-cell *matHeaderCellDef> {{ column }}</mat-header-cell>
+        <mat-cell *matCellDef="let item"> {{ objectValues(item)[i] }} </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="keys"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: keys;"></mat-row>
+    </mat-table>
+    <mat-paginator #paginator [length]="totalRows" [pageSize]="10" [pageSizeOptions]="[1, 2, 5, 10, 25, 100]" (page)=onPaginationChanged($event)></mat-paginator>
+  </div>
+  <div *ngIf="totalRows === 0">
+    <span>{{ "QUERY_RUN_PROPERLY_BUT_NO_RESULT" | translate}}</span>
+  </div>
+</div>

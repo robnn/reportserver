@@ -16,8 +16,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Message> handleUserError(RuntimeException ex, WebRequest request){
         ReportServerMappedException casted = (ReportServerMappedException) ex;
         Message messageObject;
-        messageObject = new Message(Severity.ERROR, casted.getErrorCause().getCause());
-
+        if (casted.getErrorCause() != null) {
+            messageObject = new Message(Severity.ERROR, casted.getErrorCause().getCause());
+        } else {
+            messageObject = new Message(Severity.ERROR, casted.getErrorCauseString());
+        }
         return new ResponseEntity<>(messageObject, HttpStatus.BAD_REQUEST);
     }
 }

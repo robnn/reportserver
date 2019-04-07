@@ -29,6 +29,7 @@ import { ConnectionsComponent } from './settings/connections/connections.compone
 import { AddConnectionDialogComponent } from './settings/connections/add-connection-dialog/add-connection-dialog.component';
 import { QueriesComponent } from './queries/queries.component';
 import { AdHocComponent } from './queries/ad-hoc/ad-hoc.component';
+import { ResultTableComponent } from './queries/result-table/result-table.component';
 
 
 const appRoutes: Routes = [
@@ -57,7 +58,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ConnectionsComponent,
     AddConnectionDialogComponent,
     QueriesComponent,
-    AdHocComponent
+    AdHocComponent,
+    ResultTableComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes, { enableTracing: false }),

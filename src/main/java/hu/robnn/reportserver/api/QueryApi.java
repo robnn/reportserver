@@ -2,8 +2,8 @@ package hu.robnn.reportserver.api;
 
 import hu.robnn.auth.annotation.Authenticated;
 import hu.robnn.reportserver.converter.Converter;
-import hu.robnn.reportserver.model.dto.PagedQueryRequest;
 import hu.robnn.reportserver.model.dto.PagedQueryResponse;
+import hu.robnn.reportserver.model.dto.ParametrizedQueryRequest;
 import hu.robnn.reportserver.model.dto.QueryResponse;
 import hu.robnn.reportserver.service.QueryManager;
 import org.springframework.http.HttpStatus;
@@ -36,9 +36,8 @@ public class QueryApi {
 
     @RequestMapping(path = "/paged", method = RequestMethod.POST)
     @Authenticated
-    public ResponseEntity<PagedQueryResponse> executePagedQuery(@RequestBody PagedQueryRequest pagedQueryRequest) {
-        PagedQueryResponse pagedQueryResponse = queryManager.executePaginatedQuery(pagedQueryRequest);
+    public ResponseEntity<PagedQueryResponse> executePagedQuery(@RequestBody ParametrizedQueryRequest parametrizedQueryRequest) {
+        PagedQueryResponse pagedQueryResponse = queryManager.executePaginatedQuery(parametrizedQueryRequest);
         return new ResponseEntity<>(pagedQueryResponse, HttpStatus.OK);
     }
-
 }

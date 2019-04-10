@@ -10,7 +10,9 @@ class PagedQueryResponse(var pagedResult: MutableList<MutableMap<String, Any>> =
                          var itemsPerPage: Int? = null,
                          var totalItems: Int? = null)
 
-class PagedQueryRequest(var queryString: String? = null,
+open class PagedQueryRequest(var queryString: String? = null,
                         var connectionUuid: UUID? = null,
                         var itemsPerPage: Int? = null,
                         var neededPage: Int? = null)
+
+class ParametrizedQueryRequest(var parameters: Map<String, Any> = mutableMapOf()) : PagedQueryRequest()

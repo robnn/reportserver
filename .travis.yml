@@ -29,7 +29,6 @@ matrix:
         - npm install
       script:
         - ng build
-        - ng test --watch=false
       after_script:
         - "kill $(jobs -p)"
     - language: java

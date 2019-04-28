@@ -7,7 +7,8 @@ import { FormsModule } from '@angular/forms';
 import {
   MatInputModule, MatFormFieldModule, MatSelectModule, MatOptionModule, MatCardModule,
   MatButtonModule, MatToolbarModule, MatMenuModule, MatIconModule, MatSnackBarModule,
-  MatTabsModule, MatExpansionModule, MatDialogModule, MatPaginatorModule, MatTableModule
+  MatTabsModule, MatExpansionModule, MatDialogModule, MatPaginatorModule, MatTableModule,
+  MatCheckboxModule
 } from '@angular/material';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -30,6 +31,8 @@ import { AddConnectionDialogComponent } from './settings/connections/add-connect
 import { QueriesComponent } from './queries/queries.component';
 import { AdHocComponent } from './queries/ad-hoc/ad-hoc.component';
 import { ResultTableComponent } from './queries/result-table/result-table.component';
+import { ParamModalComponent } from './queries/param-modal/param-modal.component';
+import { SavedQueriesComponent } from './queries/saved-queries/saved-queries.component';
 
 
 const appRoutes: Routes = [
@@ -59,7 +62,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     AddConnectionDialogComponent,
     QueriesComponent,
     AdHocComponent,
-    ResultTableComponent
+    ResultTableComponent,
+    ParamModalComponent,
+    SavedQueriesComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes, { enableTracing: false }),
@@ -80,6 +85,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatDialogModule,
     MatPaginatorModule,
     MatTableModule,
+    MatCheckboxModule,
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
@@ -101,6 +107,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [SeveritySnackbarComponent, AddDialogComponent, AddConnectionDialogComponent]
+  entryComponents: [SeveritySnackbarComponent, AddDialogComponent, AddConnectionDialogComponent, ParamModalComponent]
 })
 export class AppModule { }

@@ -1,0 +1,51 @@
+<mat-card class="large-card centered">
+  <mat-card-title>{{ "SAVED_QUERIES" | translate }}</mat-card-title>
+  <mat-card-content>
+
+    <span *ngIf="!queries || queries.queries.length == 0">{{ "NO_DRIVERS" | translate }}</span>
+    <mat-accordion *ngIf="queries && queries.queries.length > 0">
+      <mat-expansion-panel *ngFor="let query of queries.queries">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <span>{{ query.queryName }} </span>
+          </mat-panel-title>
+          <mat-panel-description>
+            {{ getConnectionInfoForUuid(query.connectionUuid) }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <span>{{ query.queryString }}</span>
+        <!--<mat-form-field color="accent">
+          <input matInput readonly="true" placeholder="{{ 'USERNAME' | translate }}" name="username" value="{{ connection.username }}"
+                 >
+          <mat-label>
+            <mat-icon>class</mat-icon>
+            {{ 'USERNAME' | translate }} </mat-label>
+        </mat-form-field>
+        <br>
+        <mat-form-field color="accent">
+            <input matInput readonly="true" type="password" placeholder="{{ 'PASSWORD' | translate }}" name="password" value="{{ connection.password }}"
+                   >
+            <mat-label>
+              <mat-icon>class</mat-icon>
+              {{ 'PASSWORD' | translate }} </mat-label>
+          </mat-form-field>-->
+      </mat-expansion-panel>
+    </mat-accordion>
+
+
+  </mat-card-content>
+  <mat-card-actions>
+    <!--<button color="accent" type="submit" class="full-width" mat-button>{{ "LOGIN" | translate }}</button>-->
+  </mat-card-actions>
+  <div class="flexed">
+
+    <div class="fill-remaining-space">
+
+    </div>
+
+    <!--<button mat-button mat-mini-fab color="primary" (click)="openDialog()">
+      <mat-icon>add</mat-icon>
+    </button>-->
+  </div>
+
+</mat-card>

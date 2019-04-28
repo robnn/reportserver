@@ -1,0 +1,15 @@
+<h1 mat-dialog-title><mat-icon>build</mat-icon><span>{{ "SET_PARAMETERS" | translate }}</span></h1>
+<div mat-dialog-content class="center-inputs">
+  
+    <mat-form-field *ngFor="let param of params; let i = index" color="accent" class="large-width">
+      <input matInput name="{{param}}" [(ngModel)]="paramValues[i]">
+      <mat-label>
+        <mat-icon>label</mat-icon> {{ param }} </mat-label>
+      </mat-form-field>
+    <br>
+</div>
+<div mat-dialog-actions>
+  <div class="fill-remaining-space"></div>
+  <button mat-button color="accent" (click)="onNoClick()">{{ "CANCEL" | translate }}</button>
+  <button mat-button color="accent" (click)="createParams()" [mat-dialog-close]="" cdkFocusInitial>{{ "RUN" | translate }}</button>
+</div>

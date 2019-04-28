@@ -6,6 +6,7 @@ import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.Timestamp
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -18,6 +19,33 @@ class NamedParameterStatement(private val connection: Connection,
                               private val parameters: Map<String, Any>) {
 
     companion object {
+        private val dateFormats = arrayOf(SimpleDateFormat("yyyy-MM-dd"), SimpleDateFormat("yyyy-MM-dd HH:mm"))
+
+        fun isParsableToDate(date: Any?): Boolean {
+            for (dateFormat in dateFormats) {
+                try {
+                    val dateString = date as String
+                    dateFormat.parse(dateString)
+                    return true
+                } catch (e: Exception) {
+                    continue
+                }
+            }
+            return false
+        }
+
+        fun parseToDate(date: Any?): Date {
+            for (format in dateFormats) {
+                return try {
+                    val dateString = date as String
+                    format.parse(dateString)
+                } catch (e: Exception) {
+                    continue
+                }
+            }
+            throw IllegalArgumentException("Cannot parse to date: $date")
+        }
+
         fun extractParams(query: String): List<String> {
             val regex = ":[a-zA-Z0-9]+".toRegex()
             val matchesIndex = regex.findAll(query)
@@ -33,6 +61,8 @@ class NamedParameterStatement(private val connection: Connection,
     init {
         validateParameterMatchInQuery()
     }
+
+
 
     private fun validateParameterMatchInQuery() {
         val paramsInQuery = extractParams()
@@ -69,13 +99,16 @@ class NamedParameterStatement(private val connection: Connection,
         var i = 1
         paramNamesInOrder.forEach { paramName ->
             val param = parameters[paramName]
-            when (param) {
-                is Date -> prepareStatement.setTimestamp(i++, Timestamp(param.time))
-                is Int -> prepareStatement.setInt(i++,  param)
-                is Long -> prepareStatement.setLong(i++, param)
-                is Double -> prepareStatement.setDouble(i++, param)
-                is Float -> prepareStatement.setFloat(i++, param)
-                else -> prepareStatement.setString(i++, param as String)
+            if (isParsableToDate(param)) {
+                prepareStatement.setTimestamp(i++, Timestamp(parseToDate(param).time))
+            } else {
+                when (param) {
+                    is Int -> prepareStatement.setInt(i++, param)
+                    is Long -> prepareStatement.setLong(i++, param)
+                    is Double -> prepareStatement.setDouble(i++, param)
+                    is Float -> prepareStatement.setFloat(i++, param)
+                    else -> prepareStatement.setString(i++, param as String)
+                }
             }
         }
     }

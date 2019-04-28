@@ -17,6 +17,17 @@
         <mat-icon>computer</mat-icon> {{ 'QUERY' | translate }}
       </mat-label>
     </mat-form-field>
+
+    <mat-checkbox [(ngModel)]="shouldSave"> {{ "SAVE_QUERY" | translate }}</mat-checkbox>
+    <div *ngIf="shouldSave">
+      <mat-form-field color="accent" class="full-width">
+        <input matInput name="query" [(ngModel)]="queryName">
+        <mat-label>
+          <mat-icon>save</mat-icon> {{ 'QUERY_NAME' | translate }}
+        </mat-label>
+      </mat-form-field>
+    </div>
+
   </mat-card-content>
   <mat-card-actions>
     <!--<button color="accent" type="submit" class="full-width" mat-button>{{ "LOGIN" | translate }}</button>-->
@@ -27,8 +38,9 @@
 
     </div>
 
-    <button mat-button color="primary" (click)="executePagedQuery()">ExecuteQuery</button>
+    <button mat-button color="primary" (click)="executePagedQuery()">{{"EXECUTE_QUERY" | translate}}</button>
   </div>
   
-  <app-result-table *ngIf="queryExecuted" queryString="{{this.query}}" connectionUuid="{{this.connectionUuid}}" neededPage=1 itemsPerPage=10></app-result-table>
+  <app-result-table *ngIf="queryExecuted" [queryString]=this.query
+    [connectionUuid]=this.connectionUuid neededPage=1 itemsPerPage=10 [queryName]=this.queryName></app-result-table>
 </mat-card>

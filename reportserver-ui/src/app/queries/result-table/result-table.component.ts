@@ -15,13 +15,15 @@ export class ResultTableComponent implements OnInit {
   @Input() queryString: string;
   @Input() neededPage: number;
   @Input() itemsPerPage: number;
+  @Input() queryName: string;
+  params: any;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  
+
   public queryResult: Array<Map<string, object>>;
   public objectValues = Object.values;
   public keys;
-  
+
   public totalRows: number;
 
   constructor(private queryService: QueryService,
@@ -29,10 +31,15 @@ export class ResultTableComponent implements OnInit {
 
   ngOnInit() {
     const pagedQueryRequest = new PagedQueryRequest();
+    console.log(this.params);
     pagedQueryRequest.connectionUuid = this.connectionUuid;
     pagedQueryRequest.queryString = this.queryString;
     pagedQueryRequest.itemsPerPage = this.itemsPerPage;
     pagedQueryRequest.neededPage = this.neededPage;
+    pagedQueryRequest.parameters = this.params;
+    if (this.queryName) {
+      pagedQueryRequest.queryName = this.queryName;
+    }
     this.queryService.runPagedQuery(pagedQueryRequest).subscribe(resp => {
       this.queryResult = resp.pagedResult;
       if (resp.totalItems !== 0) {
@@ -53,5 +60,9 @@ export class ResultTableComponent implements OnInit {
   public executeQuery() {
     this.ngOnInit();
   }
-}
 
+  public executeQueryWithParams(params: object) {
+    this.params = params;
+    this.ngOnInit();
+  }
+}

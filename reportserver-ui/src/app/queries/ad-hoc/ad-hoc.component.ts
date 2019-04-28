@@ -6,6 +6,9 @@ import { QueryService } from 'src/app/query.service';
 import { PagedQueryRequest } from 'src/app/model/pagedQueryRequest';
 import { PagedQueryResponse } from 'src/app/model/pagedQueryResponse';
 import { ResultTableComponent } from '../result-table/result-table.component';
+import { ParamHelper } from '../helper/param-helper';
+import { MatDialog } from '@angular/material';
+import { ParamModalComponent } from '../param-modal/param-modal.component';
 
 @Component({
   selector: 'app-ad-hoc',
@@ -19,11 +22,13 @@ export class AdHocComponent implements OnInit {
   public connections: Connections;
   public connectionUuid: string;
   public query: string;
+  public shouldSave: boolean = false;
   public queryExecuted: boolean;
 
   constructor(private connectionService: ConnectionService,
     private notificationService: NotificationService,
-    private queryService: QueryService) { }
+    private queryService: QueryService,
+    public dialog: MatDialog) { }
 
   ngOnInit() {
     this.connectionService.listConnections().subscribe(resp => {
@@ -37,10 +42,30 @@ export class AdHocComponent implements OnInit {
     });
   }
 
+  openDialog(): void {
+    const dialogRef = this.dialog.open(ParamModalComponent, {
+      width: '400px',
+      data: ParamHelper.extractParams(this.query)
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.queryExecuted = true;
+        if (this.resultTable) {
+          this.resultTable.executeQueryWithParams(result);
+        }
+      }
+    });
+  }
+
   executePagedQuery() {
-    this.queryExecuted = true;
-    if (this.resultTable) {
-      this.resultTable.executeQuery();
+    if (ParamHelper.isParametrized(this.query)) {
+      this.openDialog();
+    } else {
+      this.queryExecuted = true;
+      if (this.resultTable) {
+        this.resultTable.executeQuery();
+      }
     }
   }
 }

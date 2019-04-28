@@ -64,5 +64,12 @@
   "DRIVER": "Driver",
   "NEW_CONNECTION": "New connection",
   "PORT": "Port",
-  "CREATE": "Create"
+  "CREATE": "Create",
+  "AD_HOC": "Ad hoc query",
+  "CONNECTION": "Connection",
+  "QUERY": "Query",
+  "SAVED_QUERIES": "Saved queries",
+  "EXECUTE_QUERY": "Execute query",
+  "SAVE_QUERY": "Save query",
+  "QUERY_NAME": "Query name"
 }

@@ -10,7 +10,7 @@
               <mat-panel-title>
                   <mat-icon *ngIf="!connection.alive" class="right-margin-small dead-red" >close</mat-icon>
                   <mat-icon *ngIf="connection.alive" class="right-margin-small alive-green" >check</mat-icon>
-                <span>{{ connection.driverType | translate }} at {{ connection.host }}:{{ connection.port }} </span>
+                <span>{{ connection.driverType | translate }} @ {{ connection.host }}:{{ connection.port }} </span>
               </mat-panel-title>
               <mat-panel-description>
                 {{ "DB_NAME" | translate }}: {{ connection.dbName }}
@@ -26,7 +26,7 @@
             </mat-form-field>
             <br>
             <mat-form-field color="accent">
-                <input matInput readonly="true" placeholder="{{ 'PASSWORD' | translate }}" name="password" value="{{ connection.password }}"
+                <input matInput readonly="true" type="password" placeholder="{{ 'PASSWORD' | translate }}" name="password" value="{{ connection.password }}"
                        >
                 <mat-label>
                   <mat-icon>class</mat-icon>

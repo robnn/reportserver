@@ -9,6 +9,7 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import { Message } from './model/message';
 import { SeveritySnackbarComponent } from './severity-snackbar/severity-snackbar.component';
 import { UserService } from './user.service';
+import { LocalStorageService } from './local-storage.service';
 
 @Component({
   selector: 'app-root',
@@ -24,11 +25,16 @@ export class AppComponent implements OnInit {
   constructor(private translateService: TranslateService,
     private notificationService: NotificationService,
     private snackBar: MatSnackBar,
-    private userService: UserService) {
+    private userService: UserService,
+    private localStorageService: LocalStorageService) {
     this.initializeNotifications();
     translateService.addLangs(['hu', 'en']);
     translateService.setDefaultLang('en');
-    translateService.use('en');
+    if (localStorageService.retrieveLanguage()) {
+      translateService.use(localStorageService.retrieveLanguage());
+    } else {
+      translateService.use('en');
+    }
   }
 
   ngOnInit(): void {
@@ -41,10 +47,12 @@ export class AppComponent implements OnInit {
   }
 
   changeToHu() {
+    this.localStorageService.storeLanguage('hu');
     this.translateService.use('hu');
   }
 
   changeToEn() {
+    this.localStorageService.storeLanguage('en');
     this.translateService.use('en');
   }
 

@@ -3,4 +3,10 @@ export class PagedQueryRequest {
     connectionUuid: string;
     itemsPerPage: number;
     neededPage: number;
+    parameters: object;
+    queryName: string;
+}
+
+export class QueryRequests {
+    queries: Array<PagedQueryRequest>;
 }

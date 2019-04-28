@@ -3,6 +3,7 @@ import { LOCAL_STORAGE, StorageService } from 'angular-webstorage-service';
 
 
 const USER_TOKEN_STORAGE_KEY = 'user_token';
+const LANGUAGE_STORAGE_KEY = 'language';
 
 @Injectable({
   providedIn: 'root'
@@ -22,4 +23,17 @@ export class LocalStorageService {
   public clearUserToken() {
     this.storage.remove(USER_TOKEN_STORAGE_KEY);
   }
+
+  public storeLanguage(language: string) {
+    this.storage.set(LANGUAGE_STORAGE_KEY, language);
+  }
+
+  public retrieveLanguage(): string {
+    return this.storage.get(LANGUAGE_STORAGE_KEY);
+  }
+
+  public clearLanguage() {
+    this.storage.remove(LANGUAGE_STORAGE_KEY);
+  }
+
 }

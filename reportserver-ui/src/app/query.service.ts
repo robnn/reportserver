@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from './user.service';
-import { PagedQueryRequest } from './model/pagedQueryRequest';
+import { PagedQueryRequest, QueryRequests } from './model/pagedQueryRequest';
 import { Observable } from 'rxjs';
 import { PagedQueryResponse } from './model/pagedQueryResponse';
 
@@ -20,5 +20,9 @@ export class QueryService {
 
   runPagedQuery(pagedQueryRequest: PagedQueryRequest): Observable<PagedQueryResponse> {
     return this.http.post<PagedQueryResponse>(this.connectionUrl + "paged", pagedQueryRequest, { headers: this.userService.getAuthTokenAsHttpHeader(null) })
+  }
+
+  listSavedQueries() : Observable<QueryRequests> {
+    return this.http.get<QueryRequests>(this.connectionUrl, { headers: this.userService.getAuthTokenAsHttpHeader(null) })
   }
 }

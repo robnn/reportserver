@@ -64,5 +64,12 @@
   "DRIVER": "Meghajtó",
   "NEW_CONNECTION": "Új kapcsolat",
   "PORT": "Port",
-  "CREATE": "Létrehozás"
+  "CREATE": "Létrehozás",
+  "AD_HOC": "Alkalmi lekérdezés",
+  "CONNECTION": "Kapcsolat",
+  "QUERY": "Lekérdezés",
+  "SAVED_QUERIES": "Mentett lekérdezések",
+  "EXECUTE_QUERY": "Lekérdezés futtatása",
+  "SAVE_QUERY": "Lekérdezés mentése",
+  "QUERY_NAME": "Lekérdezés neve"
 }

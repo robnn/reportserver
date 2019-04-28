@@ -11,7 +11,8 @@ class NamedParameterStatementTest {
     fun testParameterExtraction() {
         val connectionMock = ConnectionMock()
         val testQuery = "select * from aaa where id = :firstparam and another = :secondparam and third = :thirdparam"
-        val namedParameterStatementTest = NamedParameterStatement(connectionMock, testQuery, mutableMapOf())
+        val namedParameterStatementTest = NamedParameterStatement(connectionMock, testQuery, mutableMapOf(
+                Pair(":firstparam", 1), Pair(":secondparam", 2), Pair(":thirdparam", 3)))
         val extractParams = namedParameterStatementTest.extractParams()
         assertEquals(":firstparam", extractParams[0])
         assertEquals(":secondparam", extractParams[1])

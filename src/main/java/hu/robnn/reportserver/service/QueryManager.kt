@@ -30,8 +30,8 @@ class QueryManagerImpl(@Lazy private val connectionManager: ConnectionManager,
 
     override fun executeQuery(connectionUuid: UUID, query: String) : ResultSet {
         val connectionForConnectionDescriptorUuid = connectionManager.getConnectionForConnectionDescriptorUuid(connectionUuid)
-        val createStatement = connectionForConnectionDescriptorUuid.createStatement()
         try {
+            val createStatement = connectionForConnectionDescriptorUuid.createStatement()
             return createStatement.executeQuery(query)
         } catch (e: Exception) {
             throw ReportServerMappedException(e.message!!)

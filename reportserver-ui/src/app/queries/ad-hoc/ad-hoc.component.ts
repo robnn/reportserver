@@ -22,7 +22,7 @@ export class AdHocComponent implements OnInit {
   public connections: Connections;
   public connectionUuid: string;
   public query: string;
-  public shouldSave: boolean = false;
+  public shouldSave = false;
   public queryExecuted: boolean;
 
   constructor(private connectionService: ConnectionService,
@@ -52,7 +52,7 @@ export class AdHocComponent implements OnInit {
       if (result) {
         this.queryExecuted = true;
         if (this.resultTable) {
-          this.resultTable.executeQueryWithParams(result);
+          this.resultTable.executeQueryWithParams(null, result);
         }
       }
     });
@@ -64,7 +64,7 @@ export class AdHocComponent implements OnInit {
     } else {
       this.queryExecuted = true;
       if (this.resultTable) {
-        this.resultTable.executeQuery();
+        this.resultTable.executeQuery(null);
       }
     }
   }

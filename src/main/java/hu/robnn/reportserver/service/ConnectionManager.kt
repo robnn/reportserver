@@ -66,6 +66,7 @@ open class ConnectionManagerImpl(private val connectionDescriptorRepository: Con
 
     override fun getConnectionForConnectionDescriptorUuid(uuid: UUID): Connection {
         val connection = connections[connectionDescriptorRepository.findByUuid(uuid.toString())]
+        //TODO itt kéne a kapcsolatot újraéleszteni, ha eldöglött, mivel ha menet közben döglik el akkor utána ha meg is javul akkor is szar marad
         if (connection != null) {
             return connection
         } else {

@@ -32,10 +32,9 @@ export class ParamModalComponent implements OnInit {
       if (Number(this.paramValues[i])) {
         map[item] = Number(this.paramValues[i]);
       } else {
-        map[item] = this.paramValues[i]
+        map[item] = this.paramValues[i];
       }
     });
-    console.log(map);
     return map;
   }
 }

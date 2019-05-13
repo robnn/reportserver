@@ -18,16 +18,17 @@ class QueryMapper {
         realTarget.queryString = parametrizedQueryRequest.queryString
         realTarget.connectionUuid = parametrizedQueryRequest.connectionUuid.toString()
         realTarget.queryName = parametrizedQueryRequest.queryName
-        realTarget.queryParameters = mapQueryParameters(parametrizedQueryRequest)
+        realTarget.queryParameters = mapQueryParameters(parametrizedQueryRequest, realTarget)
         return realTarget
     }
 
-    private fun mapQueryParameters(parametrizedQueryRequest: ParametrizedQueryRequest): Set<HQueryParameter> {
+    private fun mapQueryParameters(parametrizedQueryRequest: ParametrizedQueryRequest, targetQuery: HQuery): Set<HQueryParameter> {
         val parameters = HashSet<HQueryParameter>()
         parametrizedQueryRequest.parameters.forEach {
             val parameter = HQueryParameter()
             parameter.parameterName = it.key
             parameter.parameterValue = it.value.toString()
+            parameter.query = targetQuery
             parameters.add(parameter)
         }
         return parameters

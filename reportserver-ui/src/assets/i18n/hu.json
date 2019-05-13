@@ -71,5 +71,8 @@
   "SAVED_QUERIES": "Mentett lekérdezések",
   "EXECUTE_QUERY": "Lekérdezés futtatása",
   "SAVE_QUERY": "Lekérdezés mentése",
-  "QUERY_NAME": "Lekérdezés neve"
+  "QUERY_NAME": "Lekérdezés neve",
+  "NO_DRIVERS": "Nem találhatók meghatók",
+  "NO_QUERIES": "Nem találhatók lekérdezések",
+  "PARAMETERS": "Paraméterek"
 }

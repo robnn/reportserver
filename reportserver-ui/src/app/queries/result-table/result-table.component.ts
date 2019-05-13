@@ -13,10 +13,11 @@ export class ResultTableComponent implements OnInit {
 
   @Input() connectionUuid: string;
   @Input() queryString: string;
-  @Input() neededPage: number;
-  @Input() itemsPerPage: number;
   @Input() queryName: string;
+  queryRequest: PagedQueryRequest;
   params: any;
+  neededPage = 1;
+  itemsPerPage = 10;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -30,16 +31,28 @@ export class ResultTableComponent implements OnInit {
     private notificationService: NotificationService) { }
 
   ngOnInit() {
-    const pagedQueryRequest = new PagedQueryRequest();
-    console.log(this.params);
-    pagedQueryRequest.connectionUuid = this.connectionUuid;
-    pagedQueryRequest.queryString = this.queryString;
+  }
+
+  onPaginationChanged(pageEvent: PageEvent) {
+    console.log(pageEvent);
+    this.itemsPerPage = pageEvent.pageSize;
+    this.neededPage = pageEvent.pageIndex + 1;
+    this.executeQuery(this.queryRequest);
+  }
+
+  public executeQuery(query: PagedQueryRequest) {
+    this.queryRequest = query;
+    const pagedQueryRequest = this.queryRequest || new PagedQueryRequest();
+    if (!this.queryRequest) {
+      pagedQueryRequest.connectionUuid = this.connectionUuid;
+      pagedQueryRequest.queryString = this.queryString;
+      if (this.queryName) {
+        pagedQueryRequest.queryName = this.queryName;
+      }
+    }
     pagedQueryRequest.itemsPerPage = this.itemsPerPage;
     pagedQueryRequest.neededPage = this.neededPage;
     pagedQueryRequest.parameters = this.params;
-    if (this.queryName) {
-      pagedQueryRequest.queryName = this.queryName;
-    }
     this.queryService.runPagedQuery(pagedQueryRequest).subscribe(resp => {
       this.queryResult = resp.pagedResult;
       if (resp.totalItems !== 0) {
@@ -48,21 +61,11 @@ export class ResultTableComponent implements OnInit {
       this.totalRows = resp.totalItems;
     }, err => {
       this.notificationService.addNotification(err.error);
-    })
+    });
   }
 
-  onPaginationChanged(pageEvent: PageEvent) {
-    this.itemsPerPage = pageEvent.pageSize;
-    this.neededPage = pageEvent.pageIndex + 1;
-    this.executeQuery();
-  }
-
-  public executeQuery() {
-    this.ngOnInit();
-  }
-
-  public executeQueryWithParams(params: object) {
+  public executeQueryWithParams(query: PagedQueryRequest, params: object) {
     this.params = params;
-    this.ngOnInit();
+    this.executeQuery(query);
   }
 }

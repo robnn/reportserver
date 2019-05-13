@@ -37,7 +37,7 @@ open class HQuery: UuidHolder {
     @Column(name = "query_name")
     open var queryName: String? = null
 
-    @OneToMany(targetEntity = HQueryParameter::class, mappedBy = "query")
+    @OneToMany(targetEntity = HQueryParameter::class, mappedBy = "query", cascade = [CascadeType.ALL])
     open var queryParameters: Set<HQueryParameter> = mutableSetOf()
 
 }

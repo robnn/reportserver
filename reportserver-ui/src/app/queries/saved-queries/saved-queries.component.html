@@ -2,9 +2,9 @@
   <mat-card-title>{{ "SAVED_QUERIES" | translate }}</mat-card-title>
   <mat-card-content>
 
-    <span *ngIf="!queries || queries.queries.length == 0">{{ "NO_DRIVERS" | translate }}</span>
-    <mat-accordion *ngIf="queries && queries.queries.length > 0">
-      <mat-expansion-panel *ngFor="let query of queries.queries">
+    <span *ngIf="!queries || queries.length == 0">{{ "NO_QUERIES" | translate }}</span>
+    <mat-accordion *ngIf="queries && queries.length > 0">
+      <mat-expansion-panel *ngFor="let query of queries">
         <mat-expansion-panel-header>
           <mat-panel-title>
             <span>{{ query.queryName }} </span>
@@ -13,39 +13,24 @@
             {{ getConnectionInfoForUuid(query.connectionUuid) }}
           </mat-panel-description>
         </mat-expansion-panel-header>
+        <h4>{{ "QUERY" | translate }}:</h4>
         <span>{{ query.queryString }}</span>
-        <!--<mat-form-field color="accent">
-          <input matInput readonly="true" placeholder="{{ 'USERNAME' | translate }}" name="username" value="{{ connection.username }}"
-                 >
-          <mat-label>
-            <mat-icon>class</mat-icon>
-            {{ 'USERNAME' | translate }} </mat-label>
-        </mat-form-field>
-        <br>
-        <mat-form-field color="accent">
-            <input matInput readonly="true" type="password" placeholder="{{ 'PASSWORD' | translate }}" name="password" value="{{ connection.password }}"
-                   >
-            <mat-label>
-              <mat-icon>class</mat-icon>
-              {{ 'PASSWORD' | translate }} </mat-label>
-          </mat-form-field>-->
+        <div *ngIf="query.arrayParameters.length !== 0">
+          <h4>{{ "PARAMETERS" | translate }}:</h4>
+          <ul *ngFor="let param of query.arrayParameters">
+            <li>{{ param.parameterName }} : {{ param.parameterValue }}</li>
+          </ul>
+        </div>
+        <div class="flexed">
+          <div class="fill-remaining-space"></div>
+          <button mat-button color="primary" (click)="executePagedQuery(query)">{{"EXECUTE_QUERY" | translate}}</button>
+        </div>
       </mat-expansion-panel>
     </mat-accordion>
-
-
   </mat-card-content>
   <mat-card-actions>
-    <!--<button color="accent" type="submit" class="full-width" mat-button>{{ "LOGIN" | translate }}</button>-->
   </mat-card-actions>
-  <div class="flexed">
 
-    <div class="fill-remaining-space">
-
-    </div>
-
-    <!--<button mat-button mat-mini-fab color="primary" (click)="openDialog()">
-      <mat-icon>add</mat-icon>
-    </button>-->
-  </div>
-
+  <app-result-table></app-result-table>
 </mat-card>
+

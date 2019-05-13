@@ -1,4 +1,12 @@
 <mat-tab-group dynamicHeight="true">
-  <mat-tab label="{{ 'AD_HOC' | translate }}"><app-ad-hoc></app-ad-hoc></mat-tab>
-  <mat-tab label="{{ 'SAVED_QUERIES' | translate }}"><app-saved-queries></app-saved-queries> </mat-tab>
+  <mat-tab label="{{ 'AD_HOC' | translate }}">
+    <ng-template matTabContent>
+      <app-ad-hoc></app-ad-hoc>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="{{ 'SAVED_QUERIES' | translate }}">
+    <ng-template matTabContent>
+      <app-saved-queries></app-saved-queries>
+    </ng-template>
+  </mat-tab>
 </mat-tab-group>

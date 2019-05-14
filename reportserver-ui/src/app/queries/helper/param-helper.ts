@@ -25,4 +25,12 @@ export class ParamHelper {
         }
         return extracted;
     }
+
+    public static keyArrayToMap(params: Array<Parameter>): Map<string, string> {
+        const map = new Map<string, string>();
+        params.forEach(item => {
+            map.set(item.parameterName, item.parameterValue);
+        });
+        return map;
+    }
 }

@@ -9,6 +9,8 @@ import { MatDialog } from '@angular/material';
 import { ParamModalComponent } from '../param-modal/param-modal.component';
 import { PagedQueryRequest } from 'src/app/model/pagedQueryRequest';
 import { ResultTableComponent } from '../result-table/result-table.component';
+import { ExcelService } from 'src/app/excel.service';
+import { RequestHelper } from '../helper/request-helper';
 
 @Component({
   selector: 'app-saved-queries',
@@ -30,7 +32,8 @@ export class SavedQueriesComponent implements OnInit {
     private connectionService: ConnectionService,
     private notificationService: NotificationService,
     private translateService: TranslateService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    private excelService: ExcelService) { }
 
   ngOnInit() {
     this.connectionService.listConnections().subscribe(resp => {
@@ -57,7 +60,7 @@ export class SavedQueriesComponent implements OnInit {
   openDialog(query: string): void {
     const dialogRef = this.dialog.open(ParamModalComponent, {
       width: '400px',
-      data: ParamHelper.extractParams(query)
+      data: ParamHelper.keyArrayToMap(this.currentQueryRequest.arrayParameters)
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -70,6 +73,22 @@ export class SavedQueriesComponent implements OnInit {
     });
   }
 
+  openDialogForExport(query: PagedQueryRequest): void {
+    const dialogRef = this.dialog.open(ParamModalComponent, {
+      width: '400px',
+      data: ParamHelper.keyArrayToMap(query.arrayParameters)
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const notPaged = RequestHelper.convertToNotPagedRequest(query);
+        this.queryService.runNonPagedQuery(notPaged).subscribe(resp => {
+          this.excelService.exportAsExcelFile(resp.result, query.queryName);
+        });
+      }
+    });
+  }
+
   executePagedQuery(query: PagedQueryRequest) {
     this.currentQueryRequest = query;
     if (ParamHelper.isParametrized(query.queryString)) {
@@ -77,9 +96,19 @@ export class SavedQueriesComponent implements OnInit {
     } else {
       this.queryExecuted = true;
       if (this.resultTable) {
-        this.resultTable.executeQuery(query);
+        this.resultTable.executeQuery(query, true);
       }
     }
   }
 
+  exportQuery(query: PagedQueryRequest) {
+    if (ParamHelper.isParametrized(query.queryString)) {
+      this.openDialogForExport(query);
+    } else {
+      const notPaged = RequestHelper.convertToNotPagedRequest(query);
+      this.queryService.runNonPagedQuery(notPaged).subscribe(resp => {
+        this.excelService.exportAsExcelFile(resp.result, query.queryName);
+      });
+    }
+  }
 }

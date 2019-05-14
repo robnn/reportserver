@@ -43,8 +43,12 @@ open class ConnectionManagerImpl(private val connectionDescriptorRepository: Con
         connectionDescriptorRepository.findAll().forEach {
             if(it?.host != null && it.port != null && it.dbName != null && it.driver?.dbType != null) {
                 registerDriverToDriverManager(it.driver!!)
-                val connection = DriverManager.getConnection(it.driver?.dbType?.buildJdbcString(it.host!!, it.port!!, it.dbName!!), it.username, it.password)
-                connections[it] = connection
+                try {
+                    val connection = DriverManager.getConnection(it.driver?.dbType?.buildJdbcString(it.host!!, it.port!!, it.dbName!!), it.username, it.password)
+                    connections[it] = connection
+                } catch (e: Exception) {
+                    //ha nem sikerül csatlakozni akkor is induljon el az alkalmazás
+                }
             }
         }
     }
@@ -89,7 +93,4 @@ open class ConnectionManagerImpl(private val connectionDescriptorRepository: Con
         val d = Class.forName(neededClassName, true, ucl).newInstance() as java.sql.Driver
         DriverManager.registerDriver(DriverShim(d))
     }
-
-
-
 }

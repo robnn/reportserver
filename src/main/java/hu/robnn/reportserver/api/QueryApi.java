@@ -2,10 +2,7 @@ package hu.robnn.reportserver.api;
 
 import hu.robnn.auth.annotation.Authenticated;
 import hu.robnn.reportserver.converter.Converter;
-import hu.robnn.reportserver.model.dto.PagedQueryResponse;
-import hu.robnn.reportserver.model.dto.ParametrizedQueryRequest;
-import hu.robnn.reportserver.model.dto.QueryRequests;
-import hu.robnn.reportserver.model.dto.QueryResponse;
+import hu.robnn.reportserver.model.dto.*;
 import hu.robnn.reportserver.service.QueryManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,5 +43,12 @@ public class QueryApi {
     @Authenticated
     public ResponseEntity<QueryRequests> listQueries() {
         return new ResponseEntity<>(queryManager.listQueries(), HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/parametrized", method = RequestMethod.POST)
+    @Authenticated
+    public ResponseEntity<QueryResponse> executeNotPagedQuery(@RequestBody NotPagedParametrizedQueryRequest notPagedParametrizedQueryRequest) {
+        QueryResponse queryResponse = queryManager.executeQuery(notPagedParametrizedQueryRequest);
+        return new ResponseEntity<>(queryResponse, HttpStatus.OK);
     }
 }

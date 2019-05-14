@@ -27,10 +27,14 @@
     "@ngx-translate/http-loader": "^4.0.0",
     "angular-webstorage-service": "^1.0.2",
     "core-js": "^2.5.4",
+    "file-saver": "^2.0.2",
     "flag-icon-css": "^3.2.1",
+    "highlight.js": "^9.15.6",
     "ngx-flag-icon-css": "^1.0.1",
+    "ngx-highlightjs": "^3.0.3",
     "rxjs": "^6.4.0",
     "tslib": "^1.9.0",
+    "xlsx": "^0.14.3",
     "zone.js": "~0.8.29"
   },
   "devDependencies": {
@@ -38,6 +42,7 @@
     "@angular/cli": "~7.3.1",
     "@angular/compiler-cli": "^7.2.4",
     "@angular/language-service": "^7.2.4",
+    "@types/file-saver": "^2.0.0",
     "@types/jasmine": "~2.8.6",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",

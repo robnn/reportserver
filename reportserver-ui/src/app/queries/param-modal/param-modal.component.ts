@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, LOCALE_ID } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
@@ -9,10 +9,13 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 export class ParamModalComponent implements OnInit {
 
   public paramValues: Array<any> = new Array();
+  public paramKeys: Array<string>;
 
   constructor(public dialogRef: MatDialogRef<ParamModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public params: Array<string>,
-    @Inject(LOCALE_ID) private localeId: string) { }
+    @Inject(MAT_DIALOG_DATA) public params: Map<string, string>) {
+      this.paramKeys = Array.from(params.keys());
+      this.paramValues = Array.from(params.values());
+    }
 
   ngOnInit() {
   }
@@ -22,13 +25,13 @@ export class ParamModalComponent implements OnInit {
   }
 
   createParams(): void {
-    const paramMap = this.createParamMap()
+    const paramMap = this.createParamMap();
     this.dialogRef.close(paramMap);
   }
 
   createParamMap(): object {
     const map = {};
-    this.params.forEach( (item, i) => {
+    this.paramKeys.forEach( (item, i) => {
       if (Number(this.paramValues[i])) {
         map[item] = Number(this.paramValues[i]);
       } else {

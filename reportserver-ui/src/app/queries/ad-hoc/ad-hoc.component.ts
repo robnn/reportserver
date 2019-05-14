@@ -3,7 +3,7 @@ import { ConnectionService } from 'src/app/connection.service';
 import { Connections } from 'src/app/model/connection';
 import { NotificationService } from 'src/app/notification.service';
 import { QueryService } from 'src/app/query.service';
-import { PagedQueryRequest } from 'src/app/model/pagedQueryRequest';
+import { PagedQueryRequest, Parameter } from 'src/app/model/pagedQueryRequest';
 import { PagedQueryResponse } from 'src/app/model/pagedQueryResponse';
 import { ResultTableComponent } from '../result-table/result-table.component';
 import { ParamHelper } from '../helper/param-helper';
@@ -42,10 +42,11 @@ export class AdHocComponent implements OnInit {
     });
   }
 
+
   openDialog(): void {
     const dialogRef = this.dialog.open(ParamModalComponent, {
       width: '400px',
-      data: ParamHelper.extractParams(this.query)
+      data: ParamHelper.keyArrayToMap(ParamHelper.extractParams(this.query).map(key => Parameter.of(key)))
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -64,7 +65,7 @@ export class AdHocComponent implements OnInit {
     } else {
       this.queryExecuted = true;
       if (this.resultTable) {
-        this.resultTable.executeQuery(null);
+        this.resultTable.executeQuery(null, true);
       }
     }
   }

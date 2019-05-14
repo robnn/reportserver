@@ -16,6 +16,10 @@ open class PagedQueryRequest(var queryString: String? = null,
                              var neededPage: Int? = null,
                              var queryName: String? = null)
 
+open class NotPagedParametrizedQueryRequest(var queryString: String? = null,
+                                            var connectionUuid: UUID? = null,
+                                            var parameters: Map<String, Any> = mutableMapOf())
+
 class ParametrizedQueryRequest(var parameters: Map<String, Any> = mutableMapOf()) : PagedQueryRequest()
 
 class QueryRequests(var queries: Set<ParametrizedQueryRequest> = mutableSetOf())

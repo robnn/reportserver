@@ -8,7 +8,8 @@ import {
   MatInputModule, MatFormFieldModule, MatSelectModule, MatOptionModule, MatCardModule,
   MatButtonModule, MatToolbarModule, MatMenuModule, MatIconModule, MatSnackBarModule,
   MatTabsModule, MatExpansionModule, MatDialogModule, MatPaginatorModule, MatTableModule,
-  MatCheckboxModule
+  MatCheckboxModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -16,6 +17,9 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NgxFlagIconCssModule } from 'ngx-flag-icon-css'
 import { StorageServiceModule } from 'angular-webstorage-service';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { HighlightModule } from 'ngx-highlightjs';
+
+import sql from 'highlight.js/lib/languages/sql';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -34,6 +38,11 @@ import { ResultTableComponent } from './queries/result-table/result-table.compon
 import { ParamModalComponent } from './queries/param-modal/param-modal.component';
 import { SavedQueriesComponent } from './queries/saved-queries/saved-queries.component';
 
+export function hljsLanguages() {
+  return [
+    {name: 'sql', func: sql}
+  ];
+}
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent, data: { animation: 'LoginPage' } },
@@ -86,6 +95,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatPaginatorModule,
     MatTableModule,
     MatCheckboxModule,
+    MatProgressSpinnerModule,
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
@@ -98,6 +108,9 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
+    HighlightModule.forRoot({
+      languages: hljsLanguages
+    })
   ],
   providers: [
     {

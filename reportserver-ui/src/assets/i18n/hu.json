@@ -74,5 +74,10 @@
   "QUERY_NAME": "Lekérdezés neve",
   "NO_DRIVERS": "Nem találhatók meghatók",
   "NO_QUERIES": "Nem találhatók lekérdezések",
-  "PARAMETERS": "Paraméterek"
+  "PARAMETERS": "Paraméterek",
+  "QUERY_RUN_PROPERLY_BUT_NO_RESULT": "Lekérdezés sikeresen futott, de nincs eredmény",
+  "QUERY_RESULT": "Lekérdezés eredménye",
+  "SET_PARAMETERS": "Paraméterek beállítása",
+  "RUN": "Futtatás",
+  "EXPORT_XLSX": "Excel exportálás"
 }

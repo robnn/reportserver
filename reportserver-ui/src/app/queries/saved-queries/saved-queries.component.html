@@ -13,16 +13,27 @@
             {{ getConnectionInfoForUuid(query.connectionUuid) }}
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <h4>{{ "QUERY" | translate }}:</h4>
-        <span>{{ query.queryString }}</span>
-        <div *ngIf="query.arrayParameters.length !== 0">
-          <h4>{{ "PARAMETERS" | translate }}:</h4>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <span>{{ "QUERY" | translate }}:</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <pre><code [highlight]="query.queryString"></code></pre>
+        </mat-expansion-panel>
+        <mat-expansion-panel *ngIf="query.arrayParameters.length !== 0">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <span>{{ "PARAMETERS" | translate }}:</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
           <ul *ngFor="let param of query.arrayParameters">
             <li>{{ param.parameterName }} : {{ param.parameterValue }}</li>
           </ul>
-        </div>
+        </mat-expansion-panel>
         <div class="flexed">
           <div class="fill-remaining-space"></div>
+          <button mat-button color="primary" (click)="exportQuery(query)">{{"EXPORT_XLSX" | translate}}</button>
           <button mat-button color="primary" (click)="executePagedQuery(query)">{{"EXECUTE_QUERY" | translate}}</button>
         </div>
       </mat-expansion-panel>
@@ -33,4 +44,3 @@
 
   <app-result-table></app-result-table>
 </mat-card>
-

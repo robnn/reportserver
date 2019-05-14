@@ -74,5 +74,10 @@
   "QUERY_NAME": "Query name",
   "NO_DRIVERS": "No drivers found",
   "NO_QUERIES": "No queries found",
-  "PARAMETERS": "Parameters"
+  "PARAMETERS": "Parameters",
+  "QUERY_RUN_PROPERLY_BUT_NO_RESULT": "Query run properly but no result",
+  "QUERY_RESULT": "Query result",
+  "SET_PARAMETERS": "Set parameters",
+  "RUN": "Run",
+  "EXPORT_XLSX": "Export to excel"
 }

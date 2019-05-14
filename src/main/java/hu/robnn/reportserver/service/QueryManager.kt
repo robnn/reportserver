@@ -5,9 +5,7 @@ import hu.robnn.reportserver.dao.QueryRepository
 import hu.robnn.reportserver.enums.QueryErrorCause
 import hu.robnn.reportserver.exception.ReportServerMappedException
 import hu.robnn.reportserver.mapper.QueryMapper
-import hu.robnn.reportserver.model.dto.PagedQueryResponse
-import hu.robnn.reportserver.model.dto.ParametrizedQueryRequest
-import hu.robnn.reportserver.model.dto.QueryRequests
+import hu.robnn.reportserver.model.dto.*
 import hu.robnn.reportserver.service.queryhelper.NamedParameterStatement
 import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Component
@@ -17,6 +15,7 @@ import java.util.*
 
 interface QueryManager {
     fun executeQuery(connectionUuid: UUID, query: String): ResultSet
+    fun executeQuery(request: NotPagedParametrizedQueryRequest): QueryResponse
     fun executeTestQuery(connectionUuid: UUID): Boolean
     fun executePaginatedQuery(parametrizedQueryRequest: ParametrizedQueryRequest): PagedQueryResponse
     fun executeQueryWithNamedParameters(connectionUuid: UUID, query: String, parameters: Map<String, Any>): ResultSet
@@ -35,6 +34,22 @@ class QueryManagerImpl(@Lazy private val connectionManager: ConnectionManager,
             return createStatement.executeQuery(query)
         } catch (e: Exception) {
             throw ReportServerMappedException(e.message!!)
+        }
+    }
+
+    override fun executeQuery(request: NotPagedParametrizedQueryRequest): QueryResponse {
+        if (checkIfParametrized(request)
+                && request.connectionUuid != null && request.queryString != null) {
+            val resultSet = executeQueryWithNamedParameters(request.connectionUuid!!,
+                    request.queryString!!, request.parameters)
+            return Converter.convertToQueryResult(resultSet)
+        }
+
+        if (request.connectionUuid != null && request.queryString != null) {
+            val resultSet = executeQuery(request.connectionUuid!!, request.queryString!!)
+            return Converter.convertToQueryResult(resultSet)
+        } else {
+            throw ReportServerMappedException(QueryErrorCause.QUERY_AND_UUID_MUST_NOT_BE_NULL)
         }
     }
 
@@ -76,6 +91,9 @@ class QueryManagerImpl(@Lazy private val connectionManager: ConnectionManager,
 
     private fun checkIfParametrized(parametrizedQueryRequest: ParametrizedQueryRequest) =
         parametrizedQueryRequest.queryString != null && !NamedParameterStatement.extractParams(parametrizedQueryRequest.queryString!!).isEmpty()
+
+    private fun checkIfParametrized(parametrizedQueryRequest: NotPagedParametrizedQueryRequest) =
+            parametrizedQueryRequest.queryString != null && !NamedParameterStatement.extractParams(parametrizedQueryRequest.queryString!!).isEmpty()
 
     override fun executeQueryWithNamedParameters(connectionUuid: UUID, query: String, parameters: Map<String, Any>): ResultSet {
         val connectionForConnectionDescriptorUuid = connectionManager.getConnectionForConnectionDescriptorUuid(connectionUuid)

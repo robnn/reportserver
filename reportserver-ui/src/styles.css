@@ -81,7 +81,7 @@ body {
 .large-card {
   width: 90%;
   min-height: 90%;
-  height: 90%;
+  height: auto;
   margin-top: 1cm;
   background-color: rgb(80, 80, 80) !important;
   text-align: left;

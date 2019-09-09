@@ -39,9 +39,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.userService.getAuthToken() != null){
-      this.userService.getUserData();
+      this.userService.getCurrentUser();
     }
   }
+
   onActivate(componentRef) {
 
   }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { User } from './model/user';
 import { Observable, of } from 'rxjs';
 import { NotificationService } from './notification.service';
@@ -18,34 +18,51 @@ export class UserService {
 
   private usersUrl = '/users/';
 
-  private user: User;
+  public user: User;
 
   constructor(private http: HttpClient,
     private notificationService: NotificationService,
-    private localStorageService: LocalStorageService,
-    private router: Router) { }
+    private localStorageService: LocalStorageService) { }
 
   register(user: User) {
-    this.http.post<User>(this.usersUrl, user).subscribe(() => {
-      this.router.navigate(['/login']);
+    const observable = this.http.post<User>(this.usersUrl, user);
+    observable.subscribe(() => {
       const successfulLoginMessage = new Message(Severity.INFO, 'SUCCESSFUL_REGISTRATION');
       this.notificationService.addNotification(successfulLoginMessage);
     }, error => {
       this.notificationService.addNotification(error.error);
     });
+    return observable;
   }
 
   login(user: User) {
-    this.http.post<Token>(this.usersUrl + 'login', user).subscribe(x => {
+    const observable = this.http.post<Token>(this.usersUrl + 'login', user);
+    observable.subscribe(x => {
       this.authToken = x.token;
       this.localStorageService.storeUserToken(x.token);
-      this.router.navigate(['/dashboard']);
-      const successfulLoginMessage = new Message(Severity.INFO, 'SUCCESSFUL_LOGIN');
-      this.notificationService.addNotification(successfulLoginMessage);
-      this.getUserData();
+      this.getCurrentUser();
     }, error => {
       this.notificationService.addNotification(error.error);
     });
+    return observable;
+  }
+
+  loginWithFacebook(accessToken: string): Observable<Token> {
+    const observable = this.http.post<Token>(this.usersUrl + 'login/facebook', { token: accessToken });
+    observable.subscribe(x => {
+      this.authToken = x.token;
+      this.localStorageService.storeUserToken(x.token);
+    });
+    return observable;
+  }
+
+  loginWithGoogle(accessToken: string): Observable<Token> {
+    const observable = this.http.post<Token>(this.usersUrl + 'login/google', { token: accessToken });
+    observable.subscribe(x => {
+      this.authToken = x.token;
+      this.localStorageService.storeUserToken(x.token);
+    });
+    return observable;
   }
 
   getAuthToken(): string {
@@ -61,7 +78,7 @@ export class UserService {
     }
 
     if (!this.getAuthToken()) {
-      const notLoggedInMessage = new Message(Severity.ERROR, "NOT_LOGGED_IN");
+      const notLoggedInMessage = new Message(Severity.ERROR, 'NOT_LOGGED_IN');
       this.notificationService.addNotification(notLoggedInMessage);
       return null;
     }
@@ -70,21 +87,23 @@ export class UserService {
     return headers;
   }
 
-  getUserForToken(): Observable<User> {
-    return this.http.get<User>(this.usersUrl + 'byToken/' + this.getAuthToken(), { headers: this.getAuthTokenAsHttpHeader(null) });
+  getCurrentUser(): Observable<User> {
+    if (!this.user) {
+      const observable = this.http.get<User>(this.usersUrl + 'byToken/' +
+        this.getAuthToken(), { headers: this.getAuthTokenAsHttpHeader(null) });
+      observable.subscribe(resp => {
+        this.user = resp;
+      });
+      return observable;
+    }
+    return of(this.user);
   }
 
-  public getUserData(): User {
+  hasRole(role: string): boolean {
     if (!this.user) {
-      const observable = this.getUserForToken();
-      observable.subscribe(user => {
-        this.user = user;
-        return user;
-      }, error => {
-        this.notificationService.addNotification(error.error);
-      });
+      return false;
     } else {
-      return this.user;
+      return this.user.roles.map(x => x.roleCode).includes(role);
     }
   }
 
@@ -92,16 +111,5 @@ export class UserService {
     this.localStorageService.clearUserToken();
     this.authToken = null;
     this.user = null;
-  }
-
-  public getUser(): User {
-    return this.user;
-  }
-
-  public hasRole(role: string) {
-    if (this.user == null) {
-      return false;
-    }
-    return this.user.roles.map(x => x.roleCode).includes(role);
   }
 }

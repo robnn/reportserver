@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Message } from './model/message';
 import { Router } from '@angular/router';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class NotificationService {
   constructor(private router: Router) { }
 
   public addNotification = (notification: Message): void => {
-    if (notification.message == "INVALID_TOKEN") {
+    if (notification.message === 'INVALID_TOKEN') {
         this.router.navigate(['/login']);
     }
     this.notifications.next(new Array(notification));

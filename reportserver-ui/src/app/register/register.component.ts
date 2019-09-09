@@ -39,7 +39,9 @@ export class RegisterComponent implements OnInit {
       this.notificationService.addNotification(new Message(Severity.ERROR, 'EMPTY_USERNAME'));
       return;
     }
-    this.userService.register(this.user);
+    this.userService.register(this.user).subscribe(() => {
+      this.router.navigate(['/login']);
+    });
   }
 
 }

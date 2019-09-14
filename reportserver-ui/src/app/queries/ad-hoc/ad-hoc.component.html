@@ -36,6 +36,6 @@
     <div class="fill-remaining-space"></div>
     <button mat-button color="primary" (click)="executePagedQuery()">{{"EXECUTE_QUERY" | translate}}</button>
   </div>
-  
-  <app-result-table [queryString]=this.query [connectionUuid]=this.connectionUuid [queryName]=this.queryName></app-result-table>
+
+  <app-result-table [queryString]=this.query [connectionUuid]=this.connectionUuid [queryName]=null></app-result-table>
 </mat-card>

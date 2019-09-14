@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from './user.service';
 import { Connections, Connection } from './model/connection';
-import { Observable } from 'rxjs';
-import { PagedQueryRequest } from './model/pagedQueryRequest';
 
 @Injectable({
   providedIn: 'root'

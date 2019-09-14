@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { User } from './model/user';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { NotificationService } from './notification.service';
 import { Token } from './model/token';
 import { LocalStorageService } from './local-storage.service';
-import { Router } from '@angular/router';
 import { Message } from './model/message';
 import { Severity } from './model/severity';
 
@@ -26,43 +25,51 @@ export class UserService {
 
   register(user: User) {
     const observable = this.http.post<User>(this.usersUrl, user);
-    observable.subscribe(() => {
+    const subject = new Subject();
+    subject.subscribe(() => {
       const successfulLoginMessage = new Message(Severity.INFO, 'SUCCESSFUL_REGISTRATION');
       this.notificationService.addNotification(successfulLoginMessage);
     }, error => {
       this.notificationService.addNotification(error.error);
     });
-    return observable;
+    observable.subscribe(subject);
+    return subject;
   }
 
   login(user: User) {
     const observable = this.http.post<Token>(this.usersUrl + 'login', user);
-    observable.subscribe(x => {
+    const subject = new Subject<Token>();
+    subject.subscribe(x => {
       this.authToken = x.token;
       this.localStorageService.storeUserToken(x.token);
       this.getCurrentUser();
     }, error => {
       this.notificationService.addNotification(error.error);
     });
-    return observable;
+    observable.subscribe(subject);
+    return subject;
   }
 
   loginWithFacebook(accessToken: string): Observable<Token> {
     const observable = this.http.post<Token>(this.usersUrl + 'login/facebook', { token: accessToken });
-    observable.subscribe(x => {
+    const subject = new Subject<Token>();
+    subject.subscribe(x => {
       this.authToken = x.token;
       this.localStorageService.storeUserToken(x.token);
     });
-    return observable;
+    observable.subscribe(subject);
+    return subject;
   }
 
   loginWithGoogle(accessToken: string): Observable<Token> {
     const observable = this.http.post<Token>(this.usersUrl + 'login/google', { token: accessToken });
-    observable.subscribe(x => {
+    const subject = new Subject<Token>();
+    subject.subscribe(x => {
       this.authToken = x.token;
       this.localStorageService.storeUserToken(x.token);
     });
-    return observable;
+    observable.subscribe(subject);
+    return subject;
   }
 
   getAuthToken(): string {
@@ -91,10 +98,12 @@ export class UserService {
     if (!this.user) {
       const observable = this.http.get<User>(this.usersUrl + 'byToken/' +
         this.getAuthToken(), { headers: this.getAuthTokenAsHttpHeader(null) });
-      observable.subscribe(resp => {
+      const subject = new Subject<User>();
+      subject.subscribe(resp => {
         this.user = resp;
       });
-      return observable;
+      observable.subscribe(subject);
+      return subject;
     }
     return of(this.user);
   }

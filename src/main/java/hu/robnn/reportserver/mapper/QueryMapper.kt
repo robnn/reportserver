@@ -7,13 +7,15 @@ import hu.robnn.reportserver.model.dto.Column
 import hu.robnn.reportserver.model.dto.ParametrizedQueryRequest
 import hu.robnn.reportserver.service.queryhelper.NamedParameterStatement
 import hu.robnn.auth.service.UserContext
+import hu.robnn.reportserver.dao.TeamRepository
+import hu.robnn.reportserver.model.dto.TeamUuidAndName
 import org.springframework.stereotype.Component
 import java.lang.Exception
 import java.util.*
 import kotlin.collections.HashSet
 
 @Component
-class QueryMapper {
+class QueryMapper(private val teamRepository: TeamRepository) {
     fun mapToQuery(parametrizedQueryRequest: ParametrizedQueryRequest, target: HQuery?, columns: Set<HQueryColumn>) : HQuery {
         var realTarget = target
         if (realTarget == null) {
@@ -26,6 +28,8 @@ class QueryMapper {
         columns.forEach { it.query = realTarget }
         realTarget.queryColumns = columns
         realTarget.creatorUser = UserContext.Companion.currentUser
+        realTarget.visibility = parametrizedQueryRequest.visibility
+        realTarget.teams = parametrizedQueryRequest.teamUuidsAndNames.map { teamRepository.findByUuid(it.name) }.toSet()
         return realTarget
     }
 
@@ -51,6 +55,8 @@ class QueryMapper {
         target.parameters = mapToRequestParameters(query)
         target.columns = mapToColumns(query.queryColumns)
         target.creatorUsername = query.creatorUser?.username
+        target.visibility = query.visibility
+        target.teamUuidsAndNames = query.teams.map { TeamUuidAndName(UUID.fromString(it.uuid), it.name) }.toMutableList()
         return target
     }
 

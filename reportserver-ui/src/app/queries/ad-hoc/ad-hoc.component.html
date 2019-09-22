@@ -26,6 +26,24 @@
           <mat-icon>save</mat-icon> {{ 'QUERY_NAME' | translate }}
         </mat-label>
       </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-select placeholder="{{ 'VISIBILITY' | translate }}" [(ngModel)]="queryVisibility" name="queryVisibility">
+          <mat-option *ngFor="let type of types" [value]="type">
+            {{ type | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br>
+      <div *ngIf="this.queryVisibility == 'TEAM'">
+        <mat-form-field color="accent" class="large-width">
+          <mat-select placeholder="{{ 'TEAMS' | translate }}" [(ngModel)]="teamUuids" name="teamUuids" multiple>
+            <mat-option *ngFor="let team of teams" [value]="team.uuid">
+              {{ team.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
     </div>
 
   </mat-card-content>
@@ -37,5 +55,6 @@
     <button mat-button color="primary" (click)="executePagedQuery()">{{"EXECUTE_QUERY" | translate}}</button>
   </div>
 
-  <app-result-table [queryString]=this.query [connectionUuid]=this.connectionUuid [queryName]=this.queryName></app-result-table>
+  <app-result-table [queryString]=this.query [connectionUuid]=this.connectionUuid [queryName]=this.queryName
+    [visibility]=this.queryVisibility [teamUuids]=this.teamUuids></app-result-table>
 </mat-card>

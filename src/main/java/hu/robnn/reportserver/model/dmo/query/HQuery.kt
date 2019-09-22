@@ -3,6 +3,8 @@ package hu.robnn.reportserver.model.dmo.query
 import com.fasterxml.jackson.annotation.JsonIgnore
 import hu.robnn.auth.dao.model.User
 import hu.robnn.commons.interfaces.UuidHolder
+import hu.robnn.reportserver.enums.QueryVisibility
+import hu.robnn.reportserver.model.dmo.team.HTeam
 import java.util.*
 import javax.persistence.*
 
@@ -47,5 +49,15 @@ open class HQuery: UuidHolder {
     @ManyToOne
     @JoinColumn(name = "creator_user_id")
     open var creatorUser: User? = null
+
+    @Enumerated(value = EnumType.STRING)
+    open var visibility: QueryVisibility = QueryVisibility.PUBLIC
+
+    @ManyToMany(targetEntity = HTeam::class)
+    @JoinTable(
+            name = "rs_query_teams",
+            joinColumns = [JoinColumn(name = "query_id")],
+            inverseJoinColumns = [JoinColumn(name = "team_id")])
+    open var teams: Set<HTeam> = mutableSetOf()
 
 }

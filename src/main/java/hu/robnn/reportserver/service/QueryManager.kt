@@ -1,8 +1,11 @@
 package hu.robnn.reportserver.service
 
+import hu.robnn.auth.service.UserContext
 import hu.robnn.reportserver.converter.Converter
 import hu.robnn.reportserver.dao.QueryRepository
+import hu.robnn.reportserver.dao.TeamRepository
 import hu.robnn.reportserver.enums.QueryErrorCause
+import hu.robnn.reportserver.enums.QueryVisibility
 import hu.robnn.reportserver.exception.ReportServerMappedException
 import hu.robnn.reportserver.mapper.QueryMapper
 import hu.robnn.reportserver.model.dmo.query.HQueryColumn
@@ -26,7 +29,8 @@ interface QueryManager {
 @Component
 class QueryManagerImpl(@Lazy private val connectionManager: ConnectionManager,
                        private val queryMapper: QueryMapper,
-                       private val queryRepository: QueryRepository) : QueryManager {
+                       private val queryRepository: QueryRepository,
+                       private val teamRepository: TeamRepository) : QueryManager {
 
     override fun executeQuery(connectionUuid: UUID, query: String) : ResultSet {
         val connectionForConnectionDescriptorUuid = connectionManager.getConnectionForConnectionDescriptorUuid(connectionUuid)
@@ -107,6 +111,12 @@ class QueryManagerImpl(@Lazy private val connectionManager: ConnectionManager,
     }
 
     override fun listQueries(): QueryRequests {
-        return QueryRequests(queryRepository.findAll().map { queryMapper.mapToRequest(it) }.toSet())
+        val username = UserContext.currentUser?.username
+        val teams = teamRepository.findByUsername(username)
+        return QueryRequests(queryRepository.findAll().map { queryMapper.mapToRequest(it) }
+                .filter { query -> (query.visibility == QueryVisibility.TEAM &&
+                                    teams.map { it.uuid }.any { query.teamUuidsAndNames.map { tUAN -> tUAN.uuid.toString() }.contains(it) }) ||
+                        query.visibility == QueryVisibility.PUBLIC ||
+                        (query.visibility == QueryVisibility.PRIVATE && query.creatorUsername == username) }.toSet())
     }
 }

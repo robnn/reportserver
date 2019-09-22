@@ -3,12 +3,14 @@ import { ConnectionService } from 'src/app/connection.service';
 import { Connections } from 'src/app/model/connection';
 import { NotificationService } from 'src/app/notification.service';
 import { QueryService } from 'src/app/query.service';
-import { PagedQueryRequest, Parameter } from 'src/app/model/pagedQueryRequest';
+import { PagedQueryRequest, Parameter, QueryVisibility } from 'src/app/model/pagedQueryRequest';
 import { PagedQueryResponse } from 'src/app/model/pagedQueryResponse';
 import { ResultTableComponent } from '../result-table/result-table.component';
 import { ParamHelper } from '../helper/param-helper';
 import { MatDialog } from '@angular/material';
 import { ParamModalComponent } from '../param-modal/param-modal.component';
+import { TeamService } from 'src/app/team.service';
+import { Team } from 'src/app/model/team';
 
 @Component({
   selector: 'app-ad-hoc',
@@ -25,16 +27,25 @@ export class AdHocComponent implements OnInit {
   public shouldSave = false;
   public queryExecuted: boolean;
   public queryName: string;
+  public queryVisibility: QueryVisibility = QueryVisibility.PUBLIC;
+  public teamUuids: string[];
+  public teams: Array<Team>;
+  public types = Object.keys(QueryVisibility);
 
   constructor(private connectionService: ConnectionService,
     private notificationService: NotificationService,
     private queryService: QueryService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    private teamService: TeamService) { }
 
   ngOnInit() {
     this.connectionService.listConnections().subscribe(resp => {
       this.connections = resp;
     }, err => this.notificationService.addNotification(err.error));
+    this.teamService.listTeams().subscribe(resp => {
+      this.teams = resp.teams;
+    }, err => this.notificationService.addNotification(err.error));
+
   }
 
   executeQuery() {

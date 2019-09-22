@@ -20,6 +20,13 @@
             <mat-icon>face</mat-icon>
             {{ 'CREATOR_USERNAME' | translate }} </mat-label>
         </mat-form-field>
+        <mat-form-field>
+          <mat-select readonly="true" placeholder="{{ 'VISIBILITY' | translate }}" value="{{ query.visibility }}" name="queryVisibility">
+            <mat-option *ngFor="let type of types" [value]="type">
+              {{ type | translate }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -46,6 +53,16 @@
           </mat-expansion-panel-header>
           <ul *ngFor="let column of query.columns">
             <li>{{ column.columnName }} : {{ column.columnType }}</li>
+          </ul>
+        </mat-expansion-panel>
+        <mat-expansion-panel *ngIf="query.teamUuidsAndNames.length !== 0">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <span>{{ "TEAMS" | translate }}:</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <ul *ngFor="let team of query.teamUuidsAndNames">
+            <li>{{ team.name }}</li>
           </ul>
         </mat-expansion-panel>
         <div class="flexed">

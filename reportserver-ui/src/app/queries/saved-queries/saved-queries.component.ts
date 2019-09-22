@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ParamHelper } from '../helper/param-helper';
 import { MatDialog } from '@angular/material';
 import { ParamModalComponent } from '../param-modal/param-modal.component';
-import { PagedQueryRequest } from 'src/app/model/pagedQueryRequest';
+import { PagedQueryRequest, QueryVisibility } from 'src/app/model/pagedQueryRequest';
 import { ResultTableComponent } from '../result-table/result-table.component';
 import { ExcelService } from 'src/app/excel.service';
 import { RequestHelper } from '../helper/request-helper';
@@ -24,7 +24,8 @@ export class SavedQueriesComponent implements OnInit {
   public arrayFrom = Array.from;
   public currentQueryRequest: PagedQueryRequest;
   public queryExecuted = false;
-
+  public types = Object.keys(QueryVisibility);
+  
   @ViewChild(ResultTableComponent) resultTable: ResultTableComponent;
 
 

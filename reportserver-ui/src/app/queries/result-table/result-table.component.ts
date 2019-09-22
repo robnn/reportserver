@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core';
-import { PagedQueryRequest } from 'src/app/model/pagedQueryRequest';
+import { PagedQueryRequest, QueryVisibility, TeamUuidAndName } from 'src/app/model/pagedQueryRequest';
 import { QueryService } from 'src/app/query.service';
 import { NotificationService } from 'src/app/notification.service';
 import { MatPaginator, PageEvent } from '@angular/material';
@@ -14,6 +14,9 @@ export class ResultTableComponent implements OnInit {
   @Input() connectionUuid: string;
   @Input() queryString: string;
   @Input() queryName: string;
+  @Input() visibility: QueryVisibility;
+  @Input() teamUuids: string[];
+
   queryRequest: PagedQueryRequest;
   params: any;
   neededPage = 1;
@@ -27,6 +30,7 @@ export class ResultTableComponent implements OnInit {
   public keys: string[];
 
   public totalRows: number;
+  
 
   constructor(private queryService: QueryService,
     private notificationService: NotificationService) { }
@@ -59,6 +63,8 @@ export class ResultTableComponent implements OnInit {
     pagedQueryRequest.itemsPerPage = this.itemsPerPage;
     pagedQueryRequest.neededPage = this.neededPage;
     pagedQueryRequest.parameters = this.params;
+    pagedQueryRequest.visibility = this.visibility;
+    pagedQueryRequest.teamUuidsAndNames = this.teamUuids.map(it => new TeamUuidAndName(it, null));
     this.queryService.runPagedQuery(pagedQueryRequest).subscribe(resp => {
       this.queryResult = resp.pagedResult;
       if (resp.totalItems !== 0) {

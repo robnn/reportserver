@@ -42,6 +42,7 @@ public class Converter {
         pagedQueryResponse.setTotalNumberOfPages(pageCounter - 1);
         pagedQueryResponse.setTotalItems(itemCounter);
         pagedQueryResponse.setColumns(columns);
+        pagedQueryResponse.setVisibility(pagedQueryRequest.getVisibility());
         return pagedQueryResponse;
     }
 

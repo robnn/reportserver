@@ -1,5 +1,6 @@
 package hu.robnn.reportserver.model.dto
 
+import hu.robnn.reportserver.enums.QueryVisibility
 import java.util.*
 
 class QueryResponse(var result: MutableList<MutableMap<String, Any>> = mutableListOf(),
@@ -10,14 +11,20 @@ class PagedQueryResponse(var pagedResult: MutableList<MutableMap<String, Any>> =
                          var actualPage: Int? = null,
                          var itemsPerPage: Int? = null,
                          var totalItems: Int? = null,
-                         var columns: MutableList<Column> = mutableListOf())
+                         var columns: MutableList<Column> = mutableListOf(),
+                         var visibility: QueryVisibility = QueryVisibility.PUBLIC)
 
 open class PagedQueryRequest(var queryString: String? = null,
                              var connectionUuid: UUID? = null,
                              var itemsPerPage: Int? = null,
                              var neededPage: Int? = null,
                              var queryName: String? = null,
-                             var creatorUsername: String? = null)
+                             var creatorUsername: String? = null,
+                             var visibility: QueryVisibility = QueryVisibility.PUBLIC,
+                             var teamUuidsAndNames: MutableList<TeamUuidAndName> = mutableListOf())
+
+open class TeamUuidAndName(var uuid: UUID = UUID.randomUUID(),
+                           var name: String? = null)
 
 open class NotPagedParametrizedQueryRequest(var queryString: String? = null,
                                             var connectionUuid: UUID? = null,

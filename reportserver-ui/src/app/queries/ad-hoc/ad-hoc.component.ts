@@ -24,6 +24,7 @@ export class AdHocComponent implements OnInit {
   public query: string;
   public shouldSave = false;
   public queryExecuted: boolean;
+  public queryName: string;
 
   constructor(private connectionService: ConnectionService,
     private notificationService: NotificationService,

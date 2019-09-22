@@ -1,6 +1,6 @@
 package hu.robnn.reportserver.converter;
 
-import hu.robnn.reportserver.model.dmo.HQueryColumn;
+import hu.robnn.reportserver.model.dmo.query.HQueryColumn;
 import hu.robnn.reportserver.model.dto.Column;
 import hu.robnn.reportserver.model.dto.PagedQueryRequest;
 import hu.robnn.reportserver.model.dto.PagedQueryResponse;

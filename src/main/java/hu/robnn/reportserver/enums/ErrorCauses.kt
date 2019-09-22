@@ -18,3 +18,9 @@ enum class QueryErrorCause: ErrorCause {
     PARAMS_IN_QUERY_NOT_PROVIDED,
     NOT_NEEDED_PARAMS_PROVIDED,
 }
+
+enum class TeamErrorCause: ErrorCause {
+    TEAM_NAME_MUST_BE_SUPPLIED,
+    TEAM_MUST_HAVE_USERS_IN_IT,
+    TEAM_WITH_NAME_ALREADY_EXISTS,
+}

@@ -1,0 +1,42 @@
+<mat-card class="large-card centered">
+  <mat-card-title>{{ "TEAMS" | translate }}</mat-card-title>
+  <mat-card-content>
+
+    <span *ngIf="!teams || teams.length == 0">{{ "NO_TEAMS" | translate }}</span>
+    <mat-accordion *ngIf="teams && teams.length > 0">
+      <mat-expansion-panel  *ngFor="let team of teams">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+              <mat-icon>people</mat-icon>
+            <span>{{ team.name }}</span>
+          </mat-panel-title>             
+        </mat-expansion-panel-header>
+        <h4>{{ 'USERS_IN_TEAM' | translate }}:</h4>
+        <ul *ngFor="let username of team.userNames">
+          <mat-form-field color="accent">
+            <input matInput readonly="true" placeholder="{{ 'USERNAME' | translate }}" name="username" value="{{ username }}"
+                    >
+            <mat-label>
+              <mat-icon>face</mat-icon>
+              {{ 'USERNAME' | translate }} </mat-label>
+          </mat-form-field>
+        </ul>
+        <br>
+      </mat-expansion-panel>
+    </mat-accordion>
+    
+
+  </mat-card-content>
+  <mat-card-actions>
+    <!--<button color="accent" type="submit" class="full-width" mat-button>{{ "LOGIN" | translate }}</button>-->
+  </mat-card-actions>
+  <div class="flexed">
+
+    <div class="fill-remaining-space">
+
+    </div>
+
+      <button mat-button mat-mini-fab color="primary" (click)="openDialog()"><mat-icon>add</mat-icon></button>
+  </div>
+
+  </mat-card>

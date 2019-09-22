@@ -79,5 +79,8 @@
   "QUERY_RESULT": "Query result",
   "SET_PARAMETERS": "Set parameters",
   "RUN": "Run",
-  "EXPORT_XLSX": "Export to excel"
+  "EXPORT_XLSX": "Export to excel",
+  "CREATOR_USERNAME": "Creator username",
+  "COLUMNS": "Columns",
+  "TEAMS": "Teams"
 }

@@ -37,6 +37,8 @@ import { AdHocComponent } from './queries/ad-hoc/ad-hoc.component';
 import { ResultTableComponent } from './queries/result-table/result-table.component';
 import { ParamModalComponent } from './queries/param-modal/param-modal.component';
 import { SavedQueriesComponent } from './queries/saved-queries/saved-queries.component';
+import { TeamsComponent } from './settings/teams/teams.component';
+import { EditTeamComponent } from './settings/teams/edit-team/edit-team.component';
 
 export function hljsLanguages() {
   return [
@@ -73,7 +75,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     AdHocComponent,
     ResultTableComponent,
     ParamModalComponent,
-    SavedQueriesComponent
+    SavedQueriesComponent,
+    TeamsComponent,
+    EditTeamComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes, { enableTracing: false }),
@@ -120,6 +124,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [SeveritySnackbarComponent, AddDialogComponent, AddConnectionDialogComponent, ParamModalComponent]
+  entryComponents: [SeveritySnackbarComponent, AddDialogComponent, AddConnectionDialogComponent, ParamModalComponent, EditTeamComponent]
 })
 export class AppModule { }

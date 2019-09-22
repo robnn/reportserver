@@ -1,6 +1,6 @@
 package hu.robnn.reportserver.dao;
 
-import hu.robnn.reportserver.model.dmo.HQuery;
+import hu.robnn.reportserver.model.dmo.query.HQuery;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface QueryRepository extends JpaRepository<HQuery, Long> {

@@ -13,6 +13,13 @@
             {{ getConnectionInfoForUuid(query.connectionUuid) }}
           </mat-panel-description>
         </mat-expansion-panel-header>
+        <mat-form-field color="accent" *ngIf="query.creatorUsername">
+          <input matInput readonly="true" placeholder="{{ 'CREATOR_USERNAME' | translate }}" name="username" value="{{ query.creatorUsername }}"
+                 >
+          <mat-label>
+            <mat-icon>face</mat-icon>
+            {{ 'CREATOR_USERNAME' | translate }} </mat-label>
+        </mat-form-field>
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -29,6 +36,16 @@
           </mat-expansion-panel-header>
           <ul *ngFor="let param of query.arrayParameters">
             <li>{{ param.parameterName }} : {{ param.parameterValue }}</li>
+          </ul>
+        </mat-expansion-panel>
+        <mat-expansion-panel *ngIf="query.columns.length !== 0">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <span>{{ "COLUMNS" | translate }}:</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <ul *ngFor="let column of query.columns">
+            <li>{{ column.columnName }} : {{ column.columnType }}</li>
           </ul>
         </mat-expansion-panel>
         <div class="flexed">

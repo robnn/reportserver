@@ -1,0 +1,23 @@
+<h1 mat-dialog-title><mat-icon>people</mat-icon><span>{{ "EDIT_TEAM" | translate }}</span></h1>
+<div mat-dialog-content class="center-inputs">
+  
+    
+    <mat-form-field color="accent" class="large-width">
+      <input matInput name="name" [(ngModel)]="team.name">
+      <mat-label>
+        <mat-icon>people</mat-icon> {{ 'NAME' | translate }} </mat-label>
+    </mat-form-field>
+    <br>
+    <mat-form-field color="accent" class="large-width">
+      <mat-select placeholder="{{ 'USERS' | translate }}" [(ngModel)]="team.userNames" name="userNames" multiple>
+        <mat-option *ngFor="let user of users" [value]="user">
+          {{ user }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <div class="fill-remaining-space"></div>
+  <button mat-button color="accent" (click)="onNoClick()">{{ "CANCEL" | translate }}</button>
+  <button mat-button color="accent" (click)="createClick()" [mat-dialog-close]="" cdkFocusInitial>{{ "CREATE" | translate }}</button>
+</div>

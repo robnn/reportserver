@@ -24,13 +24,13 @@ public class DriverApi {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    @Authenticated
+    @Authenticated(acceptedRoles = {"ADMIN"})
     public ResponseEntity<Driver> installDriver(@RequestParam MultipartFile multipartFile, @RequestParam String dbType){
         return new ResponseEntity<>(driverService.installDriver(multipartFile, dbType), HttpStatus.CREATED);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    @Authenticated
+    @Authenticated(acceptedRoles = {"ADMIN"})
     public ResponseEntity<Drivers> listDrivers(){
         return new ResponseEntity<>(driverService.listInstalledDrivers(), HttpStatus.OK);
     }

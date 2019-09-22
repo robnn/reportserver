@@ -1,11 +1,12 @@
 package hu.robnn.reportserver.mapper
 
-import hu.robnn.reportserver.model.dmo.HQuery
-import hu.robnn.reportserver.model.dmo.HQueryColumn
-import hu.robnn.reportserver.model.dmo.HQueryParameter
+import hu.robnn.reportserver.model.dmo.query.HQuery
+import hu.robnn.reportserver.model.dmo.query.HQueryColumn
+import hu.robnn.reportserver.model.dmo.query.HQueryParameter
 import hu.robnn.reportserver.model.dto.Column
 import hu.robnn.reportserver.model.dto.ParametrizedQueryRequest
 import hu.robnn.reportserver.service.queryhelper.NamedParameterStatement
+import hu.robnn.auth.service.UserContext
 import org.springframework.stereotype.Component
 import java.lang.Exception
 import java.util.*
@@ -24,6 +25,7 @@ class QueryMapper {
         realTarget.queryParameters = mapQueryParameters(parametrizedQueryRequest, realTarget)
         columns.forEach { it.query = realTarget }
         realTarget.queryColumns = columns
+        realTarget.creatorUser = UserContext.Companion.currentUser
         return realTarget
     }
 
@@ -48,6 +50,7 @@ class QueryMapper {
         target.queryString = query.queryString
         target.parameters = mapToRequestParameters(query)
         target.columns = mapToColumns(query.queryColumns)
+        target.creatorUsername = query.creatorUser?.username
         return target
     }
 

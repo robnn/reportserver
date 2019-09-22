@@ -1,6 +1,7 @@
-package hu.robnn.reportserver.model.dmo
+package hu.robnn.reportserver.model.dmo.query
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import hu.robnn.auth.dao.model.User
 import hu.robnn.commons.interfaces.UuidHolder
 import java.util.*
 import javax.persistence.*
@@ -42,5 +43,9 @@ open class HQuery: UuidHolder {
 
     @OneToMany(targetEntity = HQueryColumn::class, mappedBy = "query", cascade = [CascadeType.ALL])
     open var queryColumns: Set<HQueryColumn> = mutableSetOf()
+
+    @ManyToOne
+    @JoinColumn(name = "creator_user_id")
+    open var creatorUser: User? = null
 
 }

@@ -22,13 +22,13 @@ public class ConnectionApi {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    @Authenticated
+    @Authenticated(acceptedRoles = {"ADMIN"})
     public ResponseEntity<ConnectionDescriptor> createConnection(@RequestBody ConnectionDescriptor connectionDescriptor){
         return new ResponseEntity<>(connectionManager.createConnection(connectionDescriptor), HttpStatus.CREATED);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    @Authenticated
+    @Authenticated(acceptedRoles = {"ADMIN"})
     public ResponseEntity<ConnectionDescriptorsResponse> listConnections(){
         return new ResponseEntity<>(new ConnectionDescriptorsResponse(connectionManager.listConnections()), HttpStatus.OK);
     }

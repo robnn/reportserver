@@ -16,7 +16,8 @@ open class PagedQueryRequest(var queryString: String? = null,
                              var connectionUuid: UUID? = null,
                              var itemsPerPage: Int? = null,
                              var neededPage: Int? = null,
-                             var queryName: String? = null)
+                             var queryName: String? = null,
+                             var creatorUsername: String? = null)
 
 open class NotPagedParametrizedQueryRequest(var queryString: String? = null,
                                             var connectionUuid: UUID? = null,

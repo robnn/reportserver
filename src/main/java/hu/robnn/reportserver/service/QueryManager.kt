@@ -5,7 +5,7 @@ import hu.robnn.reportserver.dao.QueryRepository
 import hu.robnn.reportserver.enums.QueryErrorCause
 import hu.robnn.reportserver.exception.ReportServerMappedException
 import hu.robnn.reportserver.mapper.QueryMapper
-import hu.robnn.reportserver.model.dmo.HQueryColumn
+import hu.robnn.reportserver.model.dmo.query.HQueryColumn
 import hu.robnn.reportserver.model.dto.*
 import hu.robnn.reportserver.service.queryhelper.NamedParameterStatement
 import org.springframework.context.annotation.Lazy

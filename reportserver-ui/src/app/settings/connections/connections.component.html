@@ -3,7 +3,7 @@
       <mat-card-title>{{ "CONNECTIONS" | translate }}</mat-card-title>
       <mat-card-content>
     
-        <span *ngIf="!connections || connections.connections.length == 0">{{ "NO_DRIVERS" | translate }}</span>
+        <span *ngIf="!connections || connections.connections.length == 0">{{ "NO_CONNECTIONS" | translate }}</span>
         <mat-accordion *ngIf="connections && connections.connections.length > 0">
           <mat-expansion-panel  *ngFor="let connection of connections.connections">
             <mat-expansion-panel-header>

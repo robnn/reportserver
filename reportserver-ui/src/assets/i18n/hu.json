@@ -79,5 +79,8 @@
   "QUERY_RESULT": "Lekérdezés eredménye",
   "SET_PARAMETERS": "Paraméterek beállítása",
   "RUN": "Futtatás",
-  "EXPORT_XLSX": "Excel exportálás"
+  "EXPORT_XLSX": "Excel exportálás",
+  "CREATOR_USERNAME": "Létrehozó felhasználó neve",
+  "COLUMNS": "Oszlopok",
+  "TEAMS": "Csapatok"
 }

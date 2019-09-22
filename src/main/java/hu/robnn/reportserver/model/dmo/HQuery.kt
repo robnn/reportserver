@@ -6,7 +6,7 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-@Table(name = "rs_query")
+@Table(name = "rs_query", schema = "public")
 open class HQuery: UuidHolder {
     override fun setUuid(p0: String?) {
         if(!p0.isNullOrEmpty()) {
@@ -39,5 +39,8 @@ open class HQuery: UuidHolder {
 
     @OneToMany(targetEntity = HQueryParameter::class, mappedBy = "query", cascade = [CascadeType.ALL])
     open var queryParameters: Set<HQueryParameter> = mutableSetOf()
+
+    @OneToMany(targetEntity = HQueryColumn::class, mappedBy = "query", cascade = [CascadeType.ALL])
+    open var queryColumns: Set<HQueryColumn> = mutableSetOf()
 
 }

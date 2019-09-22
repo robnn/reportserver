@@ -5,6 +5,7 @@ import hu.robnn.reportserver.dao.QueryRepository
 import hu.robnn.reportserver.enums.QueryErrorCause
 import hu.robnn.reportserver.exception.ReportServerMappedException
 import hu.robnn.reportserver.mapper.QueryMapper
+import hu.robnn.reportserver.model.dmo.HQueryColumn
 import hu.robnn.reportserver.model.dto.*
 import hu.robnn.reportserver.service.queryhelper.NamedParameterStatement
 import org.springframework.context.annotation.Lazy
@@ -68,25 +69,28 @@ class QueryManagerImpl(@Lazy private val connectionManager: ConnectionManager,
                 && parametrizedQueryRequest.connectionUuid != null && parametrizedQueryRequest.queryString != null) {
             val resultSet = executeQueryWithNamedParameters(parametrizedQueryRequest.connectionUuid!!,
                     parametrizedQueryRequest.queryString!!, parametrizedQueryRequest.parameters)
+            val columns = Converter.getColumns(resultSet)
             if (parametrizedQueryRequest.queryName != null) {
-                saveQuery(parametrizedQueryRequest)
+                saveQuery(parametrizedQueryRequest, columns)
             }
-            return Converter.convertToPagedQueryResult(resultSet, parametrizedQueryRequest)
+            return Converter.convertToPagedQueryResult(resultSet, parametrizedQueryRequest, queryMapper.mapToColumns(columns))
         }
 
         if (parametrizedQueryRequest.connectionUuid != null && parametrizedQueryRequest.queryString != null) {
             val resultSet = executeQuery(parametrizedQueryRequest.connectionUuid!!, parametrizedQueryRequest.queryString!!)
+            val columns = Converter.getColumns(resultSet)
             if (parametrizedQueryRequest.queryName != null) {
-                saveQuery(parametrizedQueryRequest)
+                saveQuery(parametrizedQueryRequest, columns)
             }
-            return Converter.convertToPagedQueryResult(resultSet, parametrizedQueryRequest)
+            return Converter.convertToPagedQueryResult(resultSet, parametrizedQueryRequest, queryMapper.mapToColumns(columns))
         } else {
             throw ReportServerMappedException(QueryErrorCause.QUERY_AND_UUID_MUST_NOT_BE_NULL)
         }
     }
 
-    private fun saveQuery(parametrizedQueryRequest: ParametrizedQueryRequest) {
-        queryRepository.save(queryMapper.mapToQuery(parametrizedQueryRequest, queryRepository.findByQueryName(parametrizedQueryRequest.queryName)))
+    private fun saveQuery(parametrizedQueryRequest: ParametrizedQueryRequest, columns: Set<HQueryColumn>) {
+        queryRepository.save(queryMapper.mapToQuery(parametrizedQueryRequest, queryRepository.findByQueryName(parametrizedQueryRequest.queryName),
+                columns))
     }
 
     private fun checkIfParametrized(parametrizedQueryRequest: ParametrizedQueryRequest) =
@@ -100,7 +104,6 @@ class QueryManagerImpl(@Lazy private val connectionManager: ConnectionManager,
 
         val namedParameterStatement = NamedParameterStatement(connectionForConnectionDescriptorUuid, query, parameters)
         return namedParameterStatement.executeQuery()
-
     }
 
     override fun listQueries(): QueryRequests {

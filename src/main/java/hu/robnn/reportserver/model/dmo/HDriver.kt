@@ -7,7 +7,7 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-@Table(name = "rs_driver")
+@Table(name = "rs_driver", schema = "public")
 class HDriver: UuidHolder {
     override fun setUuid(p0: String?) {
         if(!p0.isNullOrEmpty()) {

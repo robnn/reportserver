@@ -1,16 +1,19 @@
 package hu.robnn.reportserver.mapper
 
 import hu.robnn.reportserver.model.dmo.HQuery
+import hu.robnn.reportserver.model.dmo.HQueryColumn
 import hu.robnn.reportserver.model.dmo.HQueryParameter
+import hu.robnn.reportserver.model.dto.Column
 import hu.robnn.reportserver.model.dto.ParametrizedQueryRequest
 import hu.robnn.reportserver.service.queryhelper.NamedParameterStatement
 import org.springframework.stereotype.Component
 import java.lang.Exception
 import java.util.*
+import kotlin.collections.HashSet
 
 @Component
 class QueryMapper {
-    fun mapToQuery(parametrizedQueryRequest: ParametrizedQueryRequest, target: HQuery?) : HQuery {
+    fun mapToQuery(parametrizedQueryRequest: ParametrizedQueryRequest, target: HQuery?, columns: Set<HQueryColumn>) : HQuery {
         var realTarget = target
         if (realTarget == null) {
             realTarget = HQuery()
@@ -19,6 +22,8 @@ class QueryMapper {
         realTarget.connectionUuid = parametrizedQueryRequest.connectionUuid.toString()
         realTarget.queryName = parametrizedQueryRequest.queryName
         realTarget.queryParameters = mapQueryParameters(parametrizedQueryRequest, realTarget)
+        columns.forEach { it.query = realTarget }
+        realTarget.queryColumns = columns
         return realTarget
     }
 
@@ -42,7 +47,12 @@ class QueryMapper {
         target.queryName = query.queryName
         target.queryString = query.queryString
         target.parameters = mapToRequestParameters(query)
+        target.columns = mapToColumns(query.queryColumns)
         return target
+    }
+
+    fun mapToColumns(columns: Set<HQueryColumn>): MutableList<Column> {
+        return columns.map { Column(it.columnName, it.columnType) }.toMutableList()
     }
 
     private fun mapToRequestParameters(query: HQuery): Map<String, Any> {

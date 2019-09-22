@@ -6,7 +6,7 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-@Table(name = "rs_connection_descriptor")
+@Table(name = "rs_connection_descriptor", schema = "public")
 class HConnectionDescriptor : UuidHolder {
     override fun setUuid(p0: String?) {
         if(!p0.isNullOrEmpty()) {

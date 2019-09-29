@@ -39,6 +39,8 @@ import { ParamModalComponent } from './queries/param-modal/param-modal.component
 import { SavedQueriesComponent } from './queries/saved-queries/saved-queries.component';
 import { TeamsComponent } from './settings/teams/teams.component';
 import { EditTeamComponent } from './settings/teams/edit-team/edit-team.component';
+import { ChartsModule } from 'ng2-charts';
+import { PieChartComponent } from './queries/charts/pie-chart/pie-chart.component';
 
 export function hljsLanguages() {
   return [
@@ -77,7 +79,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ParamModalComponent,
     SavedQueriesComponent,
     TeamsComponent,
-    EditTeamComponent
+    EditTeamComponent,
+    PieChartComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes, { enableTracing: false }),
@@ -114,7 +117,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     }),
     HighlightModule.forRoot({
       languages: hljsLanguages
-    })
+    }),
+    ChartsModule
   ],
   providers: [
     {

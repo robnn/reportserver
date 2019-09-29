@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from './user.service';
-import { PagedQueryRequest, QueryRequests, NotPagedQueryRequest } from './model/pagedQueryRequest';
+import { PagedQueryRequest, QueryRequests, NotPagedQueryRequest, Column } from './model/pagedQueryRequest';
 import { Observable } from 'rxjs';
 import { PagedQueryResponse, QueryResponse } from './model/pagedQueryResponse';
 
@@ -31,5 +31,10 @@ export class QueryService {
 
   listSavedQueries() : Observable<QueryRequests> {
     return this.http.get<QueryRequests>(this.connectionUrl, { headers: this.userService.getAuthTokenAsHttpHeader(null) });
+  }
+
+  getColumns(pagedQueryRequest: PagedQueryRequest): Observable<Column[]> {
+    return this.http.post<Column[]>(this.connectionUrl + 'getColumns',
+    pagedQueryRequest, { headers: this.userService.getAuthTokenAsHttpHeader(null) });
   }
 }

@@ -3,7 +3,7 @@ import { ConnectionService } from 'src/app/connection.service';
 import { Connections } from 'src/app/model/connection';
 import { NotificationService } from 'src/app/notification.service';
 import { QueryService } from 'src/app/query.service';
-import { PagedQueryRequest, Parameter, QueryVisibility } from 'src/app/model/pagedQueryRequest';
+import { PagedQueryRequest, Parameter, QueryVisibility, Column, Chart } from 'src/app/model/pagedQueryRequest';
 import { PagedQueryResponse } from 'src/app/model/pagedQueryResponse';
 import { ResultTableComponent } from '../result-table/result-table.component';
 import { ParamHelper } from '../helper/param-helper';
@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material';
 import { ParamModalComponent } from '../param-modal/param-modal.component';
 import { TeamService } from 'src/app/team.service';
 import { Team } from 'src/app/model/team';
+import { ChartType } from 'src/app/model/chart-type';
 
 @Component({
   selector: 'app-ad-hoc',
@@ -23,14 +24,20 @@ export class AdHocComponent implements OnInit {
 
   public connections: Connections;
   public connectionUuid: string;
-  public query: string;
+  public query: string = "";
+  public chartType: string;
   public shouldSave = false;
+  public shouldChart = false;
   public queryExecuted: boolean;
   public queryName: string;
   public queryVisibility: QueryVisibility = QueryVisibility.PUBLIC;
-  public teamUuids: string[];
+  public teamUuids: string[] = new Array();
   public teams: Array<Team>;
   public types = Object.keys(QueryVisibility);
+  public chartTypes = Object.keys(ChartType);
+  public chartColumns: Column[];
+  public labelColumn: string;
+  public dataColumn: string;
 
   constructor(private connectionService: ConnectionService,
     private notificationService: NotificationService,
@@ -77,8 +84,23 @@ export class AdHocComponent implements OnInit {
     } else {
       this.queryExecuted = true;
       if (this.resultTable) {
-        this.resultTable.executeQuery(null, true);
+        const chart = new Chart();
+        chart.chartType = this.chartType;
+        chart.dataColumn = this.dataColumn;
+        chart.labelColumn = this.labelColumn;
+        this.resultTable.executeQuery(null, true, chart);
       }
+    }
+  }
+
+  onShouldChartChange() {
+    if (this.shouldChart) {
+      const req = new PagedQueryRequest();
+      req.connectionUuid = this.connectionUuid;
+      req.queryString = this.query;
+      this.queryService.getColumns(req).subscribe(resp => {
+        this.chartColumns = resp;
+      });
     }
   }
 }

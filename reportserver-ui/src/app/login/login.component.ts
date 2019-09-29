@@ -15,6 +15,11 @@ export class LoginComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
+    this.userService.getCurrentUser().subscribe(() => {
+      //do nothing
+    }, () => {
+      this.userService.invalidateData();
+    });
     if (this.userService.getAuthToken()) {
       this.router.navigate(['/dashboard']);
     }

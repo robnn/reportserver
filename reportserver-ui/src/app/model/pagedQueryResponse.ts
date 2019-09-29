@@ -1,3 +1,5 @@
+import { Chart } from "./pagedQueryRequest";
+
 export class QueryResponse {
     result: Array<Map<string, object>>;
 }
@@ -8,4 +10,5 @@ export class PagedQueryResponse {
     actualPage: number;
     itemsPerPage: number;
     totalItems: number;
+    charts: Array<Chart>;
 }

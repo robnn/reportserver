@@ -21,7 +21,7 @@
             {{ 'CREATOR_USERNAME' | translate }} </mat-label>
         </mat-form-field>
         <mat-form-field>
-          <mat-select readonly="true" placeholder="{{ 'VISIBILITY' | translate }}" value="{{ query.visibility }}" name="queryVisibility">
+          <mat-select disabled="true" placeholder="{{ 'VISIBILITY' | translate }}" value="{{ query.visibility }}" name="queryVisibility">
             <mat-option *ngFor="let type of types" [value]="type">
               {{ type | translate }}
             </mat-option>

@@ -8,12 +8,24 @@ export class PagedQueryRequest {
     queryName: string;
     visibility: QueryVisibility;
     teamUuidsAndNames: Array<TeamUuidAndName>;
+    charts: Array<Chart>;
 }
 
 export class NotPagedQueryRequest {
     queryString: string;
     connectionUuid: string;
     parameters: object;
+}
+
+export class Column {
+    columnName: string;
+    columnType: string; 
+}
+
+export class Chart {
+    chartType: string;
+    labelColumn: string;
+    dataColumn: string;
 }
 
 export class TeamUuidAndName {

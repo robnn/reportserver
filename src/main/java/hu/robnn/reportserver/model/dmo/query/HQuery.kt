@@ -41,10 +41,13 @@ open class HQuery: UuidHolder {
     open var queryName: String? = null
 
     @OneToMany(targetEntity = HQueryParameter::class, mappedBy = "query", cascade = [CascadeType.ALL])
-    open var queryParameters: Set<HQueryParameter> = mutableSetOf()
+    open var queryParameters: MutableSet<HQueryParameter> = mutableSetOf()
 
     @OneToMany(targetEntity = HQueryColumn::class, mappedBy = "query", cascade = [CascadeType.ALL])
-    open var queryColumns: Set<HQueryColumn> = mutableSetOf()
+    open var queryColumns: MutableSet<HQueryColumn> = mutableSetOf()
+
+    @OneToMany(targetEntity = HQueryChart::class, mappedBy = "query", cascade = [CascadeType.ALL])
+    open var queryCharts: MutableSet<HQueryChart> = mutableSetOf()
 
     @ManyToOne
     @JoinColumn(name = "creator_user_id")
@@ -58,6 +61,7 @@ open class HQuery: UuidHolder {
             name = "rs_query_teams",
             joinColumns = [JoinColumn(name = "query_id")],
             inverseJoinColumns = [JoinColumn(name = "team_id")])
-    open var teams: Set<HTeam> = mutableSetOf()
+    open var teams: MutableSet<HTeam> = mutableSetOf()
+
 
 }

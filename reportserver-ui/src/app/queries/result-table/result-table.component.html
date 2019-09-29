@@ -10,9 +10,13 @@
       <tr mat-header-row *matHeaderRowDef="keys"></tr>
       <tr mat-row *matRowDef="let row; columns: keys;"></tr>
     </table>
-    <mat-paginator #paginator [length]="totalRows" [pageSize]="10" [pageSizeOptions]="[1, 2, 5, 10, 25, 100]" (page)=onPaginationChanged($event)></mat-paginator>
+    <mat-paginator #paginator [length]="totalRows" [pageSize]="10" [pageSizeOptions]="[1, 2, 5, 10, 25, 100]"
+      (page)=onPaginationChanged($event)></mat-paginator>
   </div>
   <div *ngIf="totalRows === 0">
     <span>{{ "QUERY_RUN_PROPERLY_BUT_NO_RESULT" | translate}}</span>
+  </div>
+  <div *ngIf="this.chartData != null">
+    <app-pie-chart [pieChartData]="this.chartData" [pieChartLabelStrings]="this.chartLabels"></app-pie-chart>
   </div>
 </div>

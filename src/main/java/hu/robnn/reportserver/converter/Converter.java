@@ -1,10 +1,7 @@
 package hu.robnn.reportserver.converter;
 
 import hu.robnn.reportserver.model.dmo.query.HQueryColumn;
-import hu.robnn.reportserver.model.dto.Column;
-import hu.robnn.reportserver.model.dto.PagedQueryRequest;
-import hu.robnn.reportserver.model.dto.PagedQueryResponse;
-import hu.robnn.reportserver.model.dto.QueryResponse;
+import hu.robnn.reportserver.model.dto.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,12 +34,14 @@ public class Converter {
                 rowCounter = 0;
             }
         }
+        //TODO itt csak a resultsetet kéne mappelni, a többi a mapperbe kéne menjen
         pagedQueryResponse.setActualPage(pagedQueryRequest.getNeededPage());
         pagedQueryResponse.setItemsPerPage(pagedQueryRequest.getItemsPerPage());
         pagedQueryResponse.setTotalNumberOfPages(pageCounter - 1);
         pagedQueryResponse.setTotalItems(itemCounter);
         pagedQueryResponse.setColumns(columns);
         pagedQueryResponse.setVisibility(pagedQueryRequest.getVisibility());
+        pagedQueryResponse.setCharts(pagedQueryRequest.getCharts());
         return pagedQueryResponse;
     }
 

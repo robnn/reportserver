@@ -8,6 +8,8 @@ import hu.robnn.reportserver.model.dto.ParametrizedQueryRequest
 import hu.robnn.reportserver.service.queryhelper.NamedParameterStatement
 import hu.robnn.auth.service.UserContext
 import hu.robnn.reportserver.dao.TeamRepository
+import hu.robnn.reportserver.model.dmo.query.HQueryChart
+import hu.robnn.reportserver.model.dto.Chart
 import hu.robnn.reportserver.model.dto.TeamUuidAndName
 import org.springframework.stereotype.Component
 import java.lang.Exception
@@ -24,13 +26,28 @@ class QueryMapper(private val teamRepository: TeamRepository) {
         realTarget.queryString = parametrizedQueryRequest.queryString
         realTarget.connectionUuid = parametrizedQueryRequest.connectionUuid.toString()
         realTarget.queryName = parametrizedQueryRequest.queryName
-        realTarget.queryParameters = mapQueryParameters(parametrizedQueryRequest, realTarget)
+        realTarget.queryParameters = mapQueryParameters(parametrizedQueryRequest, realTarget).toMutableSet()
         columns.forEach { it.query = realTarget }
-        realTarget.queryColumns = columns
+        realTarget.queryColumns = columns.toMutableSet()
         realTarget.creatorUser = UserContext.Companion.currentUser
         realTarget.visibility = parametrizedQueryRequest.visibility
-        realTarget.teams = parametrizedQueryRequest.teamUuidsAndNames.map { teamRepository.findByUuid(it.name) }.toSet()
+        realTarget.teams = parametrizedQueryRequest.teamUuidsAndNames.map { teamRepository.findByUuid(it.name) }.toMutableSet()
+        realTarget.queryCharts = mapCharts(parametrizedQueryRequest.charts, realTarget, columns)
         return realTarget
+    }
+
+    private fun mapCharts(charts: MutableList<Chart>, query: HQuery, allColumns: Set<HQueryColumn>): MutableSet<HQueryChart> {
+        return charts.map { mapChart(it, query, allColumns) }.toMutableSet()
+    }
+
+    private fun mapChart(source: Chart, query: HQuery, allColumns: Set<HQueryColumn>): HQueryChart {
+        val target = HQueryChart()
+        target.chartType = source.chartType
+        target.query = query
+        target.dataColumn = allColumns.firstOrNull { it.columnName == source.dataColumn }
+        target.labelColumn = allColumns.firstOrNull { it.columnName == source.labelColumn }
+        query.queryCharts.add(target)
+        return target
     }
 
     private fun mapQueryParameters(parametrizedQueryRequest: ParametrizedQueryRequest, targetQuery: HQuery): Set<HQueryParameter> {
@@ -57,6 +74,7 @@ class QueryMapper(private val teamRepository: TeamRepository) {
         target.creatorUsername = query.creatorUser?.username
         target.visibility = query.visibility
         target.teamUuidsAndNames = query.teams.map { TeamUuidAndName(UUID.fromString(it.uuid), it.name) }.toMutableList()
+        target.charts = query.queryCharts.map { Chart(it.chartType, it.labelColumn?.columnName, it.dataColumn?.columnName) }.toMutableList()
         return target
     }
 

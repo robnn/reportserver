@@ -12,7 +12,8 @@ class PagedQueryResponse(var pagedResult: MutableList<MutableMap<String, Any>> =
                          var itemsPerPage: Int? = null,
                          var totalItems: Int? = null,
                          var columns: MutableList<Column> = mutableListOf(),
-                         var visibility: QueryVisibility = QueryVisibility.PUBLIC)
+                         var visibility: QueryVisibility = QueryVisibility.PUBLIC,
+                         var charts: MutableList<Chart> = mutableListOf())
 
 open class PagedQueryRequest(var queryString: String? = null,
                              var connectionUuid: UUID? = null,
@@ -21,7 +22,8 @@ open class PagedQueryRequest(var queryString: String? = null,
                              var queryName: String? = null,
                              var creatorUsername: String? = null,
                              var visibility: QueryVisibility = QueryVisibility.PUBLIC,
-                             var teamUuidsAndNames: MutableList<TeamUuidAndName> = mutableListOf())
+                             var teamUuidsAndNames: MutableList<TeamUuidAndName> = mutableListOf(),
+                             var charts: MutableList<Chart> = mutableListOf())
 
 open class TeamUuidAndName(var uuid: UUID = UUID.randomUUID(),
                            var name: String? = null)
@@ -37,3 +39,7 @@ class QueryRequests(var queries: Set<ParametrizedQueryRequest> = mutableSetOf())
 
 class Column(var columnName: String? = null,
              var columnType: String? = null)
+
+class Chart(var chartType: String? = null,
+            var labelColumn: String? = null,
+            var dataColumn: String? = null)

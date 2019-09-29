@@ -45,6 +45,33 @@
         </mat-form-field>
       </div>
     </div>
+    <br/>
+    <mat-checkbox (change)="onShouldChartChange()" *ngIf="query.length != 0" [(ngModel)]="shouldChart"> {{ "SHOULD_CHART" | translate }}</mat-checkbox>
+    <div *ngIf="shouldChart">
+      <br>
+      <mat-form-field>
+        <mat-select placeholder="{{ 'CHART_TYPE' | translate }}" [(ngModel)]="chartType" name="chartType">
+          <mat-option *ngFor="let chartType of chartTypes" [value]="chartType">
+            {{ chartType | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="{{ 'LABEL_COLUMN' | translate }}" [(ngModel)]="labelColumn" name="labelColumn">
+          <mat-option *ngFor="let chartColumn of chartColumns" [value]="chartColumn.columnName">
+            {{ chartColumn.columnName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-select placeholder="{{ 'DATA_COLUMN' | translate }}" [(ngModel)]="dataColumn" name="dataColumn">
+          <mat-option *ngFor="let chartColumn of chartColumns" [value]="chartColumn.columnName">
+            {{ chartColumn.columnName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
   </mat-card-content>
   <mat-card-actions>

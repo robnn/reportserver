@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.ResultSet;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -51,4 +52,13 @@ public class QueryApi {
         QueryResponse queryResponse = queryManager.executeQuery(notPagedParametrizedQueryRequest);
         return new ResponseEntity<>(queryResponse, HttpStatus.OK);
     }
+
+    @RequestMapping(path = "/getColumns", method = RequestMethod.POST)
+    @Authenticated
+    public ResponseEntity<List<Column>> executeNotPagedQuery(@RequestBody ParametrizedQueryRequest parametrizedQueryRequest) {
+        List<Column> queryResponse = queryManager.getQueryColumns(parametrizedQueryRequest);
+        return new ResponseEntity<>(queryResponse, HttpStatus.OK);
+    }
+
+
 }

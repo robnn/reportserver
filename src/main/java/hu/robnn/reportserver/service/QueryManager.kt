@@ -24,6 +24,7 @@ interface QueryManager {
     fun executePaginatedQuery(parametrizedQueryRequest: ParametrizedQueryRequest): PagedQueryResponse
     fun executeQueryWithNamedParameters(connectionUuid: UUID, query: String, parameters: Map<String, Any>): ResultSet
     fun listQueries(): QueryRequests
+    fun getQueryColumns(parametrizedQueryRequest: ParametrizedQueryRequest): List<Column>
 }
 
 @Component
@@ -31,6 +32,21 @@ class QueryManagerImpl(@Lazy private val connectionManager: ConnectionManager,
                        private val queryMapper: QueryMapper,
                        private val queryRepository: QueryRepository,
                        private val teamRepository: TeamRepository) : QueryManager {
+
+    override fun getQueryColumns(parametrizedQueryRequest: ParametrizedQueryRequest): List<Column> {
+        if (checkIfParametrized(parametrizedQueryRequest)) {
+            val resultSet = executeQueryWithNamedParameters(parametrizedQueryRequest.connectionUuid!!,
+                    parametrizedQueryRequest.queryString!!, parametrizedQueryRequest.parameters)
+            val columns = Converter.getColumns(resultSet)
+            return queryMapper.mapToColumns(columns)
+        } else if (parametrizedQueryRequest.connectionUuid != null && parametrizedQueryRequest.queryString != null) {
+            val resultSet = executeQuery(parametrizedQueryRequest.connectionUuid!!, parametrizedQueryRequest.queryString!!)
+            val columns = Converter.getColumns(resultSet)
+            return queryMapper.mapToColumns(columns)
+        } else {
+            throw ReportServerMappedException(QueryErrorCause.QUERY_AND_UUID_MUST_NOT_BE_NULL)
+        }
+    }
 
     override fun executeQuery(connectionUuid: UUID, query: String) : ResultSet {
         val connectionForConnectionDescriptorUuid = connectionManager.getConnectionForConnectionDescriptorUuid(connectionUuid)

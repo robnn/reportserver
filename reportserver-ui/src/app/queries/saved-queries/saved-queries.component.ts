@@ -97,7 +97,7 @@ export class SavedQueriesComponent implements OnInit {
     } else {
       this.queryExecuted = true;
       if (this.resultTable) {
-        this.resultTable.executeQuery(query, true);
+        this.resultTable.executeQuery(query, true, query.charts[0]);
       }
     }
   }

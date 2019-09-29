@@ -11,7 +11,7 @@ import * as pluginDataLabels from 'chart.js';
 export class PieChartComponent implements OnInit {
 
   @Input() pieChartData: number[];
-  @Input() pieChartLabelStrings: string[];
+  @Input() pieChartLabels: Label[];
 
    // Pie
    public pieChartOptions: ChartOptions = {
@@ -28,7 +28,6 @@ export class PieChartComponent implements OnInit {
       },
     }
   };
-  public pieChartLabels: Label[] = [this.pieChartLabelStrings];
   public pieChartType: ChartType = 'pie';
   public pieChartPlugins = [pluginDataLabels];
   public pieChartLegend = true;
@@ -40,9 +39,7 @@ export class PieChartComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-    console.log(this.pieChartLabelStrings);
-    
+  ngOnInit() {    
   }
 
 

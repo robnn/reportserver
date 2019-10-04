@@ -14,8 +14,8 @@
       (page)=onPaginationChanged($event)></mat-paginator>
     <div *ngIf="this.chartData != null" class="dark">
       <app-pie-chart [pieChartData]="this.chartData" [pieChartLabels]="this.chartLabels"></app-pie-chart>
+      <br>
     </div>
-    <br>
   </div>
   <div *ngIf="this.queryRequest.queryName.length == 0">
   </div>

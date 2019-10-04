@@ -15,6 +15,11 @@ export class BarChartComponent implements OnInit {
   
   public barChartOptions: ChartOptions = {
     responsive: true,
+    legend: {
+      labels: {
+        fontColor: '#fff'
+      }
+    },
     // We use these empty structures as placeholders for dynamic theming.
     scales: { xAxes: [{}], yAxes: [{}] },
     plugins: {

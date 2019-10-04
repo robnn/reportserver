@@ -12,7 +12,7 @@
     </table>
     <mat-paginator #paginator [length]="totalRows" [pageSize]="10" [pageSizeOptions]="[1, 2, 5, 10, 25, 100]"
       (page)=onPaginationChanged($event)></mat-paginator>
-    <div *ngIf="this.chartData != null" class="dark">
+    <div *ngIf="this.chartData != null && !isLoading" class="dark">
       <app-pie-chart [pieChartData]="this.chartData" [pieChartLabels]="this.chartLabels"></app-pie-chart>
       <br>
       <app-bar-chart [barChartDataSet]="this.chartData" [barChartLabels]="this.chartLabels"></app-bar-chart>

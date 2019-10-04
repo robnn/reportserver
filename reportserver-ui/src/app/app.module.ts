@@ -42,6 +42,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { PieChartComponent } from './components/charts/pie-chart/pie-chart.component';
 import { QueryEditorComponent } from './components/query-editor/query-editor.component';
+import { BarChartComponent } from './components/charts/bar-chart/bar-chart.component';
 
 export function hljsLanguages() {
   return [
@@ -82,7 +83,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     TeamsComponent,
     EditTeamComponent,
     PieChartComponent,
-    QueryEditorComponent
+    QueryEditorComponent,
+    BarChartComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes, { enableTracing: false }),

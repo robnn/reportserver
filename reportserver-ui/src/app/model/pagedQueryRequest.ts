@@ -1,14 +1,27 @@
 export class PagedQueryRequest {
-    queryString: string;
+    queryString: string = "";
     connectionUuid: string;
-    itemsPerPage: number;
-    neededPage: number;
+    itemsPerPage: number = 10;
+    neededPage: number = 1;
     parameters: object;
     arrayParameters: Array<Parameter>;
-    queryName: string;
+    queryName: string = "";
     visibility: QueryVisibility;
     teamUuidsAndNames: Array<TeamUuidAndName>;
-    charts: Array<Chart>;
+    charts = new Array<ChartDiagram>();
+
+    setAllFrom(other: PagedQueryRequest) {
+        this.queryString = other.queryString;
+        this.connectionUuid = other.connectionUuid;
+        this.itemsPerPage = other.itemsPerPage;
+        this.neededPage = other.neededPage;
+        this.parameters = other.parameters;
+        this.arrayParameters = other.arrayParameters;
+        this.queryName = other.queryName;
+        this.visibility = other.visibility;
+        this.teamUuidsAndNames = other.teamUuidsAndNames;
+        this.charts = other.charts;
+    }
 }
 
 export class NotPagedQueryRequest {
@@ -22,7 +35,7 @@ export class Column {
     columnType: string; 
 }
 
-export class Chart {
+export class ChartDiagram {
     chartType: string;
     labelColumn: string;
     dataColumn: string;

@@ -22,25 +22,26 @@ import { HighlightModule } from 'ngx-highlightjs';
 import sql from 'highlight.js/lib/languages/sql';
 
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { RegisterComponent } from './pages/register/register.component';
 import { ApiInterceptor } from './api-interceptor';
-import { SeveritySnackbarComponent } from './severity-snackbar/severity-snackbar.component';
-import { SettingsComponent } from './settings/settings.component';
-import { DriversComponent } from './settings/drivers/drivers.component';
-import { AddDialogComponent } from './settings/drivers/add-dialog/add-dialog.component';
-import { ConnectionsComponent } from './settings/connections/connections.component';
-import { AddConnectionDialogComponent } from './settings/connections/add-connection-dialog/add-connection-dialog.component';
-import { QueriesComponent } from './queries/queries.component';
-import { AdHocComponent } from './queries/ad-hoc/ad-hoc.component';
-import { ResultTableComponent } from './queries/result-table/result-table.component';
-import { ParamModalComponent } from './queries/param-modal/param-modal.component';
-import { SavedQueriesComponent } from './queries/saved-queries/saved-queries.component';
-import { TeamsComponent } from './settings/teams/teams.component';
-import { EditTeamComponent } from './settings/teams/edit-team/edit-team.component';
+import { SeveritySnackbarComponent } from './components/severity-snackbar/severity-snackbar.component';
+import { SettingsComponent } from './pages/settings/settings.component';
+import { DriversComponent } from './pages/settings/drivers/drivers.component';
+import { AddDialogComponent } from './pages/settings/drivers/add-dialog/add-dialog.component';
+import { ConnectionsComponent } from './pages/settings/connections/connections.component';
+import { AddConnectionDialogComponent } from './pages/settings/connections/add-connection-dialog/add-connection-dialog.component';
+import { QueriesComponent } from './pages/queries/queries.component';
+import { AdHocComponent } from './pages/queries/ad-hoc/ad-hoc.component';
+import { ResultTableComponent } from './components/result-table/result-table.component';
+import { ParamModalComponent } from './pages/queries/param-modal/param-modal.component';
+import { SavedQueriesComponent } from './pages/queries/saved-queries/saved-queries.component';
+import { TeamsComponent } from './pages/settings/teams/teams.component';
+import { EditTeamComponent } from './pages/settings/teams/edit-team/edit-team.component';
 import { ChartsModule } from 'ng2-charts';
-import { PieChartComponent } from './queries/charts/pie-chart/pie-chart.component';
+import { LoginComponent } from './pages/login/login.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { PieChartComponent } from './components/charts/pie-chart/pie-chart.component';
+import { QueryEditorComponent } from './components/query-editor/query-editor.component';
 
 export function hljsLanguages() {
   return [
@@ -80,7 +81,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     SavedQueriesComponent,
     TeamsComponent,
     EditTeamComponent,
-    PieChartComponent
+    PieChartComponent,
+    QueryEditorComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes, { enableTracing: false }),

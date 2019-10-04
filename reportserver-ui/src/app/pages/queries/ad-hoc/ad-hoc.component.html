@@ -1,0 +1,7 @@
+<mat-card class="large-card centered">
+  <mat-card-title>{{ "AD_HOC" | translate }}</mat-card-title>
+  <mat-card-content>
+    <app-query-editor [queryRequest]=this.queryRequest [resultTable]=this.resultTable></app-query-editor>
+    <app-result-table [queryRequest]=this.queryRequest></app-result-table>
+  </mat-card-content>
+</mat-card>

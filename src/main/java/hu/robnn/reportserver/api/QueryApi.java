@@ -55,9 +55,16 @@ public class QueryApi {
 
     @RequestMapping(path = "/getColumns", method = RequestMethod.POST)
     @Authenticated
-    public ResponseEntity<List<Column>> executeNotPagedQuery(@RequestBody ParametrizedQueryRequest parametrizedQueryRequest) {
+    public ResponseEntity<List<Column>> listColumns(@RequestBody ParametrizedQueryRequest parametrizedQueryRequest) {
         List<Column> queryResponse = queryManager.getQueryColumns(parametrizedQueryRequest);
         return new ResponseEntity<>(queryResponse, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/save", method = RequestMethod.POST)
+    @Authenticated
+    public ResponseEntity<ParametrizedQueryRequest> saveQuery(@RequestBody ParametrizedQueryRequest parametrizedQueryRequest) {
+        ParametrizedQueryRequest pagedQueryResponse = queryManager.saveQuery(parametrizedQueryRequest);
+        return new ResponseEntity<>(pagedQueryResponse, HttpStatus.OK);
     }
 
 

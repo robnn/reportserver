@@ -8,9 +8,11 @@ import hu.robnn.reportserver.enums.QueryErrorCause
 import hu.robnn.reportserver.enums.QueryVisibility
 import hu.robnn.reportserver.exception.ReportServerMappedException
 import hu.robnn.reportserver.mapper.QueryMapper
+import hu.robnn.reportserver.model.dmo.query.HQuery
 import hu.robnn.reportserver.model.dmo.query.HQueryColumn
 import hu.robnn.reportserver.model.dto.*
 import hu.robnn.reportserver.service.queryhelper.NamedParameterStatement
+import org.apache.commons.lang3.StringUtils.isBlank
 import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Component
 import java.lang.Exception
@@ -25,6 +27,7 @@ interface QueryManager {
     fun executeQueryWithNamedParameters(connectionUuid: UUID, query: String, parameters: Map<String, Any>): ResultSet
     fun listQueries(): QueryRequests
     fun getQueryColumns(parametrizedQueryRequest: ParametrizedQueryRequest): List<Column>
+    fun saveQuery(parametrizedQueryRequest: ParametrizedQueryRequest): ParametrizedQueryRequest
 }
 
 @Component
@@ -33,19 +36,19 @@ class QueryManagerImpl(@Lazy private val connectionManager: ConnectionManager,
                        private val queryRepository: QueryRepository,
                        private val teamRepository: TeamRepository) : QueryManager {
 
-    override fun getQueryColumns(parametrizedQueryRequest: ParametrizedQueryRequest): List<Column> {
-        if (checkIfParametrized(parametrizedQueryRequest)) {
-            val resultSet = executeQueryWithNamedParameters(parametrizedQueryRequest.connectionUuid!!,
-                    parametrizedQueryRequest.queryString!!, parametrizedQueryRequest.parameters)
-            val columns = Converter.getColumns(resultSet)
-            return queryMapper.mapToColumns(columns)
-        } else if (parametrizedQueryRequest.connectionUuid != null && parametrizedQueryRequest.queryString != null) {
-            val resultSet = executeQuery(parametrizedQueryRequest.connectionUuid!!, parametrizedQueryRequest.queryString!!)
-            val columns = Converter.getColumns(resultSet)
-            return queryMapper.mapToColumns(columns)
-        } else {
-            throw ReportServerMappedException(QueryErrorCause.QUERY_AND_UUID_MUST_NOT_BE_NULL)
+    override fun saveQuery(parametrizedQueryRequest: ParametrizedQueryRequest): ParametrizedQueryRequest {
+        if (isBlank(parametrizedQueryRequest.queryName)) {
+            throw ReportServerMappedException(QueryErrorCause.NO_QUERY_NAME_SUPPLIED)
         }
+        val resultSet = getResultSetFromRequest(parametrizedQueryRequest)
+        val columns = Converter.getColumns(resultSet)
+        return queryMapper.mapToRequest(saveQuery(parametrizedQueryRequest, columns))
+    }
+
+    override fun getQueryColumns(parametrizedQueryRequest: ParametrizedQueryRequest): List<Column> {
+        val resultSet = getResultSetFromRequest(parametrizedQueryRequest)
+        val columns = Converter.getColumns(resultSet)
+        return queryMapper.mapToColumns(columns)
     }
 
     override fun executeQuery(connectionUuid: UUID, query: String) : ResultSet {
@@ -84,34 +87,27 @@ class QueryManagerImpl(@Lazy private val connectionManager: ConnectionManager,
     }
 
     override fun executePaginatedQuery(parametrizedQueryRequest: ParametrizedQueryRequest): PagedQueryResponse {
+        val resultSet = getResultSetFromRequest(parametrizedQueryRequest)
+        val columns = Converter.getColumns(resultSet)
+        return Converter.convertToPagedQueryResult(resultSet, parametrizedQueryRequest, queryMapper.mapToColumns(columns))
+    }
 
-        if (checkIfParametrized(parametrizedQueryRequest)
+    private fun getResultSetFromRequest(parametrizedQueryRequest: ParametrizedQueryRequest) : ResultSet {
+        return if (checkIfParametrized(parametrizedQueryRequest)
                 && parametrizedQueryRequest.connectionUuid != null && parametrizedQueryRequest.queryString != null) {
-            val resultSet = executeQueryWithNamedParameters(parametrizedQueryRequest.connectionUuid!!,
+            executeQueryWithNamedParameters(parametrizedQueryRequest.connectionUuid!!,
                     parametrizedQueryRequest.queryString!!, parametrizedQueryRequest.parameters)
-            val columns = Converter.getColumns(resultSet)
-            if (parametrizedQueryRequest.queryName != null) {
-                saveQuery(parametrizedQueryRequest, columns)
-            }
-            return Converter.convertToPagedQueryResult(resultSet, parametrizedQueryRequest, queryMapper.mapToColumns(columns))
-        }
-
-        if (parametrizedQueryRequest.connectionUuid != null && parametrizedQueryRequest.queryString != null) {
-            val resultSet = executeQuery(parametrizedQueryRequest.connectionUuid!!, parametrizedQueryRequest.queryString!!)
-            val columns = Converter.getColumns(resultSet)
-            if (parametrizedQueryRequest.queryName != null) {
-                saveQuery(parametrizedQueryRequest, columns)
-            }
-            return Converter.convertToPagedQueryResult(resultSet, parametrizedQueryRequest, queryMapper.mapToColumns(columns))
+        } else if (parametrizedQueryRequest.connectionUuid != null && parametrizedQueryRequest.queryString != null) {
+            executeQuery(parametrizedQueryRequest.connectionUuid!!, parametrizedQueryRequest.queryString!!)
         } else {
             throw ReportServerMappedException(QueryErrorCause.QUERY_AND_UUID_MUST_NOT_BE_NULL)
         }
     }
 
-    private fun saveQuery(parametrizedQueryRequest: ParametrizedQueryRequest, columns: Set<HQueryColumn>) {
-        queryRepository.save(queryMapper.mapToQuery(parametrizedQueryRequest, queryRepository.findByQueryName(parametrizedQueryRequest.queryName),
+    private fun saveQuery(parametrizedQueryRequest: ParametrizedQueryRequest, columns: Set<HQueryColumn>): HQuery =
+        queryRepository.save(queryMapper.mapToQuery(parametrizedQueryRequest,
+                queryRepository.findByQueryName(parametrizedQueryRequest.queryName),
                 columns))
-    }
 
     private fun checkIfParametrized(parametrizedQueryRequest: ParametrizedQueryRequest) =
         parametrizedQueryRequest.queryString != null && !NamedParameterStatement.extractParams(parametrizedQueryRequest.queryString!!).isEmpty()

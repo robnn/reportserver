@@ -17,6 +17,7 @@ enum class QueryErrorCause: ErrorCause {
     NON_UNIQUE_PARAMETER_NAMES,
     PARAMS_IN_QUERY_NOT_PROVIDED,
     NOT_NEEDED_PARAMS_PROVIDED,
+    NO_QUERY_NAME_SUPPLIED,
 }
 
 enum class TeamErrorCause: ErrorCause {

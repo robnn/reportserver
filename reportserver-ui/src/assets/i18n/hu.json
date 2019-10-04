@@ -82,5 +82,6 @@
   "EXPORT_XLSX": "Excel exportálás",
   "CREATOR_USERNAME": "Létrehozó felhasználó neve",
   "COLUMNS": "Oszlopok",
-  "TEAMS": "Csapatok"
+  "TEAMS": "Csapatok",
+  "SUCCESS": "Sikeres művelet!"
 }

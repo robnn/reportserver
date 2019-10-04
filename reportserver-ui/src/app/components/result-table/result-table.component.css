@@ -1,0 +1,12 @@
+.scrollable {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    table-layout: fixed;
+    border-spacing: 15px;
+    text-align: center;
+}
+
+.dark {
+    background: #424242;
+}

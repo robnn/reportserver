@@ -1,0 +1,79 @@
+<mat-form-field *ngIf="connections" color="accent" class="full-width">
+  <mat-select placeholder="{{ 'CONNECTION' | translate }}" [(ngModel)]="queryRequest.connectionUuid" name="connection">
+    <mat-option *ngFor="let connection of connections.connections" [value]="connection.uuid">
+      {{ connection.dbName }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<br>
+<mat-form-field color="accent" class="full-width">
+  <textarea matInput name="query" class="large-height" [(ngModel)]="queryRequest.queryString"
+    (ngModelChange)="onQueryChange()"></textarea>
+  <mat-label>
+    <mat-icon>computer</mat-icon> {{ 'QUERY' | translate }}
+  </mat-label>
+</mat-form-field>
+
+<mat-form-field color="accent" class="full-width">
+  <input matInput name="query" [(ngModel)]="queryRequest.queryName">
+  <mat-label>
+    <mat-icon>save</mat-icon> {{ 'QUERY_NAME' | translate }}
+  </mat-label>
+</mat-form-field>
+<br>
+<mat-form-field color="accent" class="full-width">
+  <mat-select placeholder="{{ 'VISIBILITY' | translate }}" [(ngModel)]="queryRequest.queryVisibility"
+    name="queryVisibility">
+    <mat-option *ngFor="let type of visibilityTypes" [value]="type">
+      {{ type | translate }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<br>
+<div *ngIf="this.queryRequest.queryVisibility == 'TEAM'">
+  <mat-form-field color="accent" class="full-width">
+    <mat-select placeholder="{{ 'TEAMS' | translate }}" [(ngModel)]="queryRequest.teamUuids" name="teamUuids" multiple>
+      <mat-option *ngFor="let team of teams" [value]="team.uuid">
+        {{ team.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<br />
+<mat-checkbox (change)="onShouldChartChange()" *ngIf="queryRequest.queryString.length != 0" [(ngModel)]="shouldChart">
+  {{ "SHOULD_CHART" | translate }}</mat-checkbox>
+<div *ngIf="shouldChart">
+  <br>
+  <mat-form-field color="accent" class="full-width">
+    <mat-select placeholder="{{ 'CHART_TYPE' | translate }}" [(ngModel)]="queryRequest.charts[0].chartType"
+      name="chartType">
+      <mat-option *ngFor="let chartType of chartTypes" [value]="chartType">
+        {{ chartType | translate }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br>
+  <mat-form-field color="accent" class="full-width">
+    <mat-select placeholder="{{ 'LABEL_COLUMN' | translate }}" [(ngModel)]="queryRequest.charts[0].labelColumn"
+      name="labelColumn">
+      <mat-option *ngFor="let chartColumn of chartColumns" [value]="chartColumn.columnName">
+        {{ chartColumn.columnName }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br>
+  <mat-form-field color="accent" class="full-width">
+    <mat-select placeholder="{{ 'DATA_COLUMN' | translate }}" [(ngModel)]="queryRequest.charts[0].dataColumn"
+      name="dataColumn">
+      <mat-option *ngFor="let chartColumn of chartColumns" [value]="chartColumn.columnName">
+        {{ chartColumn.columnName }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div class="flexed">
+  <div class="fill-remaining-space"></div>
+  <button mat-button color="primary" (click)="saveQuery()">{{"SAVE_QUERY" | translate}}</button>
+  <button mat-button color="primary" (click)="executePagedQuery()">{{"EXECUTE_QUERY" | translate}}</button>
+</div>

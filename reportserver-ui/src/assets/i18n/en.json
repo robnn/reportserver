@@ -82,5 +82,6 @@
   "EXPORT_XLSX": "Export to excel",
   "CREATOR_USERNAME": "Creator username",
   "COLUMNS": "Columns",
-  "TEAMS": "Teams"
+  "TEAMS": "Teams",
+  "SUCCESS": "Successful operation!"
 }

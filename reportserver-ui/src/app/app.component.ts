@@ -4,12 +4,12 @@ import { slideInAnimation } from './animations';
 import { RouterOutlet } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { NotificationService } from './notification.service';
+import { NotificationService } from './service/notification.service';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import { Message } from './model/message';
-import { SeveritySnackbarComponent } from './severity-snackbar/severity-snackbar.component';
-import { UserService } from './user.service';
-import { LocalStorageService } from './local-storage.service';
+import { SeveritySnackbarComponent } from './components/severity-snackbar/severity-snackbar.component';
+import { UserService } from './service/user.service';
+import { LocalStorageService } from './service/local-storage.service';
 
 @Component({
   selector: 'app-root',

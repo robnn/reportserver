@@ -34,7 +34,6 @@ export class AddDialogComponent {
 
   onFileAdded() {
     this.toUpload = this.file.nativeElement.files;
-    console.log(this.toUpload[0]);
   }
 
   addFiles() {

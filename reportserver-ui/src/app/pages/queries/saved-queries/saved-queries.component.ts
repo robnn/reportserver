@@ -1,16 +1,17 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { QueryService } from 'src/app/service/query.service';
 import { ConnectionService } from 'src/app/service/connection.service';
 import { NotificationService } from 'src/app/service/notification.service';
 import { Connections } from 'src/app/model/connection';
 import { TranslateService } from '@ngx-translate/core';
 import { ParamHelper } from '../helper/param-helper';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatTabGroup } from '@angular/material';
 import { ParamModalComponent } from '../param-modal/param-modal.component';
 import { PagedQueryRequest, QueryVisibility } from 'src/app/model/pagedQueryRequest';
 import { ResultTableComponent } from '../../../components/result-table/result-table.component';
 import { ExcelService } from 'src/app/service/excel.service';
 import { RequestHelper } from '../helper/request-helper';
+import { ModalQueryEditorComponent } from 'src/app/components/modal-query-editor/modal-query-editor.component';
 
 @Component({
   selector: 'app-saved-queries',
@@ -109,5 +110,21 @@ export class SavedQueriesComponent implements OnInit {
         this.excelService.exportAsExcelFile(resp.result, query.queryName);
       });
     }
+  }
+
+  openForEditing(query: PagedQueryRequest) {
+    const dialogRef = this.dialog.open(ModalQueryEditorComponent, {
+      width: '80%',
+      maxHeight: '90vh',
+      data: query,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result === "SAVED"){
+        console.log("SAVED");
+        
+        this.ngOnInit();
+      }
+    });
   }
 }

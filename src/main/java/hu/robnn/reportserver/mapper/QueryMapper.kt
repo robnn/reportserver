@@ -75,6 +75,7 @@ class QueryMapper(private val teamRepository: TeamRepository) {
         target.visibility = query.visibility
         target.teamUuidsAndNames = query.teams.map { TeamUuidAndName(UUID.fromString(it.uuid), it.name) }.toMutableList()
         target.charts = query.queryCharts.map { Chart(it.chartType, it.labelColumn?.columnName, it.dataColumn?.columnName) }.toMutableList()
+        target.uuid = query.uuid
         return target
     }
 

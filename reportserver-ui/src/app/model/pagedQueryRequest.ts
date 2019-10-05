@@ -1,4 +1,5 @@
 export class PagedQueryRequest {
+    uuid: string;
     queryString: string = "";
     connectionUuid: string;
     itemsPerPage: number = 10;

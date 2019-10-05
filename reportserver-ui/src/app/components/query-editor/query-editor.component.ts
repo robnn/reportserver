@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Connections } from 'src/app/model/connection';
 import { PagedQueryRequest, QueryVisibility, Column, ChartDiagram, Parameter } from 'src/app/model/pagedQueryRequest';
 import { Team } from 'src/app/model/team';
@@ -19,6 +19,8 @@ import { ResultTableComponent } from '../result-table/result-table.component';
 })
 export class QueryEditorComponent implements OnInit {
 
+  @Output() public onSave: EventEmitter<any> = new EventEmitter()
+  @Input() allowExecution = true;
   @Input() queryRequest: PagedQueryRequest;
   @Input() resultTable: ResultTableComponent;
 
@@ -44,6 +46,9 @@ export class QueryEditorComponent implements OnInit {
     }, err => this.notificationService.addNotification(err.error));
     if (this.queryRequest.charts.length > 0) {
       this.shouldChart = true;
+      this.queryService.getColumns(this.queryRequest).subscribe(resp => {
+        this.chartColumns = resp;
+      });
     }
   }
 
@@ -91,6 +96,8 @@ export class QueryEditorComponent implements OnInit {
   }
 
   saveQuery() {
-    this.queryService.saveQuery(this.queryRequest).subscribe(resp => {}, error => this.notificationService.addNotification(error.error))
+    this.queryService.saveQuery(this.queryRequest).subscribe(resp => {
+      this.onSave.emit(resp);
+    }, error => this.notificationService.addNotification(error.error))
   }
 }

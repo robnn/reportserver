@@ -12,7 +12,7 @@ export class BarChartComponent implements OnInit {
 
   @Input() barChartDataSet: number[];
   @Input() barChartLabels: Label[];
-  
+
   public barChartOptions: ChartOptions = {
     responsive: true,
     legend: {
@@ -20,8 +20,10 @@ export class BarChartComponent implements OnInit {
         fontColor: '#fff'
       }
     },
-    // We use these empty structures as placeholders for dynamic theming.
-    scales: { xAxes: [{}], yAxes: [{}] },
+    scales: {
+      xAxes: [{ gridLines: { color: 'white' }, ticks: { fontColor: 'white' } }],
+      yAxes: [{ gridLines: { color: 'white' }, ticks: { fontColor: 'white' } }]
+    },
     plugins: {
       datalabels: {
         anchor: 'end',
@@ -38,7 +40,11 @@ export class BarChartComponent implements OnInit {
 
   ngOnInit() {
     this.barChartData = [
-      { data: this.barChartDataSet }
+      {
+        data: this.barChartDataSet,
+        backgroundColor: 'rgb(0,150,136)',
+        hoverBackgroundColor: 'rgb(255,255,255)'
+      }
     ];
   }
 

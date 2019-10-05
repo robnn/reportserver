@@ -67,6 +67,7 @@
         </mat-expansion-panel>
         <br>
         <div class="flexed">
+          <button mat-button mat-mini-fab color="primary" (click)="openForEditing(query)"><mat-icon>edit</mat-icon></button>
           <div class="fill-remaining-space"></div>
           <button mat-button color="primary" (click)="exportQuery(query)">{{"EXPORT_XLSX" | translate}}</button>
           <button mat-button color="primary" (click)="executePagedQuery(query)">{{"EXECUTE_QUERY" | translate}}</button>

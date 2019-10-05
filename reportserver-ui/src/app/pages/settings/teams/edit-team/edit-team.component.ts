@@ -36,7 +36,6 @@ export class EditTeamComponent implements OnInit {
   ngOnInit() {
     this.teamService.listUsers().subscribe(resp => {
       this.users = resp;
-      console.log(this.users);
     }, err => this.notificationService.addNotification(err.error));
   }
 

@@ -43,6 +43,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { PieChartComponent } from './components/charts/pie-chart/pie-chart.component';
 import { QueryEditorComponent } from './components/query-editor/query-editor.component';
 import { BarChartComponent } from './components/charts/bar-chart/bar-chart.component';
+import { ModalQueryEditorComponent } from './components/modal-query-editor/modal-query-editor.component';
 
 export function hljsLanguages() {
   return [
@@ -84,7 +85,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     EditTeamComponent,
     PieChartComponent,
     QueryEditorComponent,
-    BarChartComponent
+    BarChartComponent,
+    ModalQueryEditorComponent,
   ],
   imports: [
     RouterModule.forRoot(appRoutes, { enableTracing: false }),
@@ -132,6 +134,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [SeveritySnackbarComponent, AddDialogComponent, AddConnectionDialogComponent, ParamModalComponent, EditTeamComponent]
+  entryComponents: [SeveritySnackbarComponent, AddDialogComponent, AddConnectionDialogComponent, ParamModalComponent, EditTeamComponent, ModalQueryEditorComponent]
 })
 export class AppModule { }

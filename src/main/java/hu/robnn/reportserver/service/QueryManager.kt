@@ -106,7 +106,7 @@ class QueryManagerImpl(@Lazy private val connectionManager: ConnectionManager,
 
     private fun saveQuery(parametrizedQueryRequest: ParametrizedQueryRequest, columns: Set<HQueryColumn>): HQuery =
         queryRepository.save(queryMapper.mapToQuery(parametrizedQueryRequest,
-                queryRepository.findByQueryName(parametrizedQueryRequest.queryName),
+                queryRepository.findByUuid(parametrizedQueryRequest.uuid),
                 columns))
 
     private fun checkIfParametrized(parametrizedQueryRequest: ParametrizedQueryRequest) =

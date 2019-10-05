@@ -23,7 +23,7 @@
 </mat-form-field>
 <br>
 <mat-form-field color="accent" class="full-width">
-  <mat-select placeholder="{{ 'VISIBILITY' | translate }}" [(ngModel)]="queryRequest.queryVisibility"
+  <mat-select placeholder="{{ 'VISIBILITY' | translate }}" [(ngModel)]="queryRequest.visibility"
     name="queryVisibility">
     <mat-option *ngFor="let type of visibilityTypes" [value]="type">
       {{ type | translate }}
@@ -75,5 +75,5 @@
 <div class="flexed">
   <div class="fill-remaining-space"></div>
   <button mat-button color="primary" (click)="saveQuery()">{{"SAVE_QUERY" | translate}}</button>
-  <button mat-button color="primary" (click)="executePagedQuery()">{{"EXECUTE_QUERY" | translate}}</button>
+  <button *ngIf="allowExecution" mat-button color="primary" (click)="executePagedQuery()">{{"EXECUTE_QUERY" | translate}}</button>
 </div>

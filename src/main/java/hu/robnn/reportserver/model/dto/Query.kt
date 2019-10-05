@@ -15,7 +15,8 @@ class PagedQueryResponse(var pagedResult: MutableList<MutableMap<String, Any>> =
                          var visibility: QueryVisibility = QueryVisibility.PUBLIC,
                          var charts: MutableList<Chart> = mutableListOf())
 
-open class PagedQueryRequest(var queryString: String? = null,
+open class PagedQueryRequest(var uuid: String? = null,
+                             var queryString: String? = null,
                              var connectionUuid: UUID? = null,
                              var itemsPerPage: Int? = null,
                              var neededPage: Int? = null,

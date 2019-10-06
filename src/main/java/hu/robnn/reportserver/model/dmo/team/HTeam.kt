@@ -36,7 +36,7 @@ open class HTeam : UuidHolder {
             name = "rs_user_teams",
             joinColumns = [JoinColumn(name = "team_id")],
             inverseJoinColumns = [JoinColumn(name = "user_id")])
-    open var users: Set<User> = mutableSetOf()
+    open var users: MutableSet<User> = mutableSetOf()
 
 
 }

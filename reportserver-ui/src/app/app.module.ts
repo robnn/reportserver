@@ -86,7 +86,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     PieChartComponent,
     QueryEditorComponent,
     BarChartComponent,
-    ModalQueryEditorComponent,
+    ModalQueryEditorComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes, { enableTracing: false }),

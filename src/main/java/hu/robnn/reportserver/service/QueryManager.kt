@@ -25,7 +25,7 @@ interface QueryManager {
     fun executeTestQuery(connectionUuid: UUID): Boolean
     fun executePaginatedQuery(parametrizedQueryRequest: ParametrizedQueryRequest): PagedQueryResponse
     fun executeQueryWithNamedParameters(connectionUuid: UUID, query: String, parameters: Map<String, Any>): ResultSet
-    fun listQueries(): QueryRequests
+    fun listQueries(page: Int?, itemsPerPage: Int?): QueryRequests
     fun getQueryColumns(parametrizedQueryRequest: ParametrizedQueryRequest): List<Column>
     fun saveQuery(parametrizedQueryRequest: ParametrizedQueryRequest): ParametrizedQueryRequest
 }
@@ -122,13 +122,22 @@ class QueryManagerImpl(@Lazy private val connectionManager: ConnectionManager,
         return namedParameterStatement.executeQuery()
     }
 
-    override fun listQueries(): QueryRequests {
+    override fun listQueries(page: Int?, itemsPerPage: Int?): PagedQueryRequests {
         val username = UserContext.currentUser?.username
         val teams = teamRepository.findByUsername(username)
-        return QueryRequests(queryRepository.findAll().map { queryMapper.mapToRequest(it) }
-                .filter { query -> (query.visibility == QueryVisibility.TEAM &&
-                                    teams.map { it.uuid }.any { query.teamUuidsAndNames.map { tUAN -> tUAN.uuid.toString() }.contains(it) }) ||
-                        query.visibility == QueryVisibility.PUBLIC ||
-                        (query.visibility == QueryVisibility.PRIVATE && query.creatorUsername == username) }.toSet())
+        val queries = queryRepository.findAll().map { queryMapper.mapToRequest(it) }
+                .filter { query ->
+                    (query.visibility == QueryVisibility.TEAM &&
+                            teams.map { it.uuid }.any { query.teamUuidsAndNames.map { tUAN -> tUAN.uuid.toString() }.contains(it) }) ||
+                            query.visibility == QueryVisibility.PUBLIC ||
+                            (query.visibility == QueryVisibility.PRIVATE && query.creatorUsername == username)
+                }.toSet()
+        val chunked = queries.chunked(itemsPerPage ?: 10)
+        return PagedQueryRequests().apply {
+            this.queries = chunked[(page ?: 1) - 1].toSet()
+            this.actualPage = page ?: 1
+            this.itemsPerPage = itemsPerPage ?: 10
+            this.totalItems = queries.size
+        }
     }
 }

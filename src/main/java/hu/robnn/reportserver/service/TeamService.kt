@@ -41,9 +41,6 @@ class TeamServiceImpl(private val teamRepository: TeamRepository,
         if (team.userNames.isEmpty()) {
             throw ReportServerMappedException(TeamErrorCause.TEAM_MUST_HAVE_USERS_IN_IT)
         }
-        if (teamRepository.findByName(team.name).isPresent) {
-            throw ReportServerMappedException(TeamErrorCause.TEAM_WITH_NAME_ALREADY_EXISTS)
-        }
     }
 
     override fun listUsernames() = userDao.findAll().map { it.username!! }

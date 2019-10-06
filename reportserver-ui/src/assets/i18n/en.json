@@ -83,5 +83,20 @@
   "CREATOR_USERNAME": "Creator username",
   "COLUMNS": "Columns",
   "TEAMS": "Teams",
-  "SUCCESS": "Successful operation!"
+  "SUCCESS": "Successful operation!",
+  "VISIBILITY": "Visibility",
+  "PRIVATE": "Private",
+  "PUBLIC": "Public",
+  "TEAM": "Team",
+  "SHOULD_CHART": "Create chart for query",
+  "CHART_TYPE": "Chart type",
+  "PIE": "Pie chart",
+  "BAR": "Bar chart",
+  "LABEL_COLUMN": "Label column",
+  "DATA_COLUMN": "Data column",
+  "EDIT_TEAM": "Edit team",
+  "NAME": "Name",
+  "USERS": "Users",
+  "USERS_IN_TEAM": "Users in team",
+  "CHART": "Chart"
 }

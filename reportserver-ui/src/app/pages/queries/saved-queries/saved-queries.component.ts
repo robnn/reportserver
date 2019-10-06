@@ -5,13 +5,14 @@ import { NotificationService } from 'src/app/service/notification.service';
 import { Connections } from 'src/app/model/connection';
 import { TranslateService } from '@ngx-translate/core';
 import { ParamHelper } from '../helper/param-helper';
-import { MatDialog, MatTabGroup } from '@angular/material';
+import { MatDialog, MatTabGroup, PageEvent } from '@angular/material';
 import { ParamModalComponent } from '../param-modal/param-modal.component';
 import { PagedQueryRequest, QueryVisibility } from 'src/app/model/pagedQueryRequest';
 import { ResultTableComponent } from '../../../components/result-table/result-table.component';
 import { ExcelService } from 'src/app/service/excel.service';
 import { RequestHelper } from '../helper/request-helper';
 import { ModalQueryEditorComponent } from 'src/app/components/modal-query-editor/modal-query-editor.component';
+import { ChartType } from 'src/app/model/chart-type';
 
 @Component({
   selector: 'app-saved-queries',
@@ -27,6 +28,10 @@ export class SavedQueriesComponent implements OnInit {
   public arrayFrom = Array.from;
   public currentQueryRequest = new PagedQueryRequest();
   public types = Object.keys(QueryVisibility);
+  public chartTypes = Object.keys(ChartType);
+  public totalQueries: number;
+  public itemsPerPage: number = 10;
+  public neededPage: number = 1;
 
 
   constructor(private queryService: QueryService,
@@ -40,11 +45,16 @@ export class SavedQueriesComponent implements OnInit {
     this.connectionService.listConnections().subscribe(resp => {
       this.connections = resp;
     }, err => this.notificationService.addNotification(err.error));
-    this.queryService.listSavedQueries().subscribe(resp => {
+    this.getQueries();
+  }
+
+  getQueries() {
+    this.queryService.listSavedQueries(this.neededPage, this.itemsPerPage).subscribe(resp => {
       this.queries = resp.queries.map((q) => {
         q.arrayParameters = ParamHelper.mapToArray(q.parameters);
         return q;
       });
+      this.totalQueries = resp.totalItems;
     });
   }
 
@@ -126,5 +136,11 @@ export class SavedQueriesComponent implements OnInit {
         this.ngOnInit();
       }
     });
+  }
+
+  onPaginationChanged(pageEvent: PageEvent) {
+    this.itemsPerPage = pageEvent.pageSize;
+    this.neededPage = pageEvent.pageIndex + 1;
+    this.getQueries();
   }
 }

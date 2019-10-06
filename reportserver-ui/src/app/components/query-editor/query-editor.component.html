@@ -8,15 +8,18 @@
 
 <br>
 <mat-form-field color="accent" class="full-width">
-  <textarea matInput name="query" class="large-height" [(ngModel)]="queryRequest.queryString"
-    (ngModelChange)="onQueryChange()"></textarea>
+  <div class="input-area">
+      <textarea matInput name="query" class="large-height hiddentextarea" [(ngModel)]="queryRequest.queryString"
+      (ngModelChange)="onQueryChange()"></textarea>
+    <!-- <pre><code style="background: none" class="preview" [highlight]="queryRequest.queryString"></code></pre> -->
+  </div>
   <mat-label>
     <mat-icon>computer</mat-icon> {{ 'QUERY' | translate }}
   </mat-label>
 </mat-form-field>
 
 <mat-form-field color="accent" class="full-width">
-  <input matInput name="query" [(ngModel)]="queryRequest.queryName">
+  <input matInput name="queryName" [(ngModel)]="queryRequest.queryName">
   <mat-label>
     <mat-icon>save</mat-icon> {{ 'QUERY_NAME' | translate }}
   </mat-label>
@@ -31,7 +34,7 @@
   </mat-select>
 </mat-form-field>
 <br>
-<div *ngIf="this.queryRequest.queryVisibility == 'TEAM'">
+<div *ngIf="this.queryRequest.visibility == 'TEAM'">
   <mat-form-field color="accent" class="full-width">
     <mat-select placeholder="{{ 'TEAMS' | translate }}" [(ngModel)]="queryRequest.teamUuids" name="teamUuids" multiple>
       <mat-option *ngFor="let team of teams" [value]="team.uuid">

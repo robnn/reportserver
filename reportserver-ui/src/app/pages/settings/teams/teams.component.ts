@@ -22,9 +22,10 @@ export class TeamsComponent implements OnInit {
     });
   }
 
-  openDialog(): void {
+  openDialog(team: Team): void {
     const dialogRef = this.dialog.open(EditTeamComponent, {
-      width: '400px'
+      width: '400px',
+      data: team,
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -32,6 +33,10 @@ export class TeamsComponent implements OnInit {
         this.ngOnInit();
       }
     });
+  }
+
+  openForEditing(team: Team) {
+    this.openDialog(team);
   }
 
 }

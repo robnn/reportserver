@@ -13,7 +13,7 @@ class TeamMapper(private val userDao: UserDao) {
         if (realTarget == null) {
             realTarget = HTeam()
         }
-        realTarget.users = source.userNames.map { userDao.findByUsername(it) }.filter { it.isPresent }.map { it.get() }.toSet()
+        realTarget.users = source.userNames.map { userDao.findByUsername(it) }.filter { it.isPresent }.map { it.get() }.toMutableSet()
         realTarget.name = source.name
 
         return realTarget

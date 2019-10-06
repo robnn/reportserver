@@ -33,7 +33,7 @@
               <span>{{ "QUERY" | translate }}:</span>
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <pre><code [highlight]="query.queryString"></code></pre>
+          <pre><code style="background: none" [highlight]="query.queryString"></code></pre>
         </mat-expansion-panel>
         <mat-expansion-panel *ngIf="query.arrayParameters.length !== 0">
           <mat-expansion-panel-header>
@@ -55,6 +55,39 @@
             <li>{{ column.columnName }} : {{ column.columnType }}</li>
           </ul>
         </mat-expansion-panel>
+        <mat-expansion-panel *ngIf="query.charts.length !== 0">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <span>{{ "CHART" | translate }}:</span>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+                <mat-form-field color="accent" class="full-width">
+                    <mat-select disabled="true" placeholder="{{ 'CHART_TYPE' | translate }}" [(ngModel)]="query.charts[0].chartType"
+                      name="chartType">
+                      <mat-option *ngFor="let chartType of chartTypes" [value]="chartType">
+                        {{ chartType | translate }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <br>
+                  <mat-form-field color="accent" class="full-width">
+                    <mat-select disabled="true" placeholder="{{ 'LABEL_COLUMN' | translate }}" [(ngModel)]="query.charts[0].labelColumn"
+                      name="labelColumn">
+                      <mat-option [value]="query.charts[0].labelColumn">
+                        {{ query.charts[0].labelColumn }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <br>
+                  <mat-form-field color="accent" class="full-width">
+                    <mat-select disabled="true" placeholder="{{ 'DATA_COLUMN' | translate }}" [(ngModel)]="query.charts[0].dataColumn"
+                      name="dataColumn">
+                      <mat-option [value]="query.charts[0].dataColumn">
+                        {{ query.charts[0].dataColumn }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+          </mat-expansion-panel>
         <mat-expansion-panel *ngIf="query.teamUuidsAndNames.length !== 0">
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -73,6 +106,8 @@
           <button mat-button color="primary" (click)="executePagedQuery(query)">{{"EXECUTE_QUERY" | translate}}</button>
         </div>
       </mat-expansion-panel>
+      <mat-paginator #paginator [length]="totalQueries" [pageSize]="10" [pageSizeOptions]="[1, 2, 5, 10, 25, 100]"
+      (page)=onPaginationChanged($event)></mat-paginator>
     </mat-accordion>
   </mat-card-content>
   <mat-card-actions>

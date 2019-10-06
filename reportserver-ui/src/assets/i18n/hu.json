@@ -83,5 +83,20 @@
   "CREATOR_USERNAME": "Létrehozó felhasználó neve",
   "COLUMNS": "Oszlopok",
   "TEAMS": "Csapatok",
-  "SUCCESS": "Sikeres művelet!"
+  "SUCCESS": "Sikeres művelet!",
+  "VISIBILITY": "Láthatóság",
+  "PRIVATE": "Privát",
+  "PUBLIC": "Publikus",
+  "TEAM": "Csapat",
+  "SHOULD_CHART": "Diagram létrehozása",
+  "CHART_TYPE": "Diagram típusa",
+  "PIE": "Pite diagram",
+  "BAR": "Oszlop diagram",
+  "LABEL_COLUMN": "Címke oszlop",
+  "DATA_COLUMN": "Adat oszlop",
+  "EDIT_TEAM": "Csapat szerkesztése",
+  "NAME": "Név",
+  "USERS": "Felhasználók",
+  "USERS_IN_TEAM": "Csapatban lévő felhasználók",
+  "CHART": "Diagram"
 }

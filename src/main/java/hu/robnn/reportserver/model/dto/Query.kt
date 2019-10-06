@@ -36,7 +36,11 @@ open class NotPagedParametrizedQueryRequest(var queryString: String? = null,
 class ParametrizedQueryRequest(var parameters: Map<String, Any> = mutableMapOf(),
                                var columns: MutableList<Column> = mutableListOf()) : PagedQueryRequest()
 
-class QueryRequests(var queries: Set<ParametrizedQueryRequest> = mutableSetOf())
+open class QueryRequests(var queries: Set<ParametrizedQueryRequest> = mutableSetOf())
+
+class PagedQueryRequests(var actualPage: Int? = null,
+                         var itemsPerPage: Int? = null,
+                         var totalItems: Int? = null) : QueryRequests()
 
 class Column(var columnName: String? = null,
              var columnType: String? = null)

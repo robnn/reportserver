@@ -26,7 +26,7 @@ public class TeamApi {
 
     @RequestMapping(method = RequestMethod.POST)
     @Authenticated(acceptedRoles = {"ADMIN"})
-    public ResponseEntity<Team> createTeam(@RequestBody Team team){
+    public ResponseEntity<Team> manageTeam(@RequestBody Team team){
         return new ResponseEntity<>(teamService.manageTeam(team), HttpStatus.CREATED);
     }
 

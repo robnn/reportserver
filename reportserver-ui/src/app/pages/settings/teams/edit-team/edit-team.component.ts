@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { TeamService } from 'src/app/service/team.service';
 import { Team } from 'src/app/model/team';
 import { User } from 'src/app/model/user';
@@ -18,7 +18,12 @@ export class EditTeamComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<EditTeamComponent>,
     public teamService: TeamService,
-    public notificationService: NotificationService) { }
+    public notificationService: NotificationService,
+    @Inject(MAT_DIALOG_DATA) public inputTeam: Team) {
+      if (inputTeam) {
+        this.team = inputTeam
+      }
+     }
 
   onNoClick(): void {
     this.dialogRef.close();

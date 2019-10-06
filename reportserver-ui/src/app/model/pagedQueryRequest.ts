@@ -60,6 +60,9 @@ export class Parameter {
 }
 
 export class QueryRequests {
+    actualPage: number;
+    itemsPerPage: number;
+    totalItems: number;
     queries: Array<PagedQueryRequest>;
 }
 

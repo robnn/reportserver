@@ -28,7 +28,7 @@ public class ConnectionApi {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    @Authenticated(acceptedRoles = {"ADMIN"})
+    @Authenticated
     public ResponseEntity<ConnectionDescriptorsResponse> listConnections(){
         return new ResponseEntity<>(new ConnectionDescriptorsResponse(connectionManager.listConnections()), HttpStatus.OK);
     }

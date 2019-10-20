@@ -26,6 +26,8 @@ For 3:
 
 Start Pgadmin and create a database on the local running postgres server, with the name `report_server`.
 
+Create a folder to hold the installed JDBC drivers, then set the `jdbc.drivers.folder` property in the config.properties file.
+
 CD into project directory and run:
 
 `mvn spring-boot:run`

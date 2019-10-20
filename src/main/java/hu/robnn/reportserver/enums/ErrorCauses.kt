@@ -25,3 +25,8 @@ enum class TeamErrorCause: ErrorCause {
     TEAM_MUST_HAVE_USERS_IN_IT,
     TEAM_WITH_NAME_ALREADY_EXISTS,
 }
+
+enum class DashboardErrorCause: ErrorCause {
+    USER_NOT_FOUND,
+    DASHBOARD_FOR_USER_NOT_FOUND,
+}

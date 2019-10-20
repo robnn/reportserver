@@ -134,7 +134,7 @@ class QueryManagerImpl(@Lazy private val connectionManager: ConnectionManager,
                 }.toSet()
         val chunked = queries.chunked(itemsPerPage ?: 10)
         return PagedQueryRequests().apply {
-            this.queries = chunked[(page ?: 1) - 1].toSet()
+            if (chunked.isNotEmpty()) this.queries = chunked[(page ?: 1) - 1].toSet()
             this.actualPage = page ?: 1
             this.itemsPerPage = itemsPerPage ?: 10
             this.totalItems = queries.size

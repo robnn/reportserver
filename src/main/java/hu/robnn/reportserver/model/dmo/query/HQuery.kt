@@ -40,13 +40,13 @@ open class HQuery: UuidHolder {
     @Column(name = "query_name")
     open var queryName: String? = null
 
-    @OneToMany(targetEntity = HQueryParameter::class, mappedBy = "query", cascade = [CascadeType.ALL])
+    @OneToMany(targetEntity = HQueryParameter::class, mappedBy = "query", cascade = [CascadeType.ALL], orphanRemoval = true)
     open var queryParameters: MutableSet<HQueryParameter> = mutableSetOf()
 
-    @OneToMany(targetEntity = HQueryColumn::class, mappedBy = "query", cascade = [CascadeType.ALL])
+    @OneToMany(targetEntity = HQueryColumn::class, mappedBy = "query", cascade = [CascadeType.ALL], orphanRemoval = true)
     open var queryColumns: MutableSet<HQueryColumn> = mutableSetOf()
 
-    @OneToMany(targetEntity = HQueryChart::class, mappedBy = "query", cascade = [CascadeType.ALL])
+    @OneToMany(targetEntity = HQueryChart::class, mappedBy = "query", cascade = [CascadeType.ALL], orphanRemoval = true)
     open var queryCharts: MutableSet<HQueryChart> = mutableSetOf()
 
     @ManyToOne

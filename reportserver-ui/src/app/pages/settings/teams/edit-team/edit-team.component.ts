@@ -2,7 +2,6 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { TeamService } from 'src/app/service/team.service';
 import { Team } from 'src/app/model/team';
-import { User } from 'src/app/model/user';
 import { NotificationService } from 'src/app/service/notification.service';
 
 @Component({

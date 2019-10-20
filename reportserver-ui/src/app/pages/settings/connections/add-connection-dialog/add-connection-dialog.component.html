@@ -1,7 +1,7 @@
 <h1 mat-dialog-title><mat-icon>compare_arrows</mat-icon><span>{{ "NEW_CONNECTION" | translate }}</span></h1>
 <div mat-dialog-content class="center-inputs">
   
-    <mat-form-field color="accent" class="large-width">
+    <mat-form-field *ngIf='drivers' color="accent" class="large-width">
         <mat-select placeholder="{{ 'DRIVER' | translate }}" [(ngModel)]="connection.driverUuid" name="driver">
           <mat-option *ngFor="let driver of drivers.drivers" [value]="driver.uuid">
             {{ driver.name }}

@@ -23,6 +23,9 @@ export class TeamsComponent implements OnInit {
   }
 
   openDialog(team: Team): void {
+    if (!team) {
+      team = new Team()
+    }
     const dialogRef = this.dialog.open(EditTeamComponent, {
       width: '400px',
       data: team,

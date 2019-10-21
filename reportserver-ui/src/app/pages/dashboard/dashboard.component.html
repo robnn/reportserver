@@ -1,3 +1,27 @@
-<p>
-  dashboard works!
-</p>
+<div *ngIf='dashboardExists'>
+</div>
+<div *ngIf='!dashboardExists'>
+  
+  <mat-card class="large-card centered">
+    <mat-card-title>{{ "CREATE_DASHBOARD" | translate }}</mat-card-title>
+    <mat-card-content>
+  
+      <div class="center-icon-holder">
+        <mat-icon class="large-icon">add</mat-icon>      
+      </div>
+  
+    </mat-card-content>
+    <mat-card-actions>
+      <!--<button color="accent" type="submit" class="full-width" mat-button>{{ "LOGIN" | translate }}</button>-->
+    </mat-card-actions>
+    <!-- <div class="flexed">
+
+      <div class="fill-remaining-space">
+  
+      </div>
+  
+        <button mat-button mat-mini-fab color="primary" (click)="openDialog()"><mat-icon>add</mat-icon></button>
+    </div> -->
+
+    </mat-card>
+</div>

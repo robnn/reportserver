@@ -1,0 +1,15 @@
+<h1 mat-dialog-title><mat-icon>edit</mat-icon><span>{{ 'EDIT_DASHBOARD' | translate }}</span></h1>
+<div *ngIf='dashboard'>
+  <div *ngFor='let query of dashboard.dashboardQueries'>
+    Query
+  </div>
+  <div class="flexed">
+    
+    <div class="fill-remaining-space">
+  
+    </div>
+  
+      <button mat-button mat-mini-fab color="primary" (click)="addDashboardQuery()"><mat-icon>add</mat-icon></button>
+  </div>
+
+</div>

@@ -26,13 +26,17 @@ class QueryMapper(private val teamRepository: TeamRepository) {
         realTarget.queryString = parametrizedQueryRequest.queryString
         realTarget.connectionUuid = parametrizedQueryRequest.connectionUuid.toString()
         realTarget.queryName = parametrizedQueryRequest.queryName
-        realTarget.queryParameters = mapQueryParameters(parametrizedQueryRequest, realTarget).toMutableSet()
+        realTarget.queryParameters.clear()
+        realTarget.queryParameters.addAll(mapQueryParameters(parametrizedQueryRequest, realTarget).toMutableSet())
         columns.forEach { it.query = realTarget }
-        realTarget.queryColumns = columns.toMutableSet()
+        realTarget.queryColumns.clear()
+        realTarget.queryColumns.addAll(columns)
         realTarget.creatorUser = UserContext.Companion.currentUser
         realTarget.visibility = parametrizedQueryRequest.visibility
-        realTarget.teams = parametrizedQueryRequest.teamUuidsAndNames.map { teamRepository.findByUuid(it.name) }.toMutableSet()
-        realTarget.queryCharts = mapCharts(parametrizedQueryRequest.charts, realTarget, columns)
+        realTarget.teams.clear()
+        realTarget.teams.addAll(parametrizedQueryRequest.teamUuidsAndNames.map { teamRepository.findByUuid(it.name) })
+        realTarget.queryCharts.clear()
+        realTarget.queryCharts.addAll(mapCharts(parametrizedQueryRequest.charts, realTarget, columns))
         return realTarget
     }
 

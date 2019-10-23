@@ -40,4 +40,7 @@ open class HDashboardQuery : UuidHolder {
     @OneToOne(targetEntity = HDashboard::class)
     @JoinColumn(name = "dashboard_id")
     open var dashboard: HDashboard? = null
+
+    @Column(name = "query_order")
+    open var order: Int? = null;
 }

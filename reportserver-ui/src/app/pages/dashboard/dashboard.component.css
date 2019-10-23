@@ -1,7 +1,10 @@
 .large-icon {
     font-size: 100px;
     display: inline-block;
+    margin: 10px;
 }
 .center-icon-holder {
     text-align: center;
+    border: 1px dashed white;
+    cursor: pointer;
 }

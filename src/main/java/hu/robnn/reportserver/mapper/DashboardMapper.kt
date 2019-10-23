@@ -35,6 +35,7 @@ class DashboardMapper(private val userDao: UserDao,
         val target = HDashboardQuery()
         target.dashboard = dashboard
         target.isChart = source.isChart
+        target.order = source.order
         target.query = queryRepository.findByUuid(source.queryUuid.toString())
         return target
     }
@@ -53,6 +54,7 @@ class DashboardMapper(private val userDao: UserDao,
     private fun map(source: HDashboardQuery): DashboardQuery {
         val target = DashboardQuery()
         target.isChart = source.isChart
+        target.order = source.order
         target.queryUuid = UUID.fromString(source.query?.uuid)
         target.uuid = UUID.fromString(source.uuid)
         return target

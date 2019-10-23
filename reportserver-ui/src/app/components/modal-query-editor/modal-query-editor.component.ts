@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { PagedQueryRequest } from 'src/app/model/pagedQueryRequest';
-import { PagedQueryResponse } from 'src/app/model/pagedQueryResponse';
 
 @Component({
   selector: 'app-modal-query-editor',

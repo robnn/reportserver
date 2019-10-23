@@ -1,15 +1,31 @@
 <div *ngIf='dashboardExists'>
+
+  <div *ngFor='let query of dashboard.dashboardQueries'>
+    <mat-card *ngIf='getQueryForUuid(query.queryUuid)' class="large-card centered">
+      <mat-card-title>{{ getQueryForUuid(query.queryUuid).queryName }}</mat-card-title>
+      <mat-card-content>
+        <app-result-table [queryRequest]=getQueryForUuid(query.queryUuid) [onlyChart]=query.chart
+          [shouldExecuteOnCreation]=true></app-result-table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="flexed">
+    <div class="fill-remaining-space"></div>
+    <button mat-button mat-mini-fab color="primary" (click)="openCreateDashboardModal()">
+      <mat-icon>edit</mat-icon>
+    </button>
+  </div>
 </div>
 <div *ngIf='!dashboardExists'>
-  
+
   <mat-card class="large-card centered">
     <mat-card-title>{{ "CREATE_DASHBOARD" | translate }}</mat-card-title>
     <mat-card-content>
-  
+
       <div class="center-icon-holder" (click)="openCreateDashboardModal()">
-        <mat-icon class="large-icon">add</mat-icon>      
+        <mat-icon class="large-icon">add</mat-icon>
       </div>
-  
+
     </mat-card-content>
     <mat-card-actions>
       <!--<button color="accent" type="submit" class="full-width" mat-button>{{ "LOGIN" | translate }}</button>-->
@@ -23,5 +39,5 @@
         <button mat-button mat-mini-fab color="primary" (click)="openDialog()"><mat-icon>add</mat-icon></button>
     </div> -->
 
-    </mat-card>
+  </mat-card>
 </div>

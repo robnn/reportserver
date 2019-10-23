@@ -1,0 +1,31 @@
+<h1 mat-dialog-title>
+  <mat-icon>edit</mat-icon><span>{{ 'EDIT_DASHBOARD' | translate }}</span>
+</h1>
+<div *ngIf='dashboard'>
+  <div *ngFor='let query of dashboard.dashboardQueries; let i = index'>
+    <h4>{{query.order + 1}} {{'QUERY_NUMBER' | translate}}</h4>
+    <hr>
+    <mat-form-field color="accent" class="full-width">
+      <mat-select placeholder="{{ 'QUERY' | translate }}" [(ngModel)]="dashboard.dashboardQueries[i].queryUuid"
+        name="queryUuid">
+        <mat-option *ngFor="let query of queries" [value]="query.uuid">
+          {{ query.queryName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-checkbox *ngIf='dashboard.dashboardQueries[i] && isChartByQueryUuid(dashboard.dashboardQueries[i].queryUuid)'
+      [(ngModel)]="dashboard.dashboardQueries[i].chart">{{ "DISPLAY_CHART" | translate }}</mat-checkbox>
+
+  </div>
+  <div class="flexed">
+    <div class="fill-remaining-space"></div>
+    <button mat-button mat-mini-fab color="primary" (click)="addDashboardQuery()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <div class="flexed">
+    <div class="fill-remaining-space"></div>
+    <button mat-button color="primary" (click)="saveDashboard()">{{"SAVE_DASHBOARD" | translate}}</button>
+  </div>
+
+</div>

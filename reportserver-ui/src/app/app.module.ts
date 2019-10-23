@@ -44,7 +44,7 @@ import { PieChartComponent } from './components/charts/pie-chart/pie-chart.compo
 import { QueryEditorComponent } from './components/query-editor/query-editor.component';
 import { BarChartComponent } from './components/charts/bar-chart/bar-chart.component';
 import { ModalQueryEditorComponent } from './components/modal-query-editor/modal-query-editor.component';
-import { CreateDashboardComponent } from './components/create-dashboard/create-dashboard.component';
+import { CreateDashboardComponent } from './components/edit-dashboard/create-dashboard.component';
 
 export function hljsLanguages() {
   return [

@@ -13,6 +13,8 @@ import { PagedQueryResponse, QueryResponse } from 'src/app/model/pagedQueryRespo
 export class ResultTableComponent implements OnInit {
 
   @Input() public queryRequest: PagedQueryRequest;
+  @Input() public onlyChart: boolean;
+  @Input() public shouldExecuteOnCreation: boolean;
 
   params: any;
   neededPage = 1;
@@ -37,6 +39,9 @@ export class ResultTableComponent implements OnInit {
     private notificationService: NotificationService) { }
 
   ngOnInit() {
+    if (this.shouldExecuteOnCreation) {
+      this.executeQuery(false);
+    }
   }
 
   onPaginationChanged(pageEvent: PageEvent) {
@@ -49,8 +54,9 @@ export class ResultTableComponent implements OnInit {
     if (resetPage) {
       this.neededPage = 1;
       this.itemsPerPage = 10;
+      this.isLoading = true;
     }
-    this.isLoading = true;
+    
     this.queryResult = null;
     if (this.params){
       this.queryRequest.parameters = this.params;

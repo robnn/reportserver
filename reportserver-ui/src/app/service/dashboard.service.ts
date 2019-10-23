@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from './user.service';
+import { Dashboard } from '../model/dashboard';
 
 @Injectable({
   providedIn: 'root'

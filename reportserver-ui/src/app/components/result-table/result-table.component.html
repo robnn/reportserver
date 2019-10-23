@@ -2,16 +2,18 @@
 <div [hidden]="!this.queryResult">
   <h3>{{ "QUERY_RESULT" | translate }}</h3>
   <div *ngIf="totalRows !== 0" class="mat-elevation-z8">
-    <table mat-table [dataSource]="queryResult" class="scrollable">
-      <ng-container *ngFor="let column of keys; let i = index" [attr.data-index]="i" matColumnDef="{{column}}">
-        <th mat-header-cell *matHeaderCellDef> {{ column }}</th>
-        <td mat-cell *matCellDef="let item"> {{ objectValues(item)[i] || "NULL" }} </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="keys"></tr>
-      <tr mat-row *matRowDef="let row; columns: keys;"></tr>
-    </table>
-    <mat-paginator #paginator [length]="totalRows" [pageSize]="10" [pageSizeOptions]="[1, 2, 5, 10, 25, 100]"
-      (page)=onPaginationChanged($event)></mat-paginator>
+    <div *ngIf="!onlyChart">
+        <table mat-table [dataSource]="queryResult" class="scrollable">
+            <ng-container *ngFor="let column of keys; let i = index" [attr.data-index]="i" matColumnDef="{{column}}">
+              <th mat-header-cell *matHeaderCellDef> {{ column }}</th>
+              <td mat-cell *matCellDef="let item"> {{ objectValues(item)[i] || "NULL" }} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="keys"></tr>
+            <tr mat-row *matRowDef="let row; columns: keys;"></tr>
+          </table>
+          <mat-paginator #paginator [length]="totalRows" [pageSize]="10" [pageSizeOptions]="[1, 2, 5, 10, 25, 100]"
+            (page)=onPaginationChanged($event)></mat-paginator>
+    </div>
     <div *ngIf="this.chartData != null && !isLoading" class="dark">
       <app-pie-chart *ngIf="this.chartType == 'PIE'" [pieChartData]="this.chartData" [pieChartLabels]="this.chartLabels"></app-pie-chart>
       <app-bar-chart *ngIf="this.chartType == 'BAR'" [barChartDataSet]="this.chartData" [barChartLabels]="this.chartLabels"></app-bar-chart>

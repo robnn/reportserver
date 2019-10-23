@@ -42,8 +42,14 @@ public class QueryApi {
 
     @RequestMapping(method = RequestMethod.GET)
     @Authenticated
-    public ResponseEntity<QueryRequests> listQueries(@RequestParam Integer page, @RequestParam Integer itemsPerPage ) {
+    public ResponseEntity<QueryRequests> listQueries(@RequestParam Integer page, @RequestParam Integer itemsPerPage) {
         return new ResponseEntity<>(queryManager.listQueries(page, itemsPerPage), HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/all", method = RequestMethod.GET)
+    @Authenticated
+    public ResponseEntity<QueryRequests> listAllQueries() {
+        return new ResponseEntity<>(queryManager.listAllQueries(), HttpStatus.OK);
     }
 
     @RequestMapping(path = "/parametrized", method = RequestMethod.POST)

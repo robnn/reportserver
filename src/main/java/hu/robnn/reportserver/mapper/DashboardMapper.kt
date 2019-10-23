@@ -23,7 +23,8 @@ class DashboardMapper(private val userDao: UserDao,
         realTarget.user = userDao.findByUsername(source.userName)
                 .orElseThrow { ReportServerMappedException(DashboardErrorCause.USER_NOT_FOUND) }
         realTarget.uuid = source.uuid.toString()
-        realTarget.dashboardQueries = map(source.dashboardQueries, realTarget)
+        realTarget.dashboardQueries.clear()
+        realTarget.dashboardQueries.addAll(map(source.dashboardQueries, realTarget))
         return realTarget
     }
 
@@ -34,7 +35,7 @@ class DashboardMapper(private val userDao: UserDao,
     fun map(source: DashboardQuery, dashboard: HDashboard): HDashboardQuery {
         val target = HDashboardQuery()
         target.dashboard = dashboard
-        target.isChart = source.isChart
+        target.isChart = source.chart
         target.order = source.order
         target.query = queryRepository.findByUuid(source.queryUuid.toString())
         return target
@@ -44,6 +45,7 @@ class DashboardMapper(private val userDao: UserDao,
         val target = Dashboard()
         target.dashboardQueries = map(source.dashboardQueries)
         target.userName = source.user?.username
+        target.uuid = UUID.fromString(source.uuid)
         return target
     }
 
@@ -53,7 +55,7 @@ class DashboardMapper(private val userDao: UserDao,
 
     private fun map(source: HDashboardQuery): DashboardQuery {
         val target = DashboardQuery()
-        target.isChart = source.isChart
+        target.chart = source.isChart
         target.order = source.order
         target.queryUuid = UUID.fromString(source.query?.uuid)
         target.uuid = UUID.fromString(source.uuid)

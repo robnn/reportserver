@@ -26,6 +26,7 @@ interface QueryManager {
     fun executePaginatedQuery(parametrizedQueryRequest: ParametrizedQueryRequest): PagedQueryResponse
     fun executeQueryWithNamedParameters(connectionUuid: UUID, query: String, parameters: Map<String, Any>): ResultSet
     fun listQueries(page: Int?, itemsPerPage: Int?): QueryRequests
+    fun listAllQueries(): QueryRequests
     fun getQueryColumns(parametrizedQueryRequest: ParametrizedQueryRequest): List<Column>
     fun saveQuery(parametrizedQueryRequest: ParametrizedQueryRequest): ParametrizedQueryRequest
 }
@@ -123,15 +124,7 @@ class QueryManagerImpl(@Lazy private val connectionManager: ConnectionManager,
     }
 
     override fun listQueries(page: Int?, itemsPerPage: Int?): PagedQueryRequests {
-        val username = UserContext.currentUser?.username
-        val teams = teamRepository.findByUsername(username)
-        val queries = queryRepository.findAll().map { queryMapper.mapToRequest(it) }
-                .filter { query ->
-                    (query.visibility == QueryVisibility.TEAM &&
-                            teams.map { it.uuid }.any { query.teamUuidsAndNames.map { tUAN -> tUAN.uuid.toString() }.contains(it) }) ||
-                            query.visibility == QueryVisibility.PUBLIC ||
-                            (query.visibility == QueryVisibility.PRIVATE && query.creatorUsername == username)
-                }.toSet()
+        val queries = getQueriesForUser()
         val chunked = queries.chunked(itemsPerPage ?: 10)
         return PagedQueryRequests().apply {
             if (chunked.isNotEmpty()) this.queries = chunked[(page ?: 1) - 1].toSet()
@@ -139,5 +132,22 @@ class QueryManagerImpl(@Lazy private val connectionManager: ConnectionManager,
             this.itemsPerPage = itemsPerPage ?: 10
             this.totalItems = queries.size
         }
+    }
+
+    override fun listAllQueries(): QueryRequests {
+        val queries = getQueriesForUser()
+        return QueryRequests(queries.toSet())
+    }
+
+    private fun getQueriesForUser(): Set<ParametrizedQueryRequest> {
+        val username = UserContext.currentUser?.username
+        val teams = teamRepository.findByUsername(username)
+        return queryRepository.findAll().map { queryMapper.mapToRequest(it) }
+                .filter { query ->
+                    (query.visibility == QueryVisibility.TEAM &&
+                            teams.map { it.uuid }.any { query.teamUuidsAndNames.map { tUAN -> tUAN.uuid.toString() }.contains(it) }) ||
+                            query.visibility == QueryVisibility.PUBLIC ||
+                            (query.visibility == QueryVisibility.PRIVATE && query.creatorUsername == username)
+                }.toSet()
     }
 }

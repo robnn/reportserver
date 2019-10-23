@@ -33,7 +33,7 @@ class HDashboard: UuidHolder {
     private var uuid: String = UUID.randomUUID().toString()
 
     @OneToMany(targetEntity = HDashboardQuery::class, mappedBy = "dashboard", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var dashboardQueries: Set<HDashboardQuery> = mutableSetOf();
+    var dashboardQueries: MutableSet<HDashboardQuery> = mutableSetOf();
 
     @ManyToOne(targetEntity = User::class)
     @JoinColumn(name = "user_id")

@@ -4,7 +4,7 @@ import java.util.*
 
 class DashboardQuery(var uuid: UUID = UUID.randomUUID(),
                      var queryUuid: UUID? = null,
-                     var isChart: Boolean? = null,
+                     var chart: Boolean? = null,
                      var order: Int? = null)
 
 class Dashboard(var uuid: UUID = UUID.randomUUID(),

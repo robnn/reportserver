@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from './user.service';
-import { PagedQueryRequest, QueryRequests, NotPagedQueryRequest, Column } from '../model/pagedQueryRequest';
+import { PagedQueryRequest, PagedQueryRequests, NotPagedQueryRequest, Column, QueryRequests } from '../model/pagedQueryRequest';
 import { Observable } from 'rxjs';
 import { PagedQueryResponse, QueryResponse } from '../model/pagedQueryResponse';
 
@@ -29,8 +29,12 @@ export class QueryService {
     pagedQueryRequest, { headers: this.userService.getAuthTokenAsHttpHeader(null) });
   }
 
-  listSavedQueries(page: number, itemsPerPage: number) : Observable<QueryRequests> {
-    return this.http.get<QueryRequests>(`${this.connectionUrl}?page=${page}&itemsPerPage=${itemsPerPage}`, { headers: this.userService.getAuthTokenAsHttpHeader(null) });
+  listSavedQueries(page: number, itemsPerPage: number) : Observable<PagedQueryRequests> {
+    return this.http.get<PagedQueryRequests>(`${this.connectionUrl}?page=${page}&itemsPerPage=${itemsPerPage}`, { headers: this.userService.getAuthTokenAsHttpHeader(null) });
+  }
+
+  listAllSavedQueries() : Observable<QueryRequests> {
+    return this.http.get<QueryRequests>(`${this.connectionUrl}/all`, { headers: this.userService.getAuthTokenAsHttpHeader(null) });
   }
 
   getColumns(pagedQueryRequest: PagedQueryRequest): Observable<Column[]> {

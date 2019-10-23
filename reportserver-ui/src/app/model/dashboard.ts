@@ -7,5 +7,6 @@ export class Dashboard {
 export class DashboardQuery {
     uuid: string;
     queryUuid: string;
-    isChart: string;
+    chart: boolean;
+    order: number;
 }

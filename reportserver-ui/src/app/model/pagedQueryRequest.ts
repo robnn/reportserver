@@ -59,10 +59,14 @@ export class Parameter {
     }
 }
 
-export class QueryRequests {
+export class PagedQueryRequests {
     actualPage: number;
     itemsPerPage: number;
     totalItems: number;
+    queries: Array<PagedQueryRequest>;
+}
+
+export class QueryRequests {
     queries: Array<PagedQueryRequest>;
 }
 

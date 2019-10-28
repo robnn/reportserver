@@ -89,3 +89,7 @@ body {
 .flexed {
     display: flex;
 }
+
+.left-margin {
+  margin-left: 10px !important;
+}

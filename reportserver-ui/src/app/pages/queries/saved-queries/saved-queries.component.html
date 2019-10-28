@@ -5,7 +5,7 @@
     <span *ngIf="!queries || queries.length == 0">{{ "NO_QUERIES" | translate }}</span>
     <mat-accordion *ngIf="queries && queries.length > 0">
       <mat-expansion-panel *ngFor="let query of queries">
-        <mat-expansion-panel-header>
+        <mat-expansion-panel-header style="align-content: center">
           <mat-panel-title>
             <span>{{ query.queryName }} </span>
           </mat-panel-title>

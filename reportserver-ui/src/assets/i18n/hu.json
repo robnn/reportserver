@@ -98,5 +98,11 @@
   "NAME": "Név",
   "USERS": "Felhasználók",
   "USERS_IN_TEAM": "Csapatban lévő felhasználók",
-  "CHART": "Diagram"
+  "CHART": "Diagram",
+  "ADD_QUERY": "Lekérdezés hozzáadása",
+  "EDIT_DASHBOARD": "Lekérdezés hozzáadása",
+  "QUERY_NUMBER": "Lekérdezés a sorban",
+  "DISPLAY_CHART": "Diagram megjelenítése a dashboard-on",
+  "SAVE_DASHBOARD": "Dashboard mentése",
+  "NOT_LOGGED_IN": "Nincs bejelentkezve"
 }

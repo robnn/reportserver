@@ -15,7 +15,12 @@ export class ResultTableComponent implements OnInit {
   @Input() public queryRequest: PagedQueryRequest;
   @Input() public onlyChart: boolean;
   @Input() public shouldExecuteOnCreation: boolean;
+  @Input() public isOnDashboard: boolean;
 
+  defaultPageSize = 10;
+  defaultPageSizeOptions = [1, 2, 5, 10, 25, 100];
+  defaultDashboardPageSize = 5;
+  defaultDashboardPageSizeOptions = [5];
   params: any;
   neededPage = 1;
   itemsPerPage = 10;
@@ -39,6 +44,7 @@ export class ResultTableComponent implements OnInit {
     private notificationService: NotificationService) { }
 
   ngOnInit() {
+    this.queryRequest.itemsPerPage = this.pageSize();
     if (this.shouldExecuteOnCreation) {
       this.executeQuery(false);
     }
@@ -53,7 +59,7 @@ export class ResultTableComponent implements OnInit {
   public executeQuery(resetPage: boolean) {    
     if (resetPage) {
       this.neededPage = 1;
-      this.itemsPerPage = 10;
+      this.itemsPerPage = this.pageSize();
       this.isLoading = true;
     }
     
@@ -93,5 +99,13 @@ export class ResultTableComponent implements OnInit {
   public executeQueryWithParams(params: object) {
     this.params = params;
     this.executeQuery(true);
+  }
+
+  pageSize() {
+    return this.isOnDashboard ? this.defaultDashboardPageSize : this.defaultPageSize;
+  }
+
+  pageSizeOptions() {
+    return this.isOnDashboard ? this.defaultDashboardPageSizeOptions : this.defaultPageSizeOptions;
   }
 }

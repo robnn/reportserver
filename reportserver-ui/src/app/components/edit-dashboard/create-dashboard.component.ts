@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Input } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Dashboard, DashboardQuery } from '../../model/dashboard';
 import { PagedQueryRequest } from 'src/app/model/pagedQueryRequest';
@@ -13,31 +13,21 @@ import { NotificationService } from 'src/app/service/notification.service';
 })
 export class CreateDashboardComponent implements OnInit {
 
-  public dashboard: Dashboard = new Dashboard();
+  public dashboardQuery: DashboardQuery;
   public queries: PagedQueryRequest[];
 
   constructor(public dialogRef: MatDialogRef<CreateDashboardComponent>,
     private queryService: QueryService,
     private dashboardService: DashboardService,
     private notificationService: NotificationService,
-    @Inject(MAT_DIALOG_DATA) public inDashboard: Dashboard) { 
-      this.dashboard = inDashboard;
+    @Inject(MAT_DIALOG_DATA) public inDashboardQuery: DashboardQuery) { 
+      this.dashboardQuery = inDashboardQuery;
      }
 
   ngOnInit() {
-    if (!this.dashboard.dashboardQueries) {
-      this.dashboard.dashboardQueries = [];
-    }
     this.queryService.listAllSavedQueries().subscribe(resp => {
       this.queries = resp.queries;
     })
-  }
-
-  addDashboardQuery() {
-    const dashboardQuery = new DashboardQuery();
-    dashboardQuery.order = this.dashboard.dashboardQueries.length;
-    dashboardQuery.chart = false;
-    this.dashboard.dashboardQueries.push(dashboardQuery);
   }
 
   isChartByQueryUuid(uuid: string) {
@@ -46,8 +36,6 @@ export class CreateDashboardComponent implements OnInit {
   }
 
   saveDashboard() {
-    this.dashboardService.manageDashboard(this.dashboard).subscribe(() => {
-      this.dialogRef.close('SAVED');
-    }, error => this.notificationService.addNotification(error.error));
+    this.dialogRef.close('SAVED');
   }
 }

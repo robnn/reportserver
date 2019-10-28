@@ -98,5 +98,11 @@
   "NAME": "Name",
   "USERS": "Users",
   "USERS_IN_TEAM": "Users in team",
-  "CHART": "Chart"
+  "CHART": "Chart",
+  "ADD_QUERY": "Add query",
+  "EDIT_DASHBOARD": "Add query to dashboard",
+  "QUERY_NUMBER": "Query in order",
+  "DISPLAY_CHART": "Display chart in dashboard",
+  "SAVE_DASHBOARD": "Save dashboard",
+  "NOT_LOGGED_IN": "Not logged in"
 }

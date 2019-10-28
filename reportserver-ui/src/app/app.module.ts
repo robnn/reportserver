@@ -1,16 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
-import {
-  MatInputModule, MatFormFieldModule, MatSelectModule, MatOptionModule, MatCardModule,
-  MatButtonModule, MatToolbarModule, MatMenuModule, MatIconModule, MatSnackBarModule,
-  MatTabsModule, MatExpansionModule, MatDialogModule, MatPaginatorModule, MatTableModule,
-  MatCheckboxModule,
-  MatProgressSpinnerModule
-} from '@angular/material';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -45,21 +37,14 @@ import { QueryEditorComponent } from './components/query-editor/query-editor.com
 import { BarChartComponent } from './components/charts/bar-chart/bar-chart.component';
 import { ModalQueryEditorComponent } from './components/modal-query-editor/modal-query-editor.component';
 import { CreateDashboardComponent } from './components/edit-dashboard/create-dashboard.component';
+import { RoutingModule } from './modules/routing/routing.module';
+import { MaterialModule } from './modules/material/material.module';
 
 export function hljsLanguages() {
   return [
     {name: 'sql', func: sql}
   ];
 }
-
-const appRoutes: Routes = [
-  { path: 'login', component: LoginComponent, data: { animation: 'LoginPage' } },
-  { path: 'register', component: RegisterComponent, data: { animation: 'RegisterPage' } },
-  { path: 'dashboard', component: DashboardComponent, data: { animation: 'DashboardPage' } },
-  { path: 'settings', component: SettingsComponent, data: { animation: 'SettingsPage' } },
-  { path: 'queries', component: QueriesComponent, data: {animation: 'QueriesPage' } },
-  { path: '', redirectTo: 'login', pathMatch: 'full' }
-];
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -91,26 +76,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     CreateDashboardComponent
   ],
   imports: [
-    RouterModule.forRoot(appRoutes, { enableTracing: false }),
+    MaterialModule,
+    RoutingModule,
     BrowserModule,
     NgxFlagIconCssModule,
-    MatFormFieldModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatInputModule,
-    MatButtonModule,
-    MatToolbarModule,
-    MatMenuModule,
-    MatIconModule,
-    MatSnackBarModule,
-    MatCardModule,
-    MatTabsModule,
-    MatExpansionModule,
-    MatDialogModule,
-    MatPaginatorModule,
-    MatTableModule,
-    MatCheckboxModule,
-    MatProgressSpinnerModule,
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,

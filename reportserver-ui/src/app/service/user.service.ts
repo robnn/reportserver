@@ -95,7 +95,7 @@ export class UserService {
   }
 
   getCurrentUser(): Observable<User> {
-    if (!this.user) {
+    if (!this.user && this.authToken) {
       const observable = this.http.get<User>(this.usersUrl + 'byToken/' +
         this.getAuthToken(), { headers: this.getAuthTokenAsHttpHeader(null) });
       const subject = new Subject<User>();

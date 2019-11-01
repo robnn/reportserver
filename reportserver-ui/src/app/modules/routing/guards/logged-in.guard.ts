@@ -13,6 +13,10 @@ export class LoggedInGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (this.userService.getAuthToken()) {
+      if (this.userService.getCurrentUser(true).subscribe(() => {}, error => {
+        this.router.navigateByUrl('/login');
+        return false;
+      }))
       return true;
     }
     this.router.navigateByUrl('/login');

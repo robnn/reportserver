@@ -42,7 +42,7 @@ export class UserService {
     subject.subscribe(x => {
       this.authToken = x.token;
       this.localStorageService.storeUserToken(x.token);
-      this.getCurrentUser();
+      this.getCurrentUser(false);
     }, error => {
       this.notificationService.addNotification(error.error);
     });
@@ -94,8 +94,8 @@ export class UserService {
     return headers;
   }
 
-  getCurrentUser(): Observable<User> {
-    if (!this.user && this.authToken) {
+  getCurrentUser(dontUseCache: boolean): Observable<User> {
+    if (dontUseCache || !this.user && this.authToken) {
       const observable = this.http.get<User>(this.usersUrl + 'byToken/' +
         this.getAuthToken(), { headers: this.getAuthTokenAsHttpHeader(null) });
       const subject = new Subject<User>();

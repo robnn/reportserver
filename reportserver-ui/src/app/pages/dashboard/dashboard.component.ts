@@ -30,12 +30,6 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     if (!this.userService.getAuthToken()) {
       this.router.navigate(['/login']);
-    } else {
-      this.userService.getCurrentUser().subscribe(() => {}, error => {
-        if (error.error.message == 'INVALID_TOKEN') {
-          this.router.navigate(['/login']);
-        }
-      })
     }
     this.getDashboard();
     this.queryService.listAllSavedQueries().subscribe(resp => {
@@ -59,7 +53,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getDashboard() {
-    this.userService.getCurrentUser().subscribe(user => {
+    this.userService.getCurrentUser(false).subscribe(user => {
       this.username = user.username;
       this.dashboardService.getDashboardForUsername(user.username).subscribe(resp => {
         this.dashboard = resp;

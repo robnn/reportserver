@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    this.userService.getCurrentUser().subscribe(() => {
+    this.userService.getCurrentUser(false).subscribe(() => {
       //do nothing
     }, () => {
       this.userService.invalidateData();

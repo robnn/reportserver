@@ -16,8 +16,15 @@ interface DashboardService {
 class DashboardServiceImpl(private val dashboardMapper: DashboardMapper,
                            private val dashboardRepository: DashboardRepository) : DashboardService {
     override fun manageDashboard(dashboard: Dashboard): Dashboard {
+        correctDashboardOrder(dashboard)
         return dashboardMapper.map(dashboardRepository.save(
                 dashboardMapper.map(dashboard, dashboardRepository.findByUuid(dashboard.uuid.toString()))))
+    }
+
+    private fun correctDashboardOrder(dashboard: Dashboard) {
+        dashboard.dashboardQueries.forEachIndexed { index, dashboardQuery ->
+            dashboardQuery.order = index
+        }
     }
 
     override fun findDashboardByUsername(username: String): Dashboard? {

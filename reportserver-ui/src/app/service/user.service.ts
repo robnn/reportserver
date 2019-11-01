@@ -101,6 +101,12 @@ export class UserService {
       const subject = new Subject<User>();
       subject.subscribe(resp => {
         this.user = resp;
+      }, error => {
+        if (error.error.message == 'INVALID_TOKEN') {
+          this.invalidateData();
+        } else {
+          this.notificationService.addNotification(error.error);
+        }
       });
       observable.subscribe(subject);
       return subject;

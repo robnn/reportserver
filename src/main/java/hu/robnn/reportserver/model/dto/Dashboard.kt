@@ -8,5 +8,5 @@ class DashboardQuery(var uuid: UUID = UUID.randomUUID(),
                      var order: Int? = null)
 
 class Dashboard(var uuid: UUID = UUID.randomUUID(),
-                var dashboardQueries: Set<DashboardQuery> = mutableSetOf(),
+                var dashboardQueries: List<DashboardQuery> = mutableListOf(),
                 var userName: String? = null)

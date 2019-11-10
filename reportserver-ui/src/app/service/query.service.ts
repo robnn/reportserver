@@ -20,7 +20,8 @@ export class QueryService {
   }
 
   runPagedQuery(pagedQueryRequest: PagedQueryRequest): Observable<PagedQueryResponse> {
-    return this.http.post<PagedQueryResponse>(this.connectionUrl + '/paged',
+    const path = pagedQueryRequest.executionUuid ? '/execution' : '/paged';
+    return this.http.post<PagedQueryResponse>(this.connectionUrl + path,
     pagedQueryRequest, { headers: this.userService.getAuthTokenAsHttpHeader(null) });
   }
 

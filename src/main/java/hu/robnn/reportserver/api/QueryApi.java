@@ -40,6 +40,13 @@ public class QueryApi {
         return new ResponseEntity<>(pagedQueryResponse, HttpStatus.OK);
     }
 
+    @RequestMapping(path = "/execution", method = RequestMethod.POST)
+    @Authenticated
+    public ResponseEntity<PagedQueryResponse> getExecution(@RequestBody ExecutionQueryRequest executionQueryRequest) {
+        PagedQueryResponse pagedQueryResponse = queryManager.getExecutionData(executionQueryRequest);
+        return new ResponseEntity<>(pagedQueryResponse, HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.GET)
     @Authenticated
     public ResponseEntity<QueryRequests> listQueries(@RequestParam Integer page, @RequestParam Integer itemsPerPage) {

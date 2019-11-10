@@ -10,6 +10,9 @@ export class PagedQueryRequest {
     visibility: QueryVisibility;
     teamUuidsAndNames: Array<TeamUuidAndName>;
     charts = new Array<ChartDiagram>();
+    executions = new Array<QueryExecution>();
+    saveExecution = false;
+    executionUuid: string;
 
     setAllFrom(other: PagedQueryRequest) {
         this.queryString = other.queryString;
@@ -22,6 +25,8 @@ export class PagedQueryRequest {
         this.visibility = other.visibility;
         this.teamUuidsAndNames = other.teamUuidsAndNames;
         this.charts = other.charts;
+        this.saveExecution = other.saveExecution;
+        this.executionUuid = other.executionUuid;
     }
 }
 
@@ -29,6 +34,11 @@ export class NotPagedQueryRequest {
     queryString: string;
     connectionUuid: string;
     parameters: object;
+}
+
+export class QueryExecution {
+    uuid: string;
+    executionTime: Date;
 }
 
 export class Column {

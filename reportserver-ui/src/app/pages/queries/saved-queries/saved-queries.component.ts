@@ -109,6 +109,9 @@ export class SavedQueriesComponent implements OnInit {
         this.resultTable.executeQuery(true);
       }
     }
+    if (query.saveExecution) {
+      this.getQueries();
+    }
   }
 
   exportQuery(query: PagedQueryRequest) {
@@ -142,5 +145,14 @@ export class SavedQueriesComponent implements OnInit {
     this.itemsPerPage = pageEvent.pageSize;
     this.neededPage = pageEvent.pageIndex + 1;
     this.getQueries();
+  }
+
+  getExecutionForQuery(query: PagedQueryRequest, executionUuid: string) {
+    this.currentQueryRequest.setAllFrom(query);
+    this.currentQueryRequest.executionUuid = executionUuid;
+    if (this.resultTable) {
+      this.resultTable.executeQuery(true);
+    }
+    
   }
 }

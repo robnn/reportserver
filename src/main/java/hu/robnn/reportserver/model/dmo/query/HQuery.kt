@@ -49,6 +49,9 @@ open class HQuery: UuidHolder {
     @OneToMany(targetEntity = HQueryChart::class, mappedBy = "query", cascade = [CascadeType.ALL], orphanRemoval = true)
     open var queryCharts: MutableSet<HQueryChart> = mutableSetOf()
 
+    @OneToMany(targetEntity = HQueryExecution::class, mappedBy = "query", cascade = [CascadeType.ALL], orphanRemoval = true)
+    open var queryExecutions: MutableSet<HQueryExecution> = mutableSetOf()
+
     @ManyToOne
     @JoinColumn(name = "creator_user_id")
     open var creatorUser: User? = null

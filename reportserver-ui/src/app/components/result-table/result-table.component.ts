@@ -53,6 +53,7 @@ export class ResultTableComponent implements OnInit {
   onPaginationChanged(pageEvent: PageEvent) {
     this.queryRequest.itemsPerPage = pageEvent.pageSize;
     this.queryRequest.neededPage = pageEvent.pageIndex + 1;
+    this.queryRequest.saveExecution = false; // dont save another execution for pagination change
     this.executeQuery(false);
   }
 

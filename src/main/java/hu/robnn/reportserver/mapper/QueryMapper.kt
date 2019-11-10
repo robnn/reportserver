@@ -3,14 +3,11 @@ package hu.robnn.reportserver.mapper
 import hu.robnn.reportserver.model.dmo.query.HQuery
 import hu.robnn.reportserver.model.dmo.query.HQueryColumn
 import hu.robnn.reportserver.model.dmo.query.HQueryParameter
-import hu.robnn.reportserver.model.dto.Column
-import hu.robnn.reportserver.model.dto.ParametrizedQueryRequest
 import hu.robnn.reportserver.service.queryhelper.NamedParameterStatement
 import hu.robnn.auth.service.UserContext
 import hu.robnn.reportserver.dao.TeamRepository
 import hu.robnn.reportserver.model.dmo.query.HQueryChart
-import hu.robnn.reportserver.model.dto.Chart
-import hu.robnn.reportserver.model.dto.TeamUuidAndName
+import hu.robnn.reportserver.model.dto.*
 import org.springframework.stereotype.Component
 import java.lang.Exception
 import java.util.*
@@ -80,6 +77,7 @@ class QueryMapper(private val teamRepository: TeamRepository) {
         target.teamUuidsAndNames = query.teams.map { TeamUuidAndName(UUID.fromString(it.uuid), it.name) }.toMutableList()
         target.charts = query.queryCharts.map { Chart(it.chartType, it.labelColumn?.columnName, it.dataColumn?.columnName) }.toMutableList()
         target.uuid = query.uuid
+        target.executions = query.queryExecutions.map { QueryExecution(uuid = UUID.fromString(it.uuid), executionTime = it.executionTime)}.toMutableList()
         return target
     }
 

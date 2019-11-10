@@ -1,7 +1,9 @@
 package hu.robnn.reportserver.service
 
+import com.google.gson.Gson
 import hu.robnn.auth.service.UserContext
 import hu.robnn.reportserver.converter.Converter
+import hu.robnn.reportserver.dao.QueryExecutionRepository
 import hu.robnn.reportserver.dao.QueryRepository
 import hu.robnn.reportserver.dao.TeamRepository
 import hu.robnn.reportserver.enums.QueryErrorCause
@@ -10,6 +12,7 @@ import hu.robnn.reportserver.exception.ReportServerMappedException
 import hu.robnn.reportserver.mapper.QueryMapper
 import hu.robnn.reportserver.model.dmo.query.HQuery
 import hu.robnn.reportserver.model.dmo.query.HQueryColumn
+import hu.robnn.reportserver.model.dmo.query.HQueryExecution
 import hu.robnn.reportserver.model.dto.*
 import hu.robnn.reportserver.service.queryhelper.NamedParameterStatement
 import org.apache.commons.lang3.StringUtils.isBlank
@@ -29,13 +32,15 @@ interface QueryManager {
     fun listAllQueries(): QueryRequests
     fun getQueryColumns(parametrizedQueryRequest: ParametrizedQueryRequest): List<Column>
     fun saveQuery(parametrizedQueryRequest: ParametrizedQueryRequest): ParametrizedQueryRequest
+    fun getExecutionData(executionRequest: ExecutionQueryRequest): PagedQueryResponse
 }
 
 @Component
 class QueryManagerImpl(@Lazy private val connectionManager: ConnectionManager,
                        private val queryMapper: QueryMapper,
                        private val queryRepository: QueryRepository,
-                       private val teamRepository: TeamRepository) : QueryManager {
+                       private val teamRepository: TeamRepository,
+                       private val queryExecutionRepository: QueryExecutionRepository) : QueryManager {
 
     override fun saveQuery(parametrizedQueryRequest: ParametrizedQueryRequest): ParametrizedQueryRequest {
         if (isBlank(parametrizedQueryRequest.queryName)) {
@@ -90,7 +95,24 @@ class QueryManagerImpl(@Lazy private val connectionManager: ConnectionManager,
     override fun executePaginatedQuery(parametrizedQueryRequest: ParametrizedQueryRequest): PagedQueryResponse {
         val resultSet = getResultSetFromRequest(parametrizedQueryRequest)
         val columns = Converter.getColumns(resultSet)
+        if (parametrizedQueryRequest.saveExecution) {
+            if (parametrizedQueryRequest.queryName == null) {
+                throw ReportServerMappedException(QueryErrorCause.NO_QUERY_NAME_SUPPLIED)
+            }
+            saveExecution(parametrizedQueryRequest)
+        }
         return Converter.convertToPagedQueryResult(resultSet, parametrizedQueryRequest, queryMapper.mapToColumns(columns))
+    }
+
+    private fun saveExecution(parametrizedQueryRequest: ParametrizedQueryRequest) {
+        val notPaged = NotPagedParametrizedQueryRequest(queryString = parametrizedQueryRequest.queryString,
+                connectionUuid = parametrizedQueryRequest.connectionUuid, parameters = parametrizedQueryRequest.parameters)
+        val executeQuery = executeQuery(notPaged)
+        val jsonString = Gson().toJson(executeQuery.result)
+        val queryInDb = queryRepository.findByQueryName(parametrizedQueryRequest.queryName)
+        val hQueryExecution = HQueryExecution().apply { query = queryInDb; executionTime = Date(); executionData = jsonString }
+        queryInDb.queryExecutions.add(hQueryExecution)
+        queryExecutionRepository.save(hQueryExecution)
     }
 
     private fun getResultSetFromRequest(parametrizedQueryRequest: ParametrizedQueryRequest) : ResultSet {
@@ -149,5 +171,12 @@ class QueryManagerImpl(@Lazy private val connectionManager: ConnectionManager,
                             query.visibility == QueryVisibility.PUBLIC ||
                             (query.visibility == QueryVisibility.PRIVATE && query.creatorUsername == username)
                 }.toSet()
+    }
+
+    override fun getExecutionData(executionRequest: ExecutionQueryRequest): PagedQueryResponse {
+        val queryExecution = queryExecutionRepository.findByUuid(executionRequest.executionUuid.toString())
+        val resultSet = getResultSetFromRequest(executionRequest)
+        val columns = Converter.getColumns(resultSet)
+        return Converter.convertToPagedQueryResult(queryExecution.executionData, executionRequest, queryMapper.mapToColumns(columns))
     }
 }

@@ -55,6 +55,18 @@
             <li>{{ column.columnName }} : {{ column.columnType }}</li>
           </ul>
         </mat-expansion-panel>
+        <mat-expansion-panel *ngIf="query.executions.length !== 0">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <span>{{ "EXECUTIONS" | translate }}:</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <ul *ngFor="let execution of query.executions">
+            <li>{{ "EXECUTION_TIME" | translate }}: {{ execution.executionTime }} 
+              <button mat-button color="primary" (click)="getExecutionForQuery(query, execution.uuid)">{{ "GET_EXECUTION_RESULT" | translate }}</button>
+            </li>
+          </ul>
+        </mat-expansion-panel>
         <mat-expansion-panel *ngIf="query.charts.length !== 0">
             <mat-expansion-panel-header>
               <mat-panel-title>
@@ -104,6 +116,7 @@
           <div class="fill-remaining-space"></div>
           <button mat-button color="primary" (click)="exportQuery(query)">{{"EXPORT_XLSX" | translate}}</button>
           <button mat-button color="primary" (click)="executePagedQuery(query)">{{"EXECUTE_QUERY" | translate}}</button>
+          <mat-checkbox [(ngModel)]="query.saveExecution">{{ "SAVE_EXECUTION" | translate }}</mat-checkbox>
         </div>
       </mat-expansion-panel>
       <mat-paginator #paginator [length]="totalQueries" [pageSize]="10" [pageSizeOptions]="[1, 2, 5, 10, 25, 100]"

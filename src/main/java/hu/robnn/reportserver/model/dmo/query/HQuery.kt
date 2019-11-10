@@ -40,6 +40,9 @@ open class HQuery: UuidHolder {
     @Column(name = "query_name")
     open var queryName: String? = null
 
+    @OneToOne(targetEntity = HQueryScheduleData::class, mappedBy = "query", cascade = [CascadeType.ALL], orphanRemoval = true)
+    open var queryScheduleData: HQueryScheduleData? = null
+
     @OneToMany(targetEntity = HQueryParameter::class, mappedBy = "query", cascade = [CascadeType.ALL], orphanRemoval = true)
     open var queryParameters: MutableSet<HQueryParameter> = mutableSetOf()
 
@@ -65,6 +68,7 @@ open class HQuery: UuidHolder {
             joinColumns = [JoinColumn(name = "query_id")],
             inverseJoinColumns = [JoinColumn(name = "team_id")])
     open var teams: MutableSet<HTeam> = mutableSetOf()
+
 
 
 }

@@ -75,6 +75,30 @@
     </mat-select>
   </mat-form-field>
 </div>
+<mat-checkbox (change)="onShouldScheduleChange()" *ngIf="queryRequest.queryName" [(ngModel)]="shouldSchedule">
+  {{ "SHOULD_SCHEDULE" | translate }}</mat-checkbox>
+<div *ngIf="shouldSchedule">
+  <mat-form-field color="accent" class="full-width">
+    <mat-select placeholder="{{ 'SCHEDULE_TYPE' | translate }}" [(ngModel)]="queryRequest.queryScheduleData.type" name="scheduleType">
+      <mat-option *ngFor="let type of scheduleTypes" [value]="type">
+        {{ type | translate }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field *ngIf="queryRequest.queryScheduleData.type == 'WEEKLY' || queryRequest.queryScheduleData.type == 'DAILY'" color="accent" class="full-width">
+    <input matInput name="timeOfDay" [(ngModel)]="queryRequest.queryScheduleData.timeOfDay">
+    <mat-label>
+      <mat-icon>access_time</mat-icon> {{ 'TIME_OF_DAY' | translate }}
+    </mat-label>
+  </mat-form-field>
+  <mat-form-field *ngIf="queryRequest.queryScheduleData.type == 'WEEKLY'" color="accent" class="full-width">
+    <mat-select placeholder="{{ 'DAY' | translate }}" [(ngModel)]="queryRequest.queryScheduleData.day" name="scheduleType">
+      <mat-option *ngFor="let type of dayTypes" [value]="type">
+        {{ type | translate }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
 <div class="flexed">
   <div class="fill-remaining-space"></div>
   <button mat-button color="primary" (click)="saveQuery()">{{"SAVE_QUERY" | translate}}</button>

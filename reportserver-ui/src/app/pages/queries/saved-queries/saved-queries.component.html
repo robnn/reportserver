@@ -13,20 +13,44 @@
             {{ getConnectionInfoForUuid(query.connectionUuid) }}
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <mat-form-field color="accent" *ngIf="query.creatorUsername">
-          <input matInput readonly="true" placeholder="{{ 'CREATOR_USERNAME' | translate }}" name="username" value="{{ query.creatorUsername }}"
-                 >
+        <mat-form-field color="accent" *ngIf="query.creatorUsername" class="full-width">
+          <input matInput readonly="true" placeholder="{{ 'CREATOR_USERNAME' | translate }}" name="username"
+            value="{{ query.creatorUsername }}">
           <mat-label>
             <mat-icon>face</mat-icon>
-            {{ 'CREATOR_USERNAME' | translate }} </mat-label>
+            {{ 'CREATOR_USERNAME' | translate }}
+          </mat-label>
         </mat-form-field>
-        <mat-form-field>
-          <mat-select disabled="true" placeholder="{{ 'VISIBILITY' | translate }}" value="{{ query.visibility }}" name="queryVisibility">
+        <mat-form-field color="accent" class="full-width">
+          <mat-select disabled="true" placeholder="{{ 'VISIBILITY' | translate }}" value="{{ query.visibility }}"
+            name="queryVisibility">
             <mat-option *ngFor="let type of types" [value]="type">
               {{ type | translate }}
             </mat-option>
           </mat-select>
         </mat-form-field>
+        <div *ngIf="query.queryScheduleData">
+            <mat-form-field color="accent" class="full-width">
+              <mat-select disabled="true" placeholder="{{ 'SCHEDULE_TYPE' | translate }}" [(ngModel)]="query.queryScheduleData.type" name="scheduleType">
+                <mat-option *ngFor="let type of scheduleTypes" [value]="type">
+                  {{ type | translate }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field *ngIf="query.queryScheduleData.type == 'WEEKLY' || query.queryScheduleData.type == 'DAILY'" color="accent" class="full-width">
+              <input matInput readonly="true" name="timeOfDay" [(ngModel)]="query.queryScheduleData.timeOfDay">
+              <mat-label>
+                <mat-icon>access_time</mat-icon> {{ 'TIME_OF_DAY' | translate }}
+              </mat-label>
+            </mat-form-field>
+            <mat-form-field *ngIf="query.queryScheduleData.type == 'WEEKLY'" color="accent" class="full-width">
+              <mat-select disabled="true" placeholder="{{ 'DAY' | translate }}" [(ngModel)]="query.queryScheduleData.day" name="scheduleType">
+                <mat-option *ngFor="let type of dayTypes" [value]="type">
+                  {{ type | translate }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -62,44 +86,45 @@
             </mat-panel-title>
           </mat-expansion-panel-header>
           <ul *ngFor="let execution of query.executions">
-            <li>{{ "EXECUTION_TIME" | translate }}: {{ execution.executionTime }} 
-              <button mat-button color="primary" (click)="getExecutionForQuery(query, execution.uuid)">{{ "GET_EXECUTION_RESULT" | translate }}</button>
+            <li>{{ "EXECUTION_TIME" | translate }}: {{ execution.executionTime }}
+              <button mat-button color="primary"
+                (click)="getExecutionForQuery(query, execution.uuid)">{{ "GET_EXECUTION_RESULT" | translate }}</button>
             </li>
           </ul>
         </mat-expansion-panel>
         <mat-expansion-panel *ngIf="query.charts.length !== 0">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                <span>{{ "CHART" | translate }}:</span>
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-                <mat-form-field color="accent" class="full-width">
-                    <mat-select disabled="true" placeholder="{{ 'CHART_TYPE' | translate }}" [(ngModel)]="query.charts[0].chartType"
-                      name="chartType">
-                      <mat-option *ngFor="let chartType of chartTypes" [value]="chartType">
-                        {{ chartType | translate }}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  <br>
-                  <mat-form-field color="accent" class="full-width">
-                    <mat-select disabled="true" placeholder="{{ 'LABEL_COLUMN' | translate }}" [(ngModel)]="query.charts[0].labelColumn"
-                      name="labelColumn">
-                      <mat-option [value]="query.charts[0].labelColumn">
-                        {{ query.charts[0].labelColumn }}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  <br>
-                  <mat-form-field color="accent" class="full-width">
-                    <mat-select disabled="true" placeholder="{{ 'DATA_COLUMN' | translate }}" [(ngModel)]="query.charts[0].dataColumn"
-                      name="dataColumn">
-                      <mat-option [value]="query.charts[0].dataColumn">
-                        {{ query.charts[0].dataColumn }}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-          </mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <span>{{ "CHART" | translate }}:</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-form-field color="accent" class="full-width">
+            <mat-select disabled="true" placeholder="{{ 'CHART_TYPE' | translate }}"
+              [(ngModel)]="query.charts[0].chartType" name="chartType">
+              <mat-option *ngFor="let chartType of chartTypes" [value]="chartType">
+                {{ chartType | translate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <br>
+          <mat-form-field color="accent" class="full-width">
+            <mat-select disabled="true" placeholder="{{ 'LABEL_COLUMN' | translate }}"
+              [(ngModel)]="query.charts[0].labelColumn" name="labelColumn">
+              <mat-option [value]="query.charts[0].labelColumn">
+                {{ query.charts[0].labelColumn }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <br>
+          <mat-form-field color="accent" class="full-width">
+            <mat-select disabled="true" placeholder="{{ 'DATA_COLUMN' | translate }}"
+              [(ngModel)]="query.charts[0].dataColumn" name="dataColumn">
+              <mat-option [value]="query.charts[0].dataColumn">
+                {{ query.charts[0].dataColumn }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-expansion-panel>
         <mat-expansion-panel *ngIf="query.teamUuidsAndNames.length !== 0">
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -112,15 +137,21 @@
         </mat-expansion-panel>
         <br>
         <div class="flexed">
-          <button mat-button mat-mini-fab color="primary" (click)="openForEditing(query)"><mat-icon>edit</mat-icon></button>
+          <div class="fill-remaining-space"></div>
+          <mat-checkbox [(ngModel)]="query.saveExecution">{{ "SAVE_EXECUTION" | translate }}</mat-checkbox>
+        </div>
+        <div class="flexed">
+          <button mat-button mat-mini-fab color="primary" (click)="openForEditing(query)">
+            <mat-icon>edit</mat-icon>
+          </button>
           <div class="fill-remaining-space"></div>
           <button mat-button color="primary" (click)="exportQuery(query)">{{"EXPORT_XLSX" | translate}}</button>
           <button mat-button color="primary" (click)="executePagedQuery(query)">{{"EXECUTE_QUERY" | translate}}</button>
-          <mat-checkbox [(ngModel)]="query.saveExecution">{{ "SAVE_EXECUTION" | translate }}</mat-checkbox>
+
         </div>
       </mat-expansion-panel>
       <mat-paginator #paginator [length]="totalQueries" [pageSize]="10" [pageSizeOptions]="[1, 2, 5, 10, 25, 100]"
-      (page)=onPaginationChanged($event)></mat-paginator>
+        (page)=onPaginationChanged($event)></mat-paginator>
     </mat-accordion>
   </mat-card-content>
   <mat-card-actions>

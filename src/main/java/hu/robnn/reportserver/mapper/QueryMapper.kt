@@ -1,12 +1,9 @@
 package hu.robnn.reportserver.mapper
 
-import hu.robnn.reportserver.model.dmo.query.HQuery
-import hu.robnn.reportserver.model.dmo.query.HQueryColumn
-import hu.robnn.reportserver.model.dmo.query.HQueryParameter
 import hu.robnn.reportserver.service.queryhelper.NamedParameterStatement
 import hu.robnn.auth.service.UserContext
 import hu.robnn.reportserver.dao.TeamRepository
-import hu.robnn.reportserver.model.dmo.query.HQueryChart
+import hu.robnn.reportserver.model.dmo.query.*
 import hu.robnn.reportserver.model.dto.*
 import org.springframework.stereotype.Component
 import java.lang.Exception
@@ -34,7 +31,21 @@ class QueryMapper(private val teamRepository: TeamRepository) {
         realTarget.teams.addAll(parametrizedQueryRequest.teamUuidsAndNames.map { teamRepository.findByUuid(it.name) })
         realTarget.queryCharts.clear()
         realTarget.queryCharts.addAll(mapCharts(parametrizedQueryRequest.charts, realTarget, columns))
+        realTarget.queryScheduleData = map(parametrizedQueryRequest.queryScheduleData, realTarget)
         return realTarget
+    }
+
+    private fun map(queryScheduleData: QueryScheduleData?, query: HQuery): HQueryScheduleData? {
+        if (queryScheduleData == null) {
+            return null
+        }
+        val target = HQueryScheduleData()
+        target.date = queryScheduleData.date
+        target.day = queryScheduleData.day
+        target.query = query
+        target.scheduledExecutionType = queryScheduleData.type
+        target.timeInDay = queryScheduleData.timeOfDay
+        return target
     }
 
     private fun mapCharts(charts: MutableList<Chart>, query: HQuery, allColumns: Set<HQueryColumn>): MutableSet<HQueryChart> {
@@ -78,6 +89,19 @@ class QueryMapper(private val teamRepository: TeamRepository) {
         target.charts = query.queryCharts.map { Chart(it.chartType, it.labelColumn?.columnName, it.dataColumn?.columnName) }.toMutableList()
         target.uuid = query.uuid
         target.executions = query.queryExecutions.map { QueryExecution(uuid = UUID.fromString(it.uuid), executionTime = it.executionTime)}.toMutableList()
+        target.queryScheduleData = mapScheduleData(query.queryScheduleData)
+        return target
+    }
+
+    private fun mapScheduleData(queryScheduleData: HQueryScheduleData?): QueryScheduleData? {
+        if (queryScheduleData == null) {
+            return null
+        }
+        val target = QueryScheduleData()
+        target.date = queryScheduleData.date
+        target.day = queryScheduleData.day
+        target.timeOfDay = queryScheduleData.timeInDay
+        target.type = queryScheduleData.scheduledExecutionType
         return target
     }
 

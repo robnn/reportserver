@@ -1,6 +1,8 @@
 package hu.robnn.reportserver.model.dto
 
+import hu.robnn.reportserver.enums.Day
 import hu.robnn.reportserver.enums.QueryVisibility
+import hu.robnn.reportserver.enums.ScheduledExecutionType
 import java.util.*
 
 class QueryResponse(var result: MutableList<MutableMap<String, Any>> = mutableListOf(),
@@ -26,7 +28,8 @@ open class PagedQueryRequest(var uuid: String? = null,
                              var teamUuidsAndNames: MutableList<TeamUuidAndName> = mutableListOf(),
                              var charts: MutableList<Chart> = mutableListOf(),
                              var executions: MutableList<QueryExecution> = mutableListOf(),
-                             var saveExecution: Boolean = false)
+                             var saveExecution: Boolean = false,
+                             var queryScheduleData: QueryScheduleData? = null)
 
 open class TeamUuidAndName(var uuid: UUID = UUID.randomUUID(),
                            var name: String? = null)
@@ -55,3 +58,8 @@ class Chart(var chartType: String? = null,
 
 class QueryExecution(var uuid: UUID? = UUID.randomUUID(),
                     var executionTime: Date? = null)
+
+class QueryScheduleData(var timeOfDay: String? = null,
+                        var day: Day? = null,
+                        var date: Date? = null,
+                        var type: ScheduledExecutionType? = null)

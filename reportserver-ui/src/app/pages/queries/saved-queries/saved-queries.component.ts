@@ -13,6 +13,8 @@ import { ExcelService } from 'src/app/service/excel.service';
 import { RequestHelper } from '../helper/request-helper';
 import { ModalQueryEditorComponent } from 'src/app/components/modal-query-editor/modal-query-editor.component';
 import { ChartType } from 'src/app/model/chart-type';
+import { ScheduledExecutionType } from 'src/app/model/scheduled-type';
+import { Day } from 'src/app/model/day';
 
 @Component({
   selector: 'app-saved-queries',
@@ -29,6 +31,8 @@ export class SavedQueriesComponent implements OnInit {
   public currentQueryRequest = new PagedQueryRequest();
   public types = Object.keys(QueryVisibility);
   public chartTypes = Object.keys(ChartType);
+  public scheduleTypes = Object.keys(ScheduledExecutionType);
+  public dayTypes = Object.keys(Day);
   public totalQueries: number;
   public itemsPerPage: number = 10;
   public neededPage: number = 1;

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Connections } from 'src/app/model/connection';
-import { PagedQueryRequest, QueryVisibility, Column, ChartDiagram, Parameter } from 'src/app/model/pagedQueryRequest';
+import { PagedQueryRequest, QueryVisibility, Column, ChartDiagram, Parameter, QueryScheduleData } from 'src/app/model/pagedQueryRequest';
 import { Team } from 'src/app/model/team';
 import { ChartType } from 'src/app/model/chart-type';
 import { ConnectionService } from 'src/app/service/connection.service';
@@ -11,6 +11,8 @@ import { TeamService } from 'src/app/service/team.service';
 import { ParamModalComponent } from 'src/app/pages/queries/param-modal/param-modal.component';
 import { ParamHelper } from 'src/app/pages/queries/helper/param-helper';
 import { ResultTableComponent } from '../result-table/result-table.component';
+import { ScheduledExecutionType } from 'src/app/model/scheduled-type';
+import { Day } from 'src/app/model/day';
 
 @Component({
   selector: 'app-query-editor',
@@ -26,9 +28,12 @@ export class QueryEditorComponent implements OnInit {
 
   public connections: Connections;
   public shouldChart = false;
+  public shouldSchedule = false;
   public teams: Array<Team>;
   public visibilityTypes = Object.keys(QueryVisibility);
   public chartTypes = Object.keys(ChartType);
+  public scheduleTypes = Object.keys(ScheduledExecutionType);
+  public dayTypes = Object.keys(Day);
   public chartColumns: Column[];
   
   constructor(private connectionService: ConnectionService,
@@ -49,6 +54,9 @@ export class QueryEditorComponent implements OnInit {
       this.queryService.getColumns(this.queryRequest).subscribe(resp => {
         this.chartColumns = resp;
       });
+    }
+    if (this.queryRequest.queryScheduleData) {
+      this.shouldSchedule = true;
     }
   }
 
@@ -78,6 +86,14 @@ export class QueryEditorComponent implements OnInit {
       });
     } else {
       this.queryRequest.charts.unshift();
+    }
+  }
+
+  onShouldScheduleChange() {
+    if (this.shouldSchedule) {
+      this.queryRequest.queryScheduleData = new QueryScheduleData();
+    } else {
+      this.queryRequest.queryScheduleData = null;
     }
   }
 

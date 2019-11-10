@@ -1,3 +1,6 @@
+import { ScheduledExecutionType } from './scheduled-type';
+import { Day } from './day';
+
 export class PagedQueryRequest {
     uuid: string;
     queryString: string = "";
@@ -13,6 +16,7 @@ export class PagedQueryRequest {
     executions = new Array<QueryExecution>();
     saveExecution = false;
     executionUuid: string;
+    queryScheduleData: QueryScheduleData;
 
     setAllFrom(other: PagedQueryRequest) {
         this.queryString = other.queryString;
@@ -27,6 +31,7 @@ export class PagedQueryRequest {
         this.charts = other.charts;
         this.saveExecution = other.saveExecution;
         this.executionUuid = other.executionUuid;
+        this.queryScheduleData = other.queryScheduleData;
     }
 }
 
@@ -44,6 +49,13 @@ export class QueryExecution {
 export class Column {
     columnName: string;
     columnType: string; 
+}
+
+export class QueryScheduleData {
+    timeOfDay: string;
+    date: Date;
+    type: ScheduledExecutionType;
+    day: Day;
 }
 
 export class ChartDiagram {

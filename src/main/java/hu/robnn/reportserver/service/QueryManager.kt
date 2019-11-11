@@ -8,6 +8,8 @@ import hu.robnn.reportserver.dao.QueryRepository
 import hu.robnn.reportserver.dao.TeamRepository
 import hu.robnn.reportserver.enums.QueryErrorCause
 import hu.robnn.reportserver.enums.QueryVisibility
+import hu.robnn.reportserver.enums.ScheduledExecutionType
+import hu.robnn.reportserver.enums.SchedulingErrorCause
 import hu.robnn.reportserver.exception.ReportServerMappedException
 import hu.robnn.reportserver.mapper.QueryMapper
 import hu.robnn.reportserver.model.dmo.query.HQuery
@@ -19,6 +21,7 @@ import org.apache.commons.lang3.StringUtils.isBlank
 import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Component
 import java.lang.Exception
+import java.lang.NumberFormatException
 import java.sql.ResultSet
 import java.util.*
 
@@ -46,9 +49,40 @@ class QueryManagerImpl(@Lazy private val connectionManager: ConnectionManager,
         if (isBlank(parametrizedQueryRequest.queryName)) {
             throw ReportServerMappedException(QueryErrorCause.NO_QUERY_NAME_SUPPLIED)
         }
+        validateScheduledExecution(parametrizedQueryRequest)
         val resultSet = getResultSetFromRequest(parametrizedQueryRequest)
         val columns = Converter.getColumns(resultSet)
         return queryMapper.mapToRequest(saveQuery(parametrizedQueryRequest, columns))
+    }
+
+    private fun validateScheduledExecution(parametrizedQueryRequest: ParametrizedQueryRequest) {
+        if (parametrizedQueryRequest.queryScheduleData == null) {
+            return
+        } else {
+            val scheduleData = parametrizedQueryRequest.queryScheduleData!!
+            if (scheduleData.timeOfDay != null) {
+                try {
+                    ScheduledExecutionType.TimeOfDay.parseFromString(scheduleData.timeOfDay!!)
+                } catch (e: NumberFormatException) {
+                    throw ReportServerMappedException(SchedulingErrorCause.INVALID_TIME_OF_DAY)
+                }
+            }
+            if (scheduleData.type == ScheduledExecutionType.ONE_TIME) {
+                if (scheduleData.date == null) {
+                    throw ReportServerMappedException(SchedulingErrorCause.ONE_TIME_DATE_MUST_SUPPLIED)
+                }
+            } else if (scheduleData.type == ScheduledExecutionType.WEEKLY) {
+                if (scheduleData.day == null) {
+                    throw ReportServerMappedException(SchedulingErrorCause.WEEKLY_DAY_MUST_SUPPLIED)
+                } else if (scheduleData.timeOfDay == null) {
+                    throw  ReportServerMappedException(SchedulingErrorCause.WEEKLY_TIME_OF_DAY_MUST_SUPPLIED)
+                }
+            } else if (scheduleData.type == ScheduledExecutionType.DAILY) {
+                if (scheduleData.timeOfDay == null) {
+                    throw ReportServerMappedException(SchedulingErrorCause.DAILY_TIME_OF_DAY_MUST_SUPPLIED)
+                }
+            }
+        }
     }
 
     override fun getQueryColumns(parametrizedQueryRequest: ParametrizedQueryRequest): List<Column> {

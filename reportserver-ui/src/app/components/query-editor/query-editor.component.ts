@@ -6,13 +6,14 @@ import { ChartType } from 'src/app/model/chart-type';
 import { ConnectionService } from 'src/app/service/connection.service';
 import { NotificationService } from 'src/app/service/notification.service';
 import { QueryService } from 'src/app/service/query.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDatepickerInputEvent } from '@angular/material';
 import { TeamService } from 'src/app/service/team.service';
 import { ParamModalComponent } from 'src/app/pages/queries/param-modal/param-modal.component';
 import { ParamHelper } from 'src/app/pages/queries/helper/param-helper';
 import { ResultTableComponent } from '../result-table/result-table.component';
 import { ScheduledExecutionType } from 'src/app/model/scheduled-type';
 import { Day } from 'src/app/model/day';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-query-editor',
@@ -35,6 +36,8 @@ export class QueryEditorComponent implements OnInit {
   public scheduleTypes = Object.keys(ScheduledExecutionType);
   public dayTypes = Object.keys(Day);
   public chartColumns: Column[];
+  public preloadTime: {};
+  public preloadDate: FormControl;
   
   constructor(private connectionService: ConnectionService,
     private notificationService: NotificationService,
@@ -57,6 +60,11 @@ export class QueryEditorComponent implements OnInit {
     }
     if (this.queryRequest.queryScheduleData) {
       this.shouldSchedule = true;
+      this.preloadDate = new FormControl(this.queryRequest.queryScheduleData.date);
+      if (this.queryRequest.queryScheduleData.timeOfDay) {
+        const splitTime = this.queryRequest.queryScheduleData.timeOfDay.split(":");
+        this.preloadTime = { hour: splitTime[0].replace("0", ""), minute: splitTime[1].replace("0", ""), format: 24 }
+      }
     }
   }
 
@@ -115,5 +123,17 @@ export class QueryEditorComponent implements OnInit {
     this.queryService.saveQuery(this.queryRequest).subscribe(resp => {
       this.onSave.emit(resp);
     }, error => this.notificationService.addNotification(error.error))
+  }
+
+  onChangeTime(event) {
+    this.queryRequest.queryScheduleData.timeOfDay = `${event.hour}:${event.minute}`;
+    if (this.queryRequest.queryScheduleData.date) {
+      this.queryRequest.queryScheduleData.date.setHours(event.hour);
+      this.queryRequest.queryScheduleData.date.setMinutes(event.minute);
+    }
+  }
+
+  onChangeDate(event: MatDatepickerInputEvent<Date>) {
+    this.queryRequest.queryScheduleData.date = event.value;
   }
 }

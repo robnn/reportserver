@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -39,6 +39,7 @@ import { ModalQueryEditorComponent } from './components/modal-query-editor/modal
 import { CreateDashboardComponent } from './components/edit-dashboard/create-dashboard.component';
 import { RoutingModule } from './modules/routing/routing.module';
 import { MaterialModule } from './modules/material/material.module';
+import { MaterialTimePickerModule } from '@candidosales/material-time-picker';
 
 export function hljsLanguages() {
   return [
@@ -83,8 +84,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     StorageServiceModule,
     FlexLayoutModule,
+    MaterialTimePickerModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

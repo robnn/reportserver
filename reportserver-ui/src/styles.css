@@ -93,3 +93,8 @@ body {
 .left-margin {
   margin-left: 10px !important;
 }
+
+mat-panel-description {
+  display: block !important;
+  text-align: right !important;
+}

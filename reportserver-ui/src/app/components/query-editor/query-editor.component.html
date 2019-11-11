@@ -75,6 +75,7 @@
     </mat-select>
   </mat-form-field>
 </div>
+<br>
 <mat-checkbox (change)="onShouldScheduleChange()" *ngIf="queryRequest.queryName" [(ngModel)]="shouldSchedule">
   {{ "SHOULD_SCHEDULE" | translate }}</mat-checkbox>
 <div *ngIf="shouldSchedule">
@@ -85,12 +86,6 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-form-field *ngIf="queryRequest.queryScheduleData.type == 'WEEKLY' || queryRequest.queryScheduleData.type == 'DAILY'" color="accent" class="full-width">
-    <input matInput name="timeOfDay" [(ngModel)]="queryRequest.queryScheduleData.timeOfDay">
-    <mat-label>
-      <mat-icon>access_time</mat-icon> {{ 'TIME_OF_DAY' | translate }}
-    </mat-label>
-  </mat-form-field>
   <mat-form-field *ngIf="queryRequest.queryScheduleData.type == 'WEEKLY'" color="accent" class="full-width">
     <mat-select placeholder="{{ 'DAY' | translate }}" [(ngModel)]="queryRequest.queryScheduleData.day" name="scheduleType">
       <mat-option *ngFor="let type of dayTypes" [value]="type">
@@ -98,6 +93,14 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
+  <mat-form-field *ngIf="queryRequest.queryScheduleData.type == 'ONE_TIME'" color="accent" class="full-width">
+    <input matInput [matDatepicker]="picker" placeholder="{{ 'CHOOSE_DATE' | translate }}" (dateChange)="onChangeDate($event)" [formControl]="preloadDate">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <div *ngIf="queryRequest.queryScheduleData.type" color="accent" class="full-width">
+    <material-timepicker color="accent" label="{{ 'TIME_OF_DAY' | translate }}" appearance="standard" [userTime]="preloadTime" (change)="onChangeTime($event)" revertLabel="{{ 'CANCEL' | translate}}" submitLabel="{{ 'OK' | translate}}"></material-timepicker>
+  </div>
 </div>
 <div class="flexed">
   <div class="fill-remaining-space"></div>

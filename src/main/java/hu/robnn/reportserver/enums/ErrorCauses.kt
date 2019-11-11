@@ -23,10 +23,17 @@ enum class QueryErrorCause: ErrorCause {
 enum class TeamErrorCause: ErrorCause {
     TEAM_NAME_MUST_BE_SUPPLIED,
     TEAM_MUST_HAVE_USERS_IN_IT,
-    TEAM_WITH_NAME_ALREADY_EXISTS,
 }
 
 enum class DashboardErrorCause: ErrorCause {
     USER_NOT_FOUND,
     DASHBOARD_FOR_USER_NOT_FOUND,
+}
+
+enum class SchedulingErrorCause: ErrorCause {
+    ONE_TIME_DATE_MUST_SUPPLIED,
+    WEEKLY_DAY_MUST_SUPPLIED,
+    WEEKLY_TIME_OF_DAY_MUST_SUPPLIED,
+    DAILY_TIME_OF_DAY_MUST_SUPPLIED,
+    INVALID_TIME_OF_DAY,
 }

@@ -4,8 +4,9 @@ import {
   MatButtonModule, MatToolbarModule, MatMenuModule, MatIconModule, MatSnackBarModule,
   MatTabsModule, MatExpansionModule, MatDialogModule, MatPaginatorModule, MatTableModule,
   MatCheckboxModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule, MatNativeDateModule
 } from '@angular/material';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatGridListModule} from '@angular/material/grid-list';
 
 @NgModule({
@@ -28,7 +29,9 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatTableModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
-    MatGridListModule
+    MatGridListModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   exports: [
     MatFormFieldModule,
@@ -48,7 +51,9 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatTableModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
-    MatGridListModule
+    MatGridListModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ]
 })
 export class MaterialModule { }

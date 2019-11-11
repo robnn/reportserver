@@ -67,10 +67,10 @@ export class DashboardComponent implements OnInit {
   }
 
   openEditDashboardModal(query: DashboardQuery) {
-    let dashboard = this.dashboard;
-    if (!dashboard) {
-      dashboard = new Dashboard();
-      dashboard.userName = this.username;
+    if (!this.dashboard) {
+      this.dashboard = new Dashboard();
+      this.dashboard.userName = this.username;
+      this.dashboard.dashboardQueries = [];
     }
     let dashboardQuery = query;
     if (!query) {

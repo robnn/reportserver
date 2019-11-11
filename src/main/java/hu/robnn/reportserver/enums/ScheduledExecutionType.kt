@@ -1,6 +1,7 @@
 package hu.robnn.reportserver.enums
 
 import hu.robnn.reportserver.model.dmo.query.HQueryScheduleData
+import java.lang.NumberFormatException
 import java.util.*
 
 enum class ScheduledExecutionType {
@@ -42,7 +43,12 @@ enum class ScheduledExecutionType {
         companion object {
             fun parseFromString(string: String): TimeOfDay {
                 val split = string.split(":")
-                return TimeOfDay(split[0].toInt(), split[1].toInt())
+                val hour = split[0].toInt()
+                val minute = split[1].toInt()
+                if (hour > 23 || minute > 59 || hour < 0 || minute < 0) {
+                    throw NumberFormatException("Illegal time format provided")
+                }
+                return TimeOfDay(hour, minute)
             }
         }
 

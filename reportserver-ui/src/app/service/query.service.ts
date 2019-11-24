@@ -14,11 +14,6 @@ export class QueryService {
   constructor(private http: HttpClient,
     private userService: UserService) { }
 
-  runQuery(connectionUuid: string, query: string) {
-    return this.http.post(this.connectionUrl + '/simple' + '?connectionUuid=' + connectionUuid + '&query=' + query, null,
-    { headers: this.userService.getAuthTokenAsHttpHeader(null) });
-  }
-
   runPagedQuery(pagedQueryRequest: PagedQueryRequest): Observable<PagedQueryResponse> {
     const path = pagedQueryRequest.executionUuid ? '/execution' : '/paged';
     return this.http.post<PagedQueryResponse>(this.connectionUrl + path,
@@ -26,7 +21,7 @@ export class QueryService {
   }
 
   runNonPagedQuery(pagedQueryRequest: NotPagedQueryRequest): Observable<QueryResponse> {
-    return this.http.post<QueryResponse>(this.connectionUrl + '/parametrized',
+    return this.http.post<QueryResponse>(this.connectionUrl + '/notPaged',
     pagedQueryRequest, { headers: this.userService.getAuthTokenAsHttpHeader(null) });
   }
 

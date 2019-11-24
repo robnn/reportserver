@@ -1,7 +1,6 @@
 package hu.robnn.reportserver.api;
 
 import hu.robnn.auth.annotation.Authenticated;
-import hu.robnn.reportserver.converter.Converter;
 import hu.robnn.reportserver.model.dto.*;
 import hu.robnn.reportserver.service.QueryManager;
 import org.springframework.http.HttpStatus;
@@ -9,12 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.ResultSet;
 import java.util.List;
-import java.util.UUID;
 
 @Component
-@RestController("drivers")
+@RestController
 @RequestMapping(path = "queries")
 @CrossOrigin
 public class QueryApi {
@@ -25,13 +22,6 @@ public class QueryApi {
         this.queryManager = queryManager;
     }
 
-    @RequestMapping(path = "/simple", method = RequestMethod.POST)
-    @Authenticated
-    public ResponseEntity<QueryResponse> executeSimpleQuery(@RequestParam String connectionUuid, @RequestParam String query) throws Exception {
-        ResultSet resultSet = queryManager.executeQuery(UUID.fromString(connectionUuid), query);
-        QueryResponse queryResponse = Converter.convertToQueryResult(resultSet);
-        return new ResponseEntity<>(queryResponse, HttpStatus.OK);
-    }
 
     @RequestMapping(path = "/paged", method = RequestMethod.POST)
     @Authenticated
@@ -59,7 +49,7 @@ public class QueryApi {
         return new ResponseEntity<>(queryManager.listAllQueries(), HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/parametrized", method = RequestMethod.POST)
+    @RequestMapping(path = "/notPaged", method = RequestMethod.POST)
     @Authenticated
     public ResponseEntity<QueryResponse> executeNotPagedQuery(@RequestBody NotPagedParametrizedQueryRequest notPagedParametrizedQueryRequest) {
         QueryResponse queryResponse = queryManager.executeQuery(notPagedParametrizedQueryRequest);

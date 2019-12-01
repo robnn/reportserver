@@ -28,11 +28,11 @@ class DashboardMapper(private val userDao: UserDao,
         return realTarget
     }
 
-    fun map(source: Set<DashboardQuery>, dashboard: HDashboard): Set<HDashboardQuery> {
+    private fun map(source: Set<DashboardQuery>, dashboard: HDashboard): Set<HDashboardQuery> {
         return source.map { map(it, dashboard) }.toMutableSet()
     }
 
-    fun map(source: DashboardQuery, dashboard: HDashboard): HDashboardQuery {
+    private fun map(source: DashboardQuery, dashboard: HDashboard): HDashboardQuery {
         val target = HDashboardQuery()
         target.dashboard = dashboard
         target.isChart = source.chart

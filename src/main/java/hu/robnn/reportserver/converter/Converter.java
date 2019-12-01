@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import hu.robnn.reportserver.model.dmo.query.HQueryColumn;
 import hu.robnn.reportserver.model.dto.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
 import java.sql.ResultSet;
@@ -37,15 +38,7 @@ public class Converter {
                 rowCounter = 0;
             }
         }
-        //TODO itt csak a resultsetet kéne mappelni, a többi a mapperbe kéne menjen
-        pagedQueryResponse.setActualPage(pagedQueryRequest.getNeededPage());
-        pagedQueryResponse.setItemsPerPage(pagedQueryRequest.getItemsPerPage());
-        pagedQueryResponse.setTotalNumberOfPages(pageCounter - 1);
-        pagedQueryResponse.setTotalItems(itemCounter);
-        pagedQueryResponse.setColumns(columns);
-        pagedQueryResponse.setVisibility(pagedQueryRequest.getVisibility());
-        pagedQueryResponse.setCharts(pagedQueryRequest.getCharts());
-        return pagedQueryResponse;
+        return getPagedQueryResponse(pagedQueryRequest, columns, pagedQueryResponse, pageCounter, itemCounter);
     }
 
     public static PagedQueryResponse convertToPagedQueryResult(String jsonData, PagedQueryRequest pagedQueryRequest, List<Column> columns) throws SQLException {
@@ -67,8 +60,11 @@ public class Converter {
                 rowCounter = 0;
             }
         }
-        //TODO duplikátum
-        //TODO itt csak a resultsetet kéne mappelni, a többi a mapperbe kéne menjen
+        return getPagedQueryResponse(pagedQueryRequest, columns, pagedQueryResponse, pageCounter, itemCounter);
+    }
+
+    @NotNull
+    private static PagedQueryResponse getPagedQueryResponse(PagedQueryRequest pagedQueryRequest, List<Column> columns, PagedQueryResponse pagedQueryResponse, int pageCounter, int itemCounter) {
         pagedQueryResponse.setActualPage(pagedQueryRequest.getNeededPage());
         pagedQueryResponse.setItemsPerPage(pagedQueryRequest.getItemsPerPage());
         pagedQueryResponse.setTotalNumberOfPages(pageCounter - 1);

@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {ReportServerMappedException.class})
-    protected ResponseEntity<Message> handleUserError(RuntimeException ex, WebRequest request){
+    protected ResponseEntity<Message> handleError(RuntimeException ex, WebRequest request){
         ReportServerMappedException casted = (ReportServerMappedException) ex;
         Message messageObject;
         if (casted.getErrorCause() != null) {

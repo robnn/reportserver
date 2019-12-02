@@ -41,7 +41,7 @@ open class ConnectionManagerImpl(private val connectionDescriptorRepository: Con
 
     final override fun initializeConnections() {
         connectionDescriptorRepository.findAll().forEach {
-            if(it?.host != null && it.port != null && it.dbName != null && it.driver?.dbType != null) {
+            if (it?.host != null && it.port != null && it.dbName != null && it.driver?.dbType != null) {
                 registerDriverToDriverManager(it.driver!!)
                 try {
                     val connection = DriverManager.getConnection(it.driver?.dbType?.buildJdbcString(it.host!!, it.port!!, it.dbName!!), it.username, it.password)
@@ -70,17 +70,31 @@ open class ConnectionManagerImpl(private val connectionDescriptorRepository: Con
 
     override fun getConnectionForConnectionDescriptorUuid(uuid: UUID): Connection {
         val connection = connections[connectionDescriptorRepository.findByUuid(uuid.toString())]
-        //TODO itt kéne a kapcsolatot újraéleszteni, ha eldöglött, mivel ha menet közben döglik el akkor utána ha meg is javul akkor is szar marad
-        if (connection != null) {
-            return connection
+        return if (connection != null) {
+            var connectionIsAlive = true
+            try {
+                connection.prepareStatement("SELECT 1").execute()
+            } catch (e: Exception) {
+                connectionIsAlive = false
+            }
+            return if (!connectionIsAlive) {
+                // if the connection is dead renew all the connections and try again
+                initializeConnections()
+                connections[connectionDescriptorRepository.findByUuid(uuid.toString())]
+                        ?: throw IllegalStateException("No connection for descriptor!")
+            } else
+                connection
         } else {
-            throw IllegalStateException("No connection for descriptor!")
+            // if the connection not found, renew all the connections and try again
+            initializeConnections()
+            connections[connectionDescriptorRepository.findByUuid(uuid.toString())]
+                    ?: throw IllegalStateException("No connection for descriptor!")
         }
     }
 
     override fun listConnections(): List<ConnectionDescriptor> {
         val connections = connectionDescriptorRepository.findAll().map { connectionDescriptorMapper.map(it)!! }
-        connections.forEach {it.isAlive = queryManager.executeTestQuery(it.uuid) }
+        connections.forEach { it.isAlive = queryManager.executeTestQuery(it.uuid) }
         return connections
     }
 
@@ -88,9 +102,8 @@ open class ConnectionManagerImpl(private val connectionDescriptorRepository: Con
         val driverPath = jdbcFolder.absolutePath + "/" + driverInRepository.name
         val driverUrl = URL("jar:file:$driverPath!/")
         val ucl = URLClassLoader(arrayOf(driverUrl))
-        val neededClassName = driverService.findDriverClassName(driverPath, ucl)
 
-        val d = Class.forName(neededClassName, true, ucl).newInstance() as java.sql.Driver
+        val d = Class.forName(driverInRepository.driverClassNAme, true, ucl).newInstance() as java.sql.Driver
         DriverManager.registerDriver(DriverShim(d))
     }
 }

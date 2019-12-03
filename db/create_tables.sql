@@ -640,4 +640,3 @@ ALTER TABLE ONLY public.rs_connection_descriptor
 --
 -- PostgreSQL database dump complete
 --
-

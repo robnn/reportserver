@@ -1,8 +1,6 @@
 package hu.robnn.reportserver.api;
 
 import hu.robnn.auth.annotation.Authenticated;
-import hu.robnn.auth.dao.UserDao;
-import hu.robnn.reportserver.model.dto.ConnectionDescriptor;
 import hu.robnn.reportserver.model.dto.Team;
 import hu.robnn.reportserver.model.dto.TeamsResponse;
 import hu.robnn.reportserver.service.TeamService;
